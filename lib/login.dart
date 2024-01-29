@@ -10,9 +10,17 @@ import 'package:signup_page/theme.dart';
 }
 
 class LoginPageState extends State<LoginPage> {
+
+
+   final TextEditingController emailController = TextEditingController();
+   final TextEditingController passwordController = TextEditingController();
+
+    final lFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         body: SingleChildScrollView(
           child: Stack(
             children: [
@@ -37,11 +45,13 @@ class LoginPageState extends State<LoginPage> {
                     ),
                     Center(
                       child: Form(
+                        key: lFormKey,
                           child: Column(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 100, 0, 26.5),
                                 child: TextFormField(
+                                  controller: emailController,
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
@@ -49,11 +59,24 @@ class LoginPageState extends State<LoginPage> {
                                             borderSide:
                                             BorderSide(color: underLineColor)),
                                         label: const Text('Email'),
-                                        labelStyle: TextStyle(color: hintTextColor))),
+                                        labelStyle: TextStyle(color: hintTextColor)),
+                                validator: (value){
+                                    if(value == null || value.isEmpty){
+                                      return 'Please Enter Email';
+
+                                    } else if (!RegExp(
+                                        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                        .hasMatch(value)) {
+                                      return 'Please Enter valid Email';
+                                    }
+                                    return null;
+                                },
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
                                 child: TextFormField(
+                                  controller: passwordController,
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.visiblePassword,
                                     obscureText: true
@@ -70,7 +93,15 @@ class LoginPageState extends State<LoginPage> {
                                             borderSide:
                                             BorderSide(color: underLineColor)),
                                         label: const Text('Password'),
-                                        labelStyle: TextStyle(color: hintTextColor))),
+                                        labelStyle: TextStyle(color: hintTextColor)),
+                                validator: (value){
+                                    if(value == null || value.isEmpty){
+                                      return 'Please Enter Password';
+                                    } else{
+                                      return null;
+                                    }
+                                },
+                                ),
                               ),
                               //SignUp Button
 
