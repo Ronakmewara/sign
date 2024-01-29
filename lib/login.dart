@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup_page/theme.dart';
 
  class LoginPage extends StatefulWidget {
@@ -16,8 +17,20 @@ class LoginPageState extends State<LoginPage> {
    final TextEditingController passwordController = TextEditingController();
 
     final lFormKey = GlobalKey<FormState>();
+    late SharedPreferences prefs;
+@override
+void initState(){
+  super.initState();
+  initializePreferences();
+}
 
+ Future<void> initializePreferences()async{
+  prefs = await SharedPreferences.getInstance();
+
+
+ }
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
 
