@@ -141,8 +141,10 @@ class SignupState extends State<Signup> {
       children: [
         Image.asset(
           'asset/image/appbackground.jpg',
-          fit: BoxFit.fill,
+          fit:BoxFit.fill,
           width: double.maxFinite,
+          height: double.maxFinite,
+
         ),
         SingleChildScrollView(
           child: Padding(
@@ -290,7 +292,16 @@ class SignupState extends State<Signup> {
                           //Gender
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                              child: DropdownButton(
+                              child: DropdownButtonFormField(
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                validator: (value){
+                                  if(value == null || value.isEmpty){
+                                    return 'Please Enter Your Gender';
+                                  } else{
+                                    return null;
+                                  }
+
+                                },
                                 isExpanded: true,
                                 style: TextStyle(
                                     color: Theme.of(context).hintColor,
@@ -315,6 +326,15 @@ class SignupState extends State<Signup> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
                             child: TextFormField(
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              validator: (value){
+                                if(value == null || value.isEmpty){
+                                  return 'Please Enter Your Date Of Birth';
+                                } else {
+                                  return null;
+                                }
+
+                              },
                               readOnly: true,
                               controller: dateController,
                               decoration: InputDecoration(
@@ -453,6 +473,7 @@ class SignupState extends State<Signup> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               const LoginPage()));
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Signup Successfully!')));
                                 }
                               },
                               child: Container(

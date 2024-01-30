@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:signup_page/detailspage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -35,9 +36,11 @@ class HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
          automaticallyImplyLeading: false,
-        title: const Text(
-          'Api Result',
-          style: TextStyle(color: Colors.white),
+        title: Center(
+          child:  Text(
+            'Api Result',
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white , fontSize: 25),
+          ),
         ),
         actions:  [
        PopupMenuButton(
@@ -64,18 +67,19 @@ class HomepageState extends State<Homepage> {
 
         backgroundColor: Colors.teal,
       ),
-      body: ListView.separated(
-        separatorBuilder: (context , index){
-          return const Divider(
-            thickness: 2,
-          );
-        },
+      body: ListView.builder(
+
+
         itemCount: posts.length,
         itemBuilder: (context, index) {
           final post = posts[index];
           return Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(20),
             child: ListTile(
+
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> DetailsPage(post: post)));
+              },
 
               leading: CircleAvatar(
                   backgroundColor: Colors.teal,
@@ -86,6 +90,7 @@ class HomepageState extends State<Homepage> {
                         fontWeight: FontWeight.bold, color: Colors.white),
                   )),
               title: Text(post['title'], style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20),),
+              trailing: const Icon(Icons.arrow_forward_ios),
             ),
 
           );

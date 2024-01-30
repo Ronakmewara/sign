@@ -94,7 +94,7 @@ void initState(){
                                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
                                 child: TextFormField(
                                   controller: passwordController,
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.visiblePassword,
                                     obscureText: true
