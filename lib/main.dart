@@ -1,6 +1,8 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:signup_page/homepage.dart';
+import 'package:signup_page/login.dart';
 
 import 'package:signup_page/signup.dart';
 import 'package:signup_page/theme.dart';
@@ -25,6 +27,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Signup Page',
         theme: theme(),
-        home: const Signup());
+        home: const LoginPage());
   }
 }

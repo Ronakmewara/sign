@@ -1,6 +1,10 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:signup_page/homepage.dart';
+import 'package:signup_page/signup.dart';
 import 'package:signup_page/theme.dart';
 
  class LoginPage extends StatefulWidget {
@@ -90,6 +94,7 @@ void initState(){
                                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
                                 child: TextFormField(
                                   controller: passwordController,
+                                    autovalidateMode: AutovalidateMode.onUserInteraction,
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.visiblePassword,
                                     obscureText: true
@@ -120,21 +125,60 @@ void initState(){
 
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 8),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      borderRadius: BorderRadius.circular(40)),
-                                  height: 50,
-                                  width: 400,
-                                  child: Center(
-                                    child: Text(
-                                      'Sign in',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge!
-                                          .copyWith(fontSize: 18, color: Colors.white),
+                                child: InkWell(
+
+                                  onTap: (){
+                                    if(lFormKey.currentState!.validate()) {
+                                      String email = emailController.text;
+                                      String password = passwordController.text;
+
+                                      String? userJson = prefs.getString(
+                                          'user');
+
+                                      if (userJson != null) {
+                                        Map<String, dynamic> userData = json
+                                            .decode(userJson);
+
+                                        if (userData['email'] == email &&
+                                            userData['password'] == password) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            content: Text('Login Successful'),
+                                            duration: Duration(seconds: 2),
+                                          ));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Homepage()));
+                                            emailController.clear();
+                                            passwordController.clear();
+                                         
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            content: Text(
+                                                'Incorrect Credentials'),
+                                            duration: Duration(seconds: 2),
+                                          ));
+                                        }
+                                      }
+                                    }
+
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.circular(40)),
+                                    height: 50,
+                                    width: 400,
+                                    child: Center(
+                                      child: Text(
+                                        'Sign in',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .copyWith(fontSize: 18, color: Colors.white),
+                                      ),
                                     ),
                                   ),
+
                                 ),
                               ),
                               
@@ -178,7 +222,7 @@ void initState(){
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.pop(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) =>const Signup()));
                                     },
                                     child: Text(
                                       ' Sign up',
