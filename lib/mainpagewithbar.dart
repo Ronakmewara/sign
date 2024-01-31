@@ -16,7 +16,6 @@ class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
 
-    final List<String> appBarTitles = ['Home', 'Profile', 'Setting'];
     const List<Widget> pages = [
        Homepage(),
       ProfilePage(),
@@ -28,11 +27,32 @@ class MainPageState extends State<MainPage> {
         automaticallyImplyLeading: false,
         title: Center(
           child:  Text(
-            appBarTitles[selectedIndex],
+            'Welcome',
             style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white , fontSize: 25),
           ),
         ),
-
+        // actions:  [
+        //   PopupMenuButton(
+        //
+        //     child:  const IconButton(onPressed: null, icon: Icon(Icons.more_vert , color: Colors.white,), iconSize: 35,),
+        //     itemBuilder: (context){
+        //       return [
+        //         const PopupMenuItem( value: 0 ,child: Text('Logout'))
+        //       ];
+        //
+        //     },
+        //     onSelected: (value){
+        //       if(value == 0){
+        //         Navigator.pop(context);
+        //         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //           content: Text('Logged out Successfully'),
+        //           duration: Duration(seconds: 3),
+        //         ));
+        //       }
+        //     },
+        //
+        //   )
+        // ],
 
         backgroundColor: Colors.teal,
       ),

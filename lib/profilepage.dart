@@ -41,6 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return   Scaffold(
           body: Center(
             child: Padding(
+<<<<<<< HEAD
               padding: const EdgeInsets.all( 50),
               child: Container(
                 padding: const EdgeInsets.all(16.0),
@@ -83,6 +84,44 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   ],
                 ),
+=======
+              padding: const EdgeInsets.only(top: 50),
+              child: Column(
+
+                children: [
+                  const CircleAvatar(
+                    maxRadius: 100,
+                    backgroundColor: Colors.black,
+
+                  ),
+
+                  const SizedBox(height: 25,),
+
+                  Column(
+                    children: [
+                      const Text('Full Name', style: TextStyle(color: Colors.grey , fontSize: 12),),
+                      Text(data?['fullName'] ?? "",style: const TextStyle(fontSize: 20),)
+                    ],
+                  ),
+                 const SizedBox(height: 25,),
+
+                  Column(
+                    children: [
+                      const Text('Email Id', style: TextStyle(color: Colors.grey , fontSize: 12),),
+                      Text(data?['email'] ?? "" , style: const TextStyle(fontSize: 20), )
+                    ],
+                  ),
+                  const SizedBox(height: 25,),
+                  Column(
+                    children: [
+                      const Text('Phone Number', style: TextStyle(color: Colors.grey , fontSize: 12),),
+                      Text(data?['mobileNumber'] ?? "",style: const TextStyle(fontSize: 20),)
+                    ],
+                  ),
+                  const SizedBox(height: 25,),
+
+                ],
+>>>>>>> origin/master
               ),
             ),
           ),
