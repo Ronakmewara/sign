@@ -1,9 +1,8 @@
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:signup_page/homepage.dart';
+import 'package:signup_page/mainpagewithbar.dart';
 import 'package:signup_page/signup.dart';
 import 'package:signup_page/theme.dart';
 
@@ -22,6 +21,8 @@ class LoginPageState extends State<LoginPage> {
 
     final lFormKey = GlobalKey<FormState>();
     late SharedPreferences prefs;
+
+
 @override
 void initState(){
   super.initState();
@@ -30,8 +31,6 @@ void initState(){
 
  Future<void> initializePreferences()async{
   prefs = await SharedPreferences.getInstance();
-
-
  }
   @override
 
@@ -128,7 +127,10 @@ void initState(){
                                 child: InkWell(
 
                                   onTap: (){
+
+                                    print("asd");
                                     if(lFormKey.currentState!.validate()) {
+
                                       String email = emailController.text;
                                       String password = passwordController.text;
 
@@ -146,10 +148,11 @@ void initState(){
                                             content: Text('Login Successful'),
                                             duration: Duration(seconds: 2),
                                           ));
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Homepage()));
+                                          prefs.setBool('isLogged', true);
+                                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
                                             emailController.clear();
                                             passwordController.clear();
-                                         
+
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
@@ -158,6 +161,8 @@ void initState(){
                                             duration: Duration(seconds: 2),
                                           ));
                                         }
+                                      } else{
+                                        print('no data');
                                       }
                                     }
 
@@ -222,7 +227,8 @@ void initState(){
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) =>const Signup()));
+
+                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const Signup()));
                                     },
                                     child: Text(
                                       ' Sign up',

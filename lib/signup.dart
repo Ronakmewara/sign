@@ -54,6 +54,8 @@ class Signup extends StatefulWidget {
 }
 
 class SignupState extends State<Signup> {
+
+
   String? dropdownValue;
   var genderOptions = ['male', 'female'];
   List<String> hobbies = [
@@ -114,7 +116,7 @@ class SignupState extends State<Signup> {
     String userJson = json.encode(user.toJson());
 
     await prefs.setString('user', userJson);
-    print('success:$userJson');
+
 
     //clearing Input Fields
 
@@ -186,7 +188,10 @@ class SignupState extends State<Signup> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please Enter Name';
+                                } else{
+                                  return null;
                                 }
+
                               },
                             ),
                           ),
@@ -238,6 +243,8 @@ class SignupState extends State<Signup> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please Enter Password';
+                                } else {
+                                  return null;
                                 }
                               },
                             ),
@@ -262,6 +269,8 @@ class SignupState extends State<Signup> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please Enter Password';
+                                } else {
+                                  return null;
                                 }
                               },
                             ),
@@ -283,10 +292,16 @@ class SignupState extends State<Signup> {
                                   labelStyle: TextStyle(color: hintTextColor)),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
+
                                   return 'Please Enter Mobile Number';
                                 }
-                                return null;
+                                else if (!RegExp(r"^[0-9]{10}$").hasMatch(value)){
+                                  return 'Mobile Number must be of 10 digit';
+                                } else {
+                                  return null;
+                                }
                               },
+
                             ),
                           ),
                           //Gender
@@ -356,7 +371,7 @@ class SignupState extends State<Signup> {
                                     dateController.text = formattedDate;
                                   });
                                 }
-                                ;
+
                               },
                             ),
                           ),
@@ -448,7 +463,7 @@ class SignupState extends State<Signup> {
                                       setState(() {
                                         if (value!) {
                                           selectedHobbies.add(hobby);
-                                          print(selectedHobbies);
+
                                         } else {
                                           selectedHobbies.remove(hobby);
                                         }
@@ -511,7 +526,7 @@ class SignupState extends State<Signup> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
