@@ -54,8 +54,6 @@ class Signup extends StatefulWidget {
 }
 
 class SignupState extends State<Signup> {
-
-
   String? dropdownValue;
   var genderOptions = ['male', 'female'];
   List<String> hobbies = [
@@ -117,7 +115,6 @@ class SignupState extends State<Signup> {
 
     await prefs.setString('user', userJson);
 
-
     //clearing Input Fields
 
     nameController.clear();
@@ -137,16 +134,13 @@ class SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
         body: Stack(
       children: [
         Image.asset(
           'asset/image/appbackground.jpg',
-          fit:BoxFit.fill,
+          fit: BoxFit.fill,
           width: double.maxFinite,
           height: double.maxFinite,
-
         ),
         SingleChildScrollView(
           child: Padding(
@@ -188,10 +182,9 @@ class SignupState extends State<Signup> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please Enter Name';
-                                } else{
+                                } else {
                                   return null;
                                 }
-
                               },
                             ),
                           ),
@@ -292,30 +285,28 @@ class SignupState extends State<Signup> {
                                   labelStyle: TextStyle(color: hintTextColor)),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-
                                   return 'Please Enter Mobile Number';
-                                }
-                                else if (!RegExp(r"^[0-9]{10}$").hasMatch(value)){
+                                } else if (!RegExp(r"^[0-9]{10}$")
+                                    .hasMatch(value)) {
                                   return 'Mobile Number must be of 10 digit';
                                 } else {
                                   return null;
                                 }
                               },
-
                             ),
                           ),
                           //Gender
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
                               child: DropdownButtonFormField(
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
-                                validator: (value){
-                                  if(value == null || value.isEmpty){
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
                                     return 'Please Enter Your Gender';
-                                  } else{
+                                  } else {
                                     return null;
                                   }
-
                                 },
                                 isExpanded: true,
                                 style: TextStyle(
@@ -341,14 +332,14 @@ class SignupState extends State<Signup> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
                             child: TextFormField(
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              validator: (value){
-                                if(value == null || value.isEmpty){
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
                                   return 'Please Enter Your Date Of Birth';
                                 } else {
                                   return null;
                                 }
-
                               },
                               readOnly: true,
                               controller: dateController,
@@ -371,7 +362,6 @@ class SignupState extends State<Signup> {
                                     dateController.text = formattedDate;
                                   });
                                 }
-
                               },
                             ),
                           ),
@@ -463,7 +453,6 @@ class SignupState extends State<Signup> {
                                       setState(() {
                                         if (value!) {
                                           selectedHobbies.add(hobby);
-
                                         } else {
                                           selectedHobbies.remove(hobby);
                                         }
@@ -488,7 +477,10 @@ class SignupState extends State<Signup> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               const LoginPage()));
-                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Signup Successfully!')));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text('Signup Successfully!')));
                                 }
                               },
                               child: Container(
