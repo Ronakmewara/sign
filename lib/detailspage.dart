@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DetailsPage extends StatelessWidget {
    const DetailsPage({super.key , required this.post});
-     final post;
+     final dynamic post;
    @override
    Widget build(BuildContext context) {
      return Scaffold(

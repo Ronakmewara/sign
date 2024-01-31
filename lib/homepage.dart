@@ -34,39 +34,7 @@ class HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-         automaticallyImplyLeading: false,
-        title: Center(
-          child:  Text(
-            'Api Result',
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white , fontSize: 25),
-          ),
-        ),
-        actions:  [
-       PopupMenuButton(
-
-       child:  const IconButton(onPressed: null, icon: Icon(Icons.more_vert , color: Colors.white,), iconSize: 35,),
-        itemBuilder: (context){
-         return [
-          const PopupMenuItem( value: 0 ,child: Text('Logout'))
-         ];
-
-        },
-         onSelected: (value){
-         if(value == 0){
-           Navigator.pop(context);
-           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-             content: Text('Logged out Successfully'),
-             duration: Duration(seconds: 3),
-           ));
-         }
-         },
-
-       )
-        ],
-
-        backgroundColor: Colors.teal,
-      ),
+     backgroundColor: const Color.fromRGBO(216, 222, 216, 1.0),
       body: ListView.builder(
 
 
@@ -74,23 +42,47 @@ class HomepageState extends State<Homepage> {
         itemBuilder: (context, index) {
           final post = posts[index];
           return Padding(
-            padding: const EdgeInsets.all(20),
-            child: ListTile(
+            padding: const EdgeInsets.all(10),
+            child: Container(
 
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> DetailsPage(post: post)));
-              },
+              decoration:  BoxDecoration(
 
-              leading: CircleAvatar(
-                  backgroundColor: Colors.teal,
-                  maxRadius: 40,
-                  child: Text(
-                    post['id'].toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  )),
-              title: Text(post['title'], style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20),),
-              trailing: const Icon(Icons.arrow_forward_ios),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: const [
+                 BoxShadow(
+                  color: Colors.black,
+                offset: Offset(1, 1),
+                   blurRadius: 2
+              ),
+
+
+
+                  ]
+
+              ),
+
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: ListTile(
+
+
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> DetailsPage(post: post)));
+                  },
+
+                  leading: CircleAvatar(
+                      backgroundColor: Colors.teal,
+                      maxRadius: 40,
+                      child: Text(
+                        post['id'].toString(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      )),
+                  title: Text(post['title'], style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 17),),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                ),
+              ),
             ),
 
           );
