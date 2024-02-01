@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:signup_page/custom_input.dart';
 import 'package:signup_page/login.dart';
 import 'package:signup_page/theme.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +16,7 @@ class User {
   String country;
   String state;
   String city;
-  List<String> hobbies;
+  List<String>? hobbies;
   String gender;
 
   User(
@@ -27,7 +28,7 @@ class User {
       required this.country,
       required this.city,
       required this.state,
-      required this.hobbies,
+      this.hobbies,
       required this.gender});
 
   Map<String, dynamic> toJson() {
@@ -165,29 +166,13 @@ class SignupState extends State<Signup> {
                         children: [
                           //Name
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 26.5),
-                            child: TextFormField(
-                              controller: nameController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textCapitalization: TextCapitalization.sentences,
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  border: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: underLineColor)),
-                                  label: const Text('Your Name'),
-                                  labelStyle: TextStyle(color: hintTextColor)),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter Name';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
+                              padding:
+                                  const EdgeInsets.fromLTRB(0, 20, 0, 26.5),
+                              child: CustomInput(
+                                  name: 'Name',
+                                  controller: nameController,
+                                  placeholder: 'Enter Your Name',
+                                  keyboardStyle: TextInputType.text)),
                           //Email
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
@@ -472,7 +457,7 @@ class SignupState extends State<Signup> {
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
                                   signup();
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>

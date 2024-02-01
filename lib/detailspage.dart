@@ -18,10 +18,10 @@ class DetailsPage extends StatelessWidget {
            children: [
              Padding(
                padding: const EdgeInsets.only(bottom: 60),
-               child: Text(post['title'].toString() , style: Theme.of(context).textTheme.titleLarge,),
+               child: Text(post.title , style: Theme.of(context).textTheme.titleLarge,),
              ),
 
-             Text(post['body'] , style: const TextStyle(fontSize: 20),)
+             Text(post.body , style: const TextStyle(fontSize: 20),)
            ],
          ),
        ) ,

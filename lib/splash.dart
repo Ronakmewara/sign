@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:signup_page/homepage.dart';
 import 'package:signup_page/login.dart';
 import 'package:signup_page/mainpagewithbar.dart';
 
@@ -17,7 +16,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
     _test();
   }
 
@@ -25,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(child:  
-      Icon((Icons.energy_savings_leaf) , size: 50,)),
+      Icon((Icons.energy_savings_leaf) , size: 100,)),
     );
   }
 
@@ -35,10 +33,10 @@ class _SplashScreenState extends State<SplashScreen> {
       isLoggedIn = prefs.getBool('isLogged');
       if (isLoggedIn == true) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MainPage()));
+            context, MaterialPageRoute(builder: (context) =>const MainPage()));
       } else {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context, MaterialPageRoute(builder: (context) => const LoginPage()));
       }
     });
   }

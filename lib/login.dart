@@ -128,7 +128,7 @@ void initState(){
 
                                   onTap: (){
 
-                                    print("asd");
+
                                     if(lFormKey.currentState!.validate()) {
 
                                       String email = emailController.text;
@@ -162,7 +162,7 @@ void initState(){
                                           ));
                                         }
                                       } else{
-                                        print('no data');
+
                                       }
                                     }
 

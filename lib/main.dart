@@ -1,9 +1,6 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:signup_page/homepage.dart';
 
-import 'package:signup_page/login.dart';
 import 'package:signup_page/splash.dart';
 
 import 'package:signup_page/theme.dart';

@@ -10,6 +10,9 @@ class SettingPage extends StatelessWidget {
     await prefs.clear();
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,9 +39,7 @@ class SettingPage extends StatelessWidget {
                 ],
               )
               );
-              // Navigator.pop(context);
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //     const SnackBar(content: Text('Logged Out Successfully')));
+
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             child: const Text(
@@ -51,8 +52,22 @@ class SettingPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Account Has Been Deleted!')));
+              showDialog(context: context, builder:(BuildContext context) => AlertDialog(
+
+                content: const Text('Do You Want to Delete Your Account?'),
+                actions: [
+                  TextButton(onPressed: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Account Deleted ! Please Sign up to Continue')));
+                  }, child:const Text('Yes')),
+                  TextButton(onPressed: (){
+                    Navigator.pop(context);
+                  }, child:const Text('No')),
+
+                ],
+              ) );
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Delete Account',
