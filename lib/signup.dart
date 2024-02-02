@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup_page/custom_input.dart';
@@ -47,6 +48,9 @@ class User {
   }
 }
 
+File? _image;
+String? imagePath;
+
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -65,7 +69,7 @@ class SignupState extends State<Signup> {
     'Gaming'
   ];
   List<String> selectedHobbies = [];
-
+  ImagePicker picker = ImagePicker();
   //controllers
 
   final TextEditingController dateController = TextEditingController();
@@ -419,6 +423,39 @@ class SignupState extends State<Signup> {
                               },
                             ),
                           ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    pickImage();
+                                  },
+                                  child: const Text('Choose Your Profile Picture'),
+                                ),
+
+                              ),
+                              if(imagePath != null)
+                                Container(
+                                    height: 70,
+                                    width: 70,
+                                    decoration: const BoxDecoration(
+
+                                         shape: BoxShape.circle
+                                    ),
+                                    child : ClipOval(
+                                            child: SizedBox.fromSize(
+                                              size: const Size.fromRadius(48),
+                                              child: Image.file(File(imagePath!) ,)
+                                            ),
+                                    )
+
+                                ),
+                            ],
+                          ),
+
+
+
                           //Hobbies
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -430,21 +467,22 @@ class SignupState extends State<Signup> {
                                       color: hintTextColor, fontSize: 17),
                                 ),
                                 Column(
-                                    children: hobbies.map((hobby) {
-                                  return CheckboxListTile(
-                                    title: Text(hobby),
-                                    value: selectedHobbies.contains(hobby),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value!) {
-                                          selectedHobbies.add(hobby);
-                                        } else {
-                                          selectedHobbies.remove(hobby);
-                                        }
-                                      });
-                                    },
-                                  );
-                                }).toList())
+                                  children: hobbies.map((hobby) {
+                                    return CheckboxListTile(
+                                      title: Text(hobby),
+                                      value: selectedHobbies.contains(hobby),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          if (value!) {
+                                            selectedHobbies.add(hobby);
+                                          } else {
+                                            selectedHobbies.remove(hobby);
+                                          }
+                                        });
+                                      },
+                                    );
+                                  }).toList(),
+                                )
                               ],
                             ),
                           ),
@@ -531,5 +569,28 @@ class SignupState extends State<Signup> {
         )
       ],
     ));
+  }
+
+  void pickImage() async {
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      saveImage(pickedImage.path.toString());
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
+
+  void saveImage(String val) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('image', val);
+    loadImage();
+  }
+
+  void loadImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+  imagePath = prefs.getString('image');
+    });
   }
 }

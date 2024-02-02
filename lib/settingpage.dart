@@ -13,6 +13,7 @@ class SettingPage extends StatelessWidget {
 
 
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,12 +59,15 @@ class SettingPage extends StatelessWidget {
                 actions: [
                   TextButton(onPressed: (){
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-
+                            clear();
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Account Deleted ! Please Sign up to Continue')));
+
+
                   }, child:const Text('Yes')),
                   TextButton(onPressed: (){
                     Navigator.pop(context);
+
                   }, child:const Text('No')),
 
                 ],
