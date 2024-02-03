@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +11,8 @@ import 'package:signup_page/mainpagewithbar.dart';
 import 'package:signup_page/signup.dart';
 import 'package:signup_page/theme.dart';
 
+File? _image;
+String? imagePath;
 class UpdateForm extends StatefulWidget {
   const UpdateForm({super.key, required this.data});
 
@@ -50,7 +54,7 @@ class _UpdateFormState extends State<UpdateForm> {
     });
      prefs = await SharedPreferences.getInstance();
   }
-
+  ImagePicker picker = ImagePicker();
   @override
   void initState() {
     super.initState();
@@ -157,8 +161,35 @@ class _UpdateFormState extends State<UpdateForm> {
                     keyboardStyle: TextInputType.text,
                     controller: cityController,
                   ),
+
                   const SizedBox(
-                    height: 50,
+                    height: 0,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            pickImage();
+                          },
+                          child: const Text('Update Your Profile Picture'),
+                        ),
+                      ),
+                      if(imagePath != null)
+                        Container(
+                          height:50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.white),
+                          child: ClipOval(
+                              child:Image.file(File(imagePath!),
+                                fit: BoxFit.cover,
+                              ) ),
+                        ),
+                    ],
                   ),
                   InkWell(
                     onTap: () {
@@ -179,7 +210,7 @@ class _UpdateFormState extends State<UpdateForm> {
                     prefs.setString('user',user );
 
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage()));
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text('Details Updated'),
                     ));
                     },
@@ -205,5 +236,28 @@ class _UpdateFormState extends State<UpdateForm> {
             )),
       ),
     );
+  }
+
+  void pickImage() async {
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      saveImage(pickedImage.path.toString());
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
+
+  void saveImage(String val) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('image', val);
+    loadImage();
+  }
+
+  void loadImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      imagePath = prefs.getString('image');
+    });
   }
 }

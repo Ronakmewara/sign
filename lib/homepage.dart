@@ -26,7 +26,7 @@ class HomepageState extends State<Homepage> {
 
   final TextEditingController searchController = TextEditingController();
    late List<Post> posts;
-   late List<Post> filteredPosts;
+   late List<Post> filteredPosts = [];
   @override
   void initState() {
     super.initState();
@@ -39,9 +39,10 @@ class HomepageState extends State<Homepage> {
       });
   }
 
-  void onSearchTextChanged(String searchText){
-    filteredPosts = posts.where((post) => post.title!.toLowerCase().contains(searchText.toLowerCase())).toList();
-  }
+  // void onSearchTextChanged(String searchText){
+  //
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +57,20 @@ class HomepageState extends State<Homepage> {
           children: [
             TextField(
               controller: searchController ,
-              onChanged: onSearchTextChanged,
+              onChanged: (String searchText){
+                setState(() {
+                  filteredPosts = posts.where((post) => post.title!.toLowerCase().contains(searchText.toLowerCase())).toList();
+                });
+              },
               decoration: const InputDecoration(
                 hintText: 'Search...',
-                prefixIcon: const Icon(Icons.search)
+                prefixIcon: Icon(Icons.search)
 
               ),
             ),
 
             Expanded(
+
               child: FutureBuilder(
                 future: fetchData(),
                  builder: (context , snapshot){
@@ -74,64 +80,73 @@ class HomepageState extends State<Homepage> {
                                     child: Text('No data Found'),
                                   );
                     } else if(snapshot.hasData){
-                      return ListView.builder(
-              
-              
-                        itemCount: filteredPosts.length,
-                        itemBuilder: (context, index) {
-                          final post = filteredPosts[index];
-                          return Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Container(
-              
-                              decoration: BoxDecoration(
+                      if(filteredPosts.isEmpty){
+                        return Center(
+                          child:  Container(
+                            child: const Text('No Results Found!'),
+                          ),
+                        );
+                      } else {
+                        return ListView.builder(
 
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.black,
-                                        offset: Offset(1, 1),
-                                        blurRadius: 2
-                                    ),
-                                  ]
-              
-                              ),
-              
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: ListTile(
-              
-              
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailsPage(post: post)));
-                                  },
-              
-                                  leading: CircleAvatar(
-                                      backgroundColor: buttonLightGreen,
-                                      maxRadius: 40,
-                                      child: Text(
-                                        post.id.toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: primaryColor),
-                                      )),
-                                  title: Text(post.title!, style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(fontSize: 17),),
-                                  trailing: const Icon(Icons.arrow_forward_ios),
+
+                          itemCount: filteredPosts.length,
+                          itemBuilder: (context, index) {
+                            final post = filteredPosts[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Container(
+
+                                decoration: BoxDecoration(
+
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.black,
+                                          offset: Offset(1, 1),
+                                          blurRadius: 2
+                                      ),
+                                    ]
+
+                                ),
+
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: ListTile(
+
+
+                                    onTap: () {
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailsPage(post: post)));
+                                    },
+
+                                    leading: CircleAvatar(
+                                        backgroundColor: buttonLightGreen,
+                                        maxRadius: 40,
+                                        child: Text(
+                                          post.id.toString(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: primaryColor),
+                                        )),
+                                    title: Text(post.title!, style: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .copyWith(fontSize: 17),),
+                                    trailing: const Icon(
+                                        Icons.arrow_forward_ios),
+                                  ),
                                 ),
                               ),
-                            ),
-              
-                          );
-                        },
-                      );
-                    }
+
+                            );
+                          },
+                        );
+                      } }
               
                   }
                   return const Center(

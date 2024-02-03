@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup_page/login.dart';
 
+
+
+
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
 
@@ -9,10 +12,6 @@ class SettingPage extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,24 +22,34 @@ class SettingPage extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
-              showDialog(context: context, builder:(BuildContext context) => AlertDialog(
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                        content: const Text('Do You Want to Logout?'),
+                        actions: [
+                          TextButton(
+                              onPressed: () async {
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                                      (route) => false,
+                                );
 
-                content: const Text('Do You Want to Logout?'),
-                actions: [
-                  TextButton(onPressed: (){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Logged Out Successfully')));
-                  }, child:const Text('Yes')),
-                  TextButton(onPressed: (){
-                            Navigator.pop(context);
-                  }, child:const Text('No')),
-
-                ],
-              )
-              );
-
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('Logged Out Successfully')));
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                prefs.setBool('isLogged', false);
+                              },
+                              child: const Text('Yes')),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('No')),
+                        ],
+                      ));
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             child: const Text(
@@ -53,25 +62,33 @@ class SettingPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              showDialog(context: context, builder:(BuildContext context) => AlertDialog(
-
-                content: const Text('Do You Want to Delete Your Account?'),
-                actions: [
-                  TextButton(onPressed: (){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-                            clear();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Account Deleted ! Please Sign up to Continue')));
-
-
-                  }, child:const Text('Yes')),
-                  TextButton(onPressed: (){
-                    Navigator.pop(context);
-
-                  }, child:const Text('No')),
-
-                ],
-              ) );
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                        content:
+                            const Text('Do You Want to Delete Your Account?'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginPage()));
+                                clear();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Account Deleted ! Please Sign up to Continue')));
+                              },
+                              child: const Text('Yes')),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('No')),
+                        ],
+                      ));
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Delete Account',

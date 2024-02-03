@@ -437,19 +437,16 @@ class SignupState extends State<Signup> {
                               ),
                               if(imagePath != null)
                                 Container(
-                                    height: 70,
-                                    width: 70,
-                                    decoration: const BoxDecoration(
-
-                                         shape: BoxShape.circle
-                                    ),
-                                    child : ClipOval(
-                                            child: SizedBox.fromSize(
-                                              size: const Size.fromRadius(48),
-                                              child: Image.file(File(imagePath!) ,)
-                                            ),
-                                    )
-
+                                  height:50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(25),
+                                      color: Colors.white),
+                                  child: ClipOval(
+                                      child:Image.file(File(imagePath!),
+                                        fit: BoxFit.cover,
+                                      ) ),
                                 ),
                             ],
                           ),
