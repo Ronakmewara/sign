@@ -14,5 +14,16 @@ class Post{
     title = json['title'];
     body = json['body'];
   }
+ // to convert the List to json (why we write these types of method here ??)
+
+  Map<String , dynamic> toJson(){
+    return {
+      'userId' : userId,
+      'id': id,
+      'title': title,
+      'body': body,
+    };
+
+  }
 
 }

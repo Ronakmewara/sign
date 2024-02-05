@@ -20,6 +20,11 @@ class HomepageState extends State<Homepage> {
   late List<Post> filteredPosts = [];
 
   static Future<List<Post>> fetchData() async {
+    var box = await Hive.openBox('Ronakbox');
+    var dataFromHive = box.get('data');
+    if(dataFromHive!= null){
+      //TODO How do we fetch Post type data form HIVE ??
+    }
     const url = "https://jsonplaceholder.typicode.com/posts";
     final uri = Uri.parse(url);
     final response = await http.get(uri);
@@ -28,9 +33,9 @@ class HomepageState extends State<Homepage> {
     return post.map((e) => Post.fromJson(e)).toList();
   }
 
-  void saveOnHive()async{
-    var box = await Hive.box("RonakBox");
-    await box.put('data', "Vishal");
+  void saveOnHive(List<Post> posts )async{
+    var box = await Hive.openBox("RonakBox");
+    await box.put('data', posts.map((post) => post.toJson()).toList() );
     print(box.get('data'));
   }
 
@@ -50,7 +55,7 @@ class HomepageState extends State<Homepage> {
         filteredPosts = data;
         hasData = true;
       });
-      saveOnHive();
+      saveOnHive(posts);
     });
   }
 
