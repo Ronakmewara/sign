@@ -15,7 +15,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientMixin<ProfilePage>{
   late SharedPreferences prefs;
   Map<String, dynamic>? data = {};
 
@@ -49,6 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         body: FutureBuilder(
       future: getProfileImage(),
@@ -122,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => UpdateForm(data: data)));
@@ -143,4 +144,8 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     ));
   }
+
+  @override
+
+  bool get wantKeepAlive => true;
 }

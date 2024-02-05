@@ -5,7 +5,8 @@ import 'package:signup_page/splash.dart';
 
 import 'package:signup_page/theme.dart';
 
-void main() {
+void main()  {
+
   runApp( DevicePreview(
     enabled: true,
     builder: (context) => const MyApp(), // Wrap your app

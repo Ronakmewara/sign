@@ -11,11 +11,19 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => MainPageState();
 }
 
-class MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage> with AutomaticKeepAliveClientMixin<MainPage> {
   int selectedIndex = 0;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // super.build(context);
+
     final List<String> pageTitles = ['Home', 'Profile', 'Setting'];
 
     const List<Widget> pages = [Homepage(), ProfilePage(), SettingPage()];
@@ -33,9 +41,14 @@ class MainPageState extends State<MainPage> {
         ),
         backgroundColor: primaryColor,
       ),
-      body: Center(
-        child: pages.elementAt(selectedIndex),
-      ),
+     body: IndexedStack(
+       index: selectedIndex,
+       children: const [
+         Homepage(),
+         ProfilePage(),
+         SettingPage()
+       ],
+     ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -51,7 +64,11 @@ class MainPageState extends State<MainPage> {
             selectedIndex = index;
           });
         },
+
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

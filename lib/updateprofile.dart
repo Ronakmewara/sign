@@ -65,6 +65,12 @@ class _UpdateFormState extends State<UpdateForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const MainPage()));
+          },
+          icon:const Icon(Icons.arrow_back_ios_new), color: Colors.white ,
+        ),
         title: const Center(
           child: Text(
             'Update Profile',
