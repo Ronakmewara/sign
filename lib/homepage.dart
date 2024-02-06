@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:signup_page/model_class/post.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -15,36 +14,60 @@ class Homepage extends StatefulWidget {
 }
 
 class HomepageState extends State<Homepage> {
+   bool isTimeMatched = false;
   bool hasData = false;
   late List<Post> posts;
   late List<Post> filteredPosts = [];
 
   static Future<List<Post>> fetchData() async {
-    var box = await Hive.openBox('Ronakbox');
-    var dataFromHive = box.get('data');
-    if(dataFromHive!= null){
-      //TODO How do we fetch Post type data form HIVE ??
-    }
-    const url = "https://jsonplaceholder.typicode.com/posts";
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
-    final List post = json.decode(response.body);
+    final time = DateTime.now();
 
-    return post.map((e) => Post.fromJson(e)).toList();
+    var box = await Hive.openBox('Ronakbox');
+    await box.put('date', time);
+
+    var dataFromHive = box.get('data') as List;
+     DateTime dateFromHive =  await box.get('date');
+    DateTime expiryTime = dateFromHive.add(Duration(seconds: 30));
+
+     var dateString = dateFromHive.toIso8601String();
+
+         if(dateString.isNotEmpty){
+           print('isnot empty');
+           if(dataFromHive.isNotEmpty){
+             List<Post> poistList = dataFromHive.map((e) => Post.fromJson(jsonDecode(jsonEncode(e)))).toList();
+             return  poistList;
+           }
+           if(dateFromHive.isBefore(expiryTime)){
+             List<Post> poistList = dataFromHive.map((e) => Post.fromJson(jsonDecode(jsonEncode(e)))).toList();
+             return  poistList;
+           }
+           else{
+             const url = "https://jsonplaceholder.typicode.com/posts";
+             final uri = Uri.parse(url);
+             final response = await http.get(uri);
+             final List post = json.decode(response.body);
+             return post.map((e) => Post.fromJson(e)).toList();
+           }
+
+         } else{
+           print('is Empty');
+           const url = "https://jsonplaceholder.typicode.com/posts";
+           final uri = Uri.parse(url);
+           final response = await http.get(uri);
+           final List post = json.decode(response.body);
+           return post.map((e) => Post.fromJson(e)).toList();
+         }
+
   }
 
   void saveOnHive(List<Post> posts )async{
+
     var box = await Hive.openBox("RonakBox");
-    await box.put('data', posts.map((post) => post.toJson()).toList() );
-    print(box.get('data'));
+    await box.put('data', posts.map((e) => e.toJson()).toList(),);
+
+
   }
-
-
-
-
-
   final TextEditingController searchController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -57,6 +80,14 @@ class HomepageState extends State<Homepage> {
       });
       saveOnHive(posts);
     });
+    final now = DateTime.now();
+    final afterFiveMinutes = now.add( const Duration(seconds: 40));
+    if(afterFiveMinutes.isAtSameMomentAs(now)){
+      setState(() {
+        isTimeMatched = true;
+      });
+
+    }
   }
 
   @override

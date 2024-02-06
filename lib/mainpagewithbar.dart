@@ -41,13 +41,8 @@ class MainPageState extends State<MainPage> with AutomaticKeepAliveClientMixin<M
         ),
         backgroundColor: primaryColor,
       ),
-     body: IndexedStack(
-       index: selectedIndex,
-       children: const [
-         Homepage(),
-         ProfilePage(),
-         SettingPage()
-       ],
+     body:  Center(
+       child: pages.elementAt(selectedIndex),
      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
