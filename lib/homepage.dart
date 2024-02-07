@@ -38,7 +38,7 @@ class HomepageState extends State<Homepage> {
       var lastDateTime = DateTime.parse(lastApicallDate.toString()).add(Duration(minutes: 5));
   // case 1 - 8:05  + 5 = 8:10
       //case 2 - 8:06 true
-      if(lastDateTime.isBefore(DateTime.now())) {
+      if(lastDateTime.isAfter(DateTime.now())) {
 
         List<Post> poistList = dataFromHive
             .map((e) => Post.fromJson(jsonDecode(jsonEncode(e))))
