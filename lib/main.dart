@@ -1,6 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:signup_page/infinite_list.dart';
 
 import 'package:signup_page/splash.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Signup Page',
         theme: theme(),
-        home: const SplashScreen());
+        home: const InfiniteList());
         // home: const SettingPage());
   }
 }
