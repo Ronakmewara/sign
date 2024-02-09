@@ -10,8 +10,9 @@ class Beer{
   Volume? volume;
   String? tagLine;
   double? ph;
+  int? ibu;
 
-  Beer({this.id , this.name , this.firstBrewed , this.description , this.imageUrl , this.volume , this.tagLine , this.ph});
+  Beer({this.id , this.name , this.firstBrewed , this.description , this.imageUrl , this.volume , this.tagLine , this.ph , this.ibu});
 
   Beer.fromJson(Map<String , dynamic> json){
     id = json['id'];
@@ -21,10 +22,8 @@ class Beer{
     volume = json['volume'] != null ? Volume.fromJson(json['volume']) : null;
     tagLine = json['tagline'];
      ph = json['ph'];
+    ibu = json['ibu'];
   }
-
-
-
   }
 
 
