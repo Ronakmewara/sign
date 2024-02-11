@@ -23,7 +23,6 @@ class _InfiniteListState extends State<InfiniteList> {
     Colors.green,
     Colors.lightBlue,
     Colors.lightBlueAccent,
-
   ];
   final scrollController = ScrollController();
   final _list = [];
@@ -52,7 +51,7 @@ class _InfiniteListState extends State<InfiniteList> {
       final response = await http.get(Uri.parse(url));
       final data = response.body;
       final List beerData = jsonDecode(data);
-      List<Beer> allData =  beerData.map((e) => Beer.fromJson(e)).toList();
+      List<Beer> allData = beerData.map((e) => Beer.fromJson(e)).toList();
       if (response.statusCode == 200) {
         setState(() {
           _list.addAll(allData);
@@ -92,7 +91,8 @@ class _InfiniteListState extends State<InfiniteList> {
                 itemCount: _list.length + (_isLoading ? 1 : 0),
                 itemBuilder: (context, index) {
                   if (index == _list.length) {
-                    return const Center(child: CircularProgressIndicator());
+                    return  Center(child: const CircularProgressIndicator());
+
                   } else {
                     final singleData = _list[index];
 
@@ -113,13 +113,15 @@ class _InfiniteListState extends State<InfiniteList> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50),
                                     color: colors[index % 5],
-                                    boxShadow: const [
+                                    boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black,
-                                        blurRadius: 3,
-                                        offset: Offset(
+                                        color:
+                                            colors[index % 5].withOpacity(0.5),
+                                        blurRadius: 7,
+                                        spreadRadius: 5,
+                                        offset: const Offset(
                                           1.0,
-                                          2.0,
+                                          3,
                                         ),
                                       )
                                     ]),
@@ -132,7 +134,7 @@ class _InfiniteListState extends State<InfiniteList> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
-                                        singleData['name'],
+                                        singleData.name,
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
@@ -140,7 +142,7 @@ class _InfiniteListState extends State<InfiniteList> {
                                           fontSize: 14,
                                         ),
                                       ),
-                                      Text("${singleData['ibu']} IBU",
+                                      Text("${singleData.ibu.toString()} IBU",
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -153,14 +155,20 @@ class _InfiniteListState extends State<InfiniteList> {
                           ),
                           Positioned(
                             child: InkWell(
-                              onTap: (){
-                                Navigator.push(context, (MaterialPageRoute(builder: (context) => BeerDetailsPage(beerDetails: singleData, index: index,))));
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    (MaterialPageRoute(
+                                        builder: (context) => BeerDetailsPage(
+                                            beerDetails: singleData,
+                                            index: index,
+                                            color: colors[index % 5]))));
                               },
                               child: Hero(
                                 tag: 'imageHero$index',
                                 child: CachedNetworkImage(
                                   alignment: Alignment.topCenter,
-                                  imageUrl: singleData['image_url'],
+                                  imageUrl: singleData.imageUrl,
                                   height: 240,
                                   width: 200,
                                   placeholder: (context, url) => const Center(
@@ -177,23 +185,6 @@ class _InfiniteListState extends State<InfiniteList> {
                         ]),
                       ),
                     );
-
-                    //   Wrap(
-                    //   spacing: 10,
-                    //   direction: Axis.horizontal,
-                    //    children: [
-                    //       Container(
-                    //         height: 200,
-                    //         width: 200,
-                    //         decoration: BoxDecoration(
-                    //           border: Border.all(color: Colors.black),
-                    //           borderRadius: BorderRadius.circular(10)
-                    //
-                    //         ),
-                    //       )
-                    //    ]
-                    //    ,
-                    // );
                   }
                 },
                 crossAxisCount: 2,

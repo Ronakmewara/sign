@@ -22,7 +22,8 @@ class Beer{
     volume = json['volume'] != null ? Volume.fromJson(json['volume']) : null;
     tagLine = json['tagline'];
      ph = json['ph'];
-    ibu = json['ibu'];
+     description = json['description'];
+    ibu = json['ibu']?.toInt();
   }
   }
 
@@ -41,7 +42,7 @@ class Volume {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['value'] = this.value;
     data['unit'] = this.unit;
     return data;
