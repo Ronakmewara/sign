@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:signup_page/model_class/model_beer.dart';
 import 'package:signup_page/theme.dart';
+import 'package:sizer/sizer.dart';
+import 'package:sizer/sizer.dart';
 
 class BeerDetailsPage extends StatelessWidget {
   const BeerDetailsPage(
@@ -32,8 +34,8 @@ class BeerDetailsPage extends StatelessWidget {
           backgroundColor: color,
         ),
         body: Container(
-          height: 1000,
-          width: 1000,
+          height: 100.h,
+          width: double.infinity,
           color: color,
           child: Stack(
             children: [
@@ -43,30 +45,32 @@ class BeerDetailsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width : 200,
+                      width: 200,
                       child: Text(
                         beerDetails.tagLine!,
-                        style: const TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold , color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Container(
-                      width: 130,
+                        width: 130,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.white,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(5),
+                          padding: EdgeInsets.all(5.sp),
                           child: Center(
-                              child: Text('${beerDetails.ph.toString()}'" " "PH",
-                                  style: const TextStyle(
-                                      fontSize: 25,
+                              child: Text('${beerDetails.ph}' " " "PH",
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.bold))),
                         ))
-
-
                   ],
                 ),
               ),
@@ -76,15 +80,13 @@ class BeerDetailsPage extends StatelessWidget {
                 bottom: 0,
                 child: Container(
                   clipBehavior: Clip.none,
-                  height: 500,
                   decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(40),
                           topRight: Radius.circular(40))),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 40, top: 40, right: 40),
+                    padding: const EdgeInsets.fromLTRB(40, 40, 40, 20),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -104,13 +106,13 @@ class BeerDetailsPage extends StatelessWidget {
                                           "Vol.",
                                           style: TextStyle(
                                               color: hintTextColor,
-                                              fontSize: 17),
+                                              fontSize: 12.sp),
                                         ),
                                         Text(
                                           '${beerDetails.volume!.value.toString()} ml',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20),
+                                              fontSize: 14.sp),
                                         )
                                       ],
                                     ),
@@ -122,12 +124,13 @@ class BeerDetailsPage extends StatelessWidget {
                                       Text(
                                         "Alc.",
                                         style: TextStyle(
-                                            color: hintTextColor, fontSize: 17),
+                                            color: hintTextColor,
+                                            fontSize: 12.sp),
                                       ),
                                       Text('${beerDetails.ibu} IBU',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20))
+                                              fontSize: 14.sp))
                                     ],
                                   )
                                 ],
@@ -141,12 +144,12 @@ class BeerDetailsPage extends StatelessWidget {
                                   Text(
                                     "First Brewed",
                                     style: TextStyle(
-                                        color: hintTextColor, fontSize: 17),
+                                        color: hintTextColor, fontSize: 12.sp),
                                   ),
                                   Text('${beerDetails.firstBrewed}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20))
+                                          fontSize: 14.sp))
                                 ],
                               ),
                               const SizedBox(
@@ -158,12 +161,12 @@ class BeerDetailsPage extends StatelessWidget {
                                   Text(
                                     "PH",
                                     style: TextStyle(
-                                        color: hintTextColor, fontSize: 17),
+                                        color: hintTextColor, fontSize: 12.sp),
                                   ),
                                   Text('${beerDetails.ph} PH',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20))
+                                          fontSize: 14.sp))
                                 ],
                               ),
                             ],
@@ -172,52 +175,46 @@ class BeerDetailsPage extends StatelessWidget {
                             height: 20,
                           ),
                           SizedBox(
-                            height: 100,
+                            height: 11.h,
                             child: Text(
                               beerDetails.description!,
-                              style: const TextStyle(
+                              style:   TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold , fontSize: 10.sp),
                             ),
                           ),
                           const SizedBox(
                             height: 25,
                           ),
-                          Center(
-                            child: Container(
-                              height: 60,
-                              width: 400,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.black54,
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Color.fromRGBO(15, 19, 26, 1),
-                                        offset: Offset(1, 3))
-                                  ]),
-                              child: const Center(
-                                child: Text(
-                                  "Add to cart",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 22),
-                                ),
-                              ),
-                            ),
+                          ElevatedButton(
+
+                              onPressed: () {}, child: Text('Add to cart', style: TextStyle(color: Colors.white),),
+                            style:
+                            ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromRGBO(15, 19, 26, 1),
+                              fixedSize: Size(350 , 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(7)
+                              )
+
+                             )
+
+
                           )
                         ]),
                   ),
                 ),
               ),
+              // color: Color.fromRGBO(15, 19, 26, 1),
+
               Positioned(
-                top: 30,
+                top: 4.h,
                 right: 30,
                 child: Hero(
                   tag: 'imageHero$index',
                   child: CachedNetworkImage(
-                    alignment: Alignment.topCenter,
                     imageUrl: beerDetails.imageUrl ?? "",
-                    height: 500,
-                    width: 200,
+                    height: 55.h,
                   ),
                 ),
               ),

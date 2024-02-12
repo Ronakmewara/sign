@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:signup_page/homepage.dart';
+import 'package:signup_page/list_task.dart';
 import 'package:signup_page/profilepage.dart';
 import 'package:signup_page/settingpage.dart';
 import 'package:signup_page/theme.dart';
@@ -26,7 +27,7 @@ class MainPageState extends State<MainPage> with AutomaticKeepAliveClientMixin<M
 
     final List<String> pageTitles = ['Home', 'Profile', 'Setting'];
 
-    const List<Widget> pages = [Homepage(), ProfilePage(), SettingPage()];
+    const List<Widget> pages = [TaskList(), ProfilePage(), SettingPage()];
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

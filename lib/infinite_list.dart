@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:signup_page/beer_details.dart';
 import 'package:signup_page/model_class/model_beer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:sizer/sizer.dart';
 import 'generated/json/base/json_convert_content.dart';
 
 class InfiniteList extends StatefulWidget {
@@ -86,75 +86,77 @@ class _InfiniteListState extends State<InfiniteList> {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : AlignedGridView.count(
-                controller: scrollController,
-                itemCount: _list.length + (_isLoading ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index == _list.length) {
-                    return  Center(child: const CircularProgressIndicator());
+            : SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: AlignedGridView.count(
+                  mainAxisSpacing:3.h,
+                  controller: scrollController,
+                  itemCount: _list.length + (_isLoading ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == _list.length) {
+                      return Center(child: const CircularProgressIndicator());
+                    } else {
+                      final singleData = _list[index];
 
-                  } else {
-                    final singleData = _list[index];
+                      return Container(
+                        height: 40.h,
 
-                    return Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: SizedBox(
-                        height: 350,
-                        width: 220,
-                        child: Stack(children: [
-                          Positioned(
+                        child: Stack(children: [Positioned(
                             bottom: 0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                clipBehavior: Clip.none,
-                                height: 250,
-                                width: 180,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: colors[index % 5],
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color:
-                                            colors[index % 5].withOpacity(0.5),
-                                        blurRadius: 7,
-                                        spreadRadius: 5,
-                                        offset: const Offset(
-                                          1.0,
-                                          3,
-                                        ),
-                                      )
-                                    ]),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10, top: 10, bottom: 30),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        singleData.name,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                        ),
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              clipBehavior: Clip.none,
+                              margin: const EdgeInsets.all(8.0),
+                              height: 30.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(45),
+                                  color: colors[index % 5],
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: colors[index % 5].withOpacity(0.5),
+                                      blurRadius: 7,
+                                      spreadRadius: 5,
+                                      offset: const Offset(
+                                        1.0,
+                                        3,
                                       ),
-                                      Text("${singleData.ibu.toString()} IBU",
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18)),
-                                    ],
-                                  ),
+                                    )
+                                  ]),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 10, bottom: 30),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      singleData.name,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text("${singleData.ibu} IBU",
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                           Positioned(
-                            child: InkWell(
+                            top: 0,
+                            left: 0,
+                            right: 0,
+
+
+
+                            child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                     context,
@@ -167,10 +169,8 @@ class _InfiniteListState extends State<InfiniteList> {
                               child: Hero(
                                 tag: 'imageHero$index',
                                 child: CachedNetworkImage(
-                                  alignment: Alignment.topCenter,
                                   imageUrl: singleData.imageUrl,
-                                  height: 240,
-                                  width: 200,
+                                  height: 27.h,
                                   placeholder: (context, url) => const Center(
                                     child: SizedBox(
                                       width: 40.0,
@@ -183,11 +183,11 @@ class _InfiniteListState extends State<InfiniteList> {
                             ),
                           ),
                         ]),
-                      ),
-                    );
-                  }
-                },
-                crossAxisCount: 2,
+                      );
+                    }
+                  },
+                  crossAxisCount: 2,
+                ),
               ));
   }
 }

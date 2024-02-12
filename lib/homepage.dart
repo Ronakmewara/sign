@@ -92,6 +92,7 @@ class HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
         backgroundColor: buttonLightGreen,
         body: hasData
             ? Column(
