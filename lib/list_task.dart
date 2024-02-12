@@ -40,7 +40,7 @@ class _State extends State<TaskList> {
       },
     ];
     return Scaffold(
-        body: ListView(children: [
+        body: ListView(children:
       mainPageList.map((app) => CurvedListItem(
             title: app['title'],
             time: app['time'],
@@ -48,8 +48,8 @@ class _State extends State<TaskList> {
             color: app['color'],
             nextColor: app['nextColor'],
             onTap: app['onTap'],
-          ))
-    ])
+          )).toList()
+    )
 
         // ListView(
         //   children: [
