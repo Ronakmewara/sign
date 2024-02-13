@@ -3,11 +3,12 @@ import 'dart:math';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:signup_page/beer_details.dart';
 import 'package:signup_page/model_class/model_beer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sizer/sizer.dart';
-import 'generated/json/base/json_convert_content.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 
 class InfiniteList extends StatefulWidget {
   const InfiniteList({super.key});
@@ -39,24 +40,47 @@ class _InfiniteListState extends State<InfiniteList> {
   void initState() {
     super.initState();
     scrollController.addListener(loadMore);
-    fetchData(currentPage);
+    fetchData(currentPage,'','','');
   }
 
-  Future<void> fetchData(int pageKey) async {
+
+
+  String? searchedFood;
+  String? brewedBeforeFilter;
+  String? brewedAfterFilter;
+  Future<void> fetchData(int pageKey , searchedFood , brewedBeforeFilter, brewedAfterFilter ) async {
+
     setState(() {
       _isLoading = true;
     });
     try {
-      final url = 'https://api.punkapi.com/v2/beers?page=$pageKey&per_page=10';
+      final url = 'https://api.punkapi.com/v2/beers?page=$pageKey&per_page=10${searchedFood.isEmpty ? '' :'&food=$searchedFood'}${brewedBeforeFilter.isEmpty ? '' :'&brewed_before=$brewedBeforeFilter'}${brewedAfterFilter.isEmpty ? '' :'&brewed_after=$brewedAfterFilter'}';
       final response = await http.get(Uri.parse(url));
       final data = response.body;
       final List beerData = jsonDecode(data);
       List<Beer> allData = beerData.map((e) => Beer.fromJson(e)).toList();
       if (response.statusCode == 200) {
-        setState(() {
-          _list.addAll(allData);
-          _isLoading = false;
-        });
+
+          if(searchedFood.isNotEmpty || brewedBeforeFilter.isNotEmpty || brewedAfterFilter.isNotEmpty  ){
+            setState(() {
+              _list.clear();
+              _list.addAll(allData);
+            });
+          } if((searchedFood.isEmpty || brewedBeforeFilter.isEmpty || brewedAfterFilter.isEmpty) && currentPage == 1  ){
+            setState(() {
+              _list.clear();
+              _list.addAll(allData);
+              _isLoading = false;
+            });
+          } else{
+            setState(() {
+
+              _list.addAll(allData);
+              _isLoading = false;
+            });
+          }
+
+
         if (_list.isNotEmpty) {
           isListEmpty = false;
         }
@@ -73,15 +97,178 @@ class _InfiniteListState extends State<InfiniteList> {
   void loadMore() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
+      searchedFood = searchByFoodController.text;
+      brewedBeforeFilter = brewedBeforeController.text;
+      brewedAfterFilter = brewedAfterController.text;
       currentPage++;
-      fetchData(currentPage);
+      fetchData(currentPage ,searchedFood,brewedBeforeFilter, brewedAfterFilter);
     }
   }
 
+  DateTime? brewedBefore;
+  DateTime? brewedAfter;
+  final TextEditingController brewedBeforeController = TextEditingController();
+  final TextEditingController brewedAfterController = TextEditingController();
+  final TextEditingController searchByFoodController = TextEditingController();
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext __) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          actions: [
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (_) {
+                      return SizedBox(
+                          height: 40.h,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    labelText: 'Brewed Before',
+                                    suffix: const Align(
+                                        heightFactor: 1.0,
+                                        widthFactor: 1.0,
+                                        child: Icon(Icons.date_range)),
+                                  ),
+                                  controller: brewedBeforeController,
+                                  readOnly: true,
+                                  onTap: () async {
+                                    brewedBefore = await showMonthYearPicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1995),
+                                      lastDate: DateTime(2025),
+                                    );
+                                    if (brewedBefore != null) {
+                                      setState(() {
+                                        String formattedDate =
+                                            DateFormat('MM-yyyy')
+                                                .format(brewedBefore!);
+                                        brewedBeforeController.text =
+                                            formattedDate;
+                                      });
+                                    }
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    labelText: 'Brewed After',
+                                    suffix: const Align(
+                                        heightFactor: 1.0,
+                                        widthFactor: 1.0,
+                                        child: Icon(Icons.date_range)),
+                                  ),
+                                  controller: brewedAfterController,
+                                  readOnly: true,
+                                  onTap: () async {
+                                    brewedAfter = await showMonthYearPicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1995),
+                                      lastDate: DateTime(2025),
+                                    );
+                                    if (brewedAfter != null) {
+                                      setState(() {
+                                        String formattedDate =
+                                            DateFormat('MM-yyyy')
+                                                .format(brewedAfter!);
+                                        brewedAfterController.text =
+                                            formattedDate;
+                                      });
+                                    }
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    labelText: 'filter By Food..',
+                                  ),
+                                  controller: searchByFoodController,
+                                ),
+                                Row(
+                                  children: [
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          searchByFoodController.clear();
+                                          brewedBeforeController.clear();
+                                          brewedAfterController.clear();
+                                          Navigator.pop(context);
+                                          fetchData(currentPage, '','' ,'' );
+                                        }, child: Text('Reset')),
+                                    Row(
+                                      children: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              searchedFood = searchByFoodController.text;
+                                              brewedBeforeFilter = brewedBeforeController.text;
+                                              brewedAfterFilter = brewedAfterController.text;
+                                              fetchData(currentPage, searchedFood , brewedBeforeFilter, brewedAfterFilter);
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('OK')),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('Cancel')),
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ));
+                    });
+              },
+              child: Container(
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.only(right: 20),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(5)),
+                child: const Row(
+                  children: [
+                    Text(
+                      'Filters',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Icon(
+                      Icons.filter_alt_outlined,
+                      color: Colors.white,
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
         body: isListEmpty
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -89,7 +276,8 @@ class _InfiniteListState extends State<InfiniteList> {
             : SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: AlignedGridView.count(
-                  mainAxisSpacing:3.h,
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  mainAxisSpacing: 3.h,
                   controller: scrollController,
                   itemCount: _list.length + (_isLoading ? 1 : 0),
                   itemBuilder: (context, index) {
@@ -100,8 +288,8 @@ class _InfiniteListState extends State<InfiniteList> {
 
                       return Container(
                         height: 40.h,
-
-                        child: Stack(children: [Positioned(
+                        child: Stack(children: [
+                          Positioned(
                             bottom: 0,
                             left: 0,
                             right: 0,
@@ -144,6 +332,7 @@ class _InfiniteListState extends State<InfiniteList> {
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18)),
+                                    Text(singleData.firstBrewed)
                                   ],
                                 ),
                               ),
@@ -153,9 +342,6 @@ class _InfiniteListState extends State<InfiniteList> {
                             top: 0,
                             left: 0,
                             right: 0,
-
-
-
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(

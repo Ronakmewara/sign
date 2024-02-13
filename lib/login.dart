@@ -151,7 +151,13 @@ class LoginPageState extends State<LoginPage> {
                                         duration: Duration(seconds: 2),
                                       ));
                                     }
-                                  } else {}
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text('No Such Data Found ! Please Register '),
+                                      duration: Duration(seconds: 2),
+                                    ));
+                                  }
                                 }
                               },
                               child: Container(
