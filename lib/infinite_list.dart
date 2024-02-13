@@ -40,47 +40,45 @@ class _InfiniteListState extends State<InfiniteList> {
   void initState() {
     super.initState();
     scrollController.addListener(loadMore);
-    fetchData(currentPage,'','','');
+    fetchData(currentPage);
   }
 
-
-
-  String? searchedFood;
-  String? brewedBeforeFilter;
-  String? brewedAfterFilter;
-  Future<void> fetchData(int pageKey , searchedFood , brewedBeforeFilter, brewedAfterFilter ) async {
-
+  Future<void> fetchData(int pageKey) async {
     setState(() {
       _isLoading = true;
+      if (pageKey == 1) {
+        _list.clear();
+      }
     });
     try {
-      final url = 'https://api.punkapi.com/v2/beers?page=$pageKey&per_page=10${searchedFood.isEmpty ? '' :'&food=$searchedFood'}${brewedBeforeFilter.isEmpty ? '' :'&brewed_before=$brewedBeforeFilter'}${brewedAfterFilter.isEmpty ? '' :'&brewed_after=$brewedAfterFilter'}';
+      String url = 'https://api.punkapi.com/v2/beers?page=$pageKey&per_page=10';
+
+      if (searchByFoodController.text.isNotEmpty) {
+        url += '&food=${searchByFoodController.text}';
+      }
+      if (brewedAfterController.text.isNotEmpty) {
+        url += '&brewed_after=${brewedAfterController.text}';
+      }
+      if (brewedBeforeController.text.isNotEmpty) {
+        url += '&brewed_before=${brewedBeforeController.text}';
+      }
+
       final response = await http.get(Uri.parse(url));
       final data = response.body;
       final List beerData = jsonDecode(data);
       List<Beer> allData = beerData.map((e) => Beer.fromJson(e)).toList();
       if (response.statusCode == 200) {
-
-          if(searchedFood.isNotEmpty || brewedBeforeFilter.isNotEmpty || brewedAfterFilter.isNotEmpty  ){
-            setState(() {
-              _list.clear();
-              _list.addAll(allData);
-            });
-          } if((searchedFood.isEmpty || brewedBeforeFilter.isEmpty || brewedAfterFilter.isEmpty) && currentPage == 1  ){
-            setState(() {
-              _list.clear();
-              _list.addAll(allData);
-              _isLoading = false;
-            });
-          } else{
-            setState(() {
-
-              _list.addAll(allData);
-              _isLoading = false;
-            });
+        setState(() {
+          if (searchByFoodController.text.isNotEmpty ||
+              brewedBeforeController.text.isNotEmpty ||
+              brewedAfterController.text.isNotEmpty) {
+            _list.clear();
+            _list.addAll(allData);
+          } else {
+            _list.addAll(allData);
           }
-
-
+          _isLoading = false;
+        });
         if (_list.isNotEmpty) {
           isListEmpty = false;
         }
@@ -97,11 +95,8 @@ class _InfiniteListState extends State<InfiniteList> {
   void loadMore() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      searchedFood = searchByFoodController.text;
-      brewedBeforeFilter = brewedBeforeController.text;
-      brewedAfterFilter = brewedAfterController.text;
       currentPage++;
-      fetchData(currentPage ,searchedFood,brewedBeforeFilter, brewedAfterFilter);
+      fetchData(currentPage);
     }
   }
 
@@ -122,17 +117,26 @@ class _InfiniteListState extends State<InfiniteList> {
                     context: context,
                     builder: (_) {
                       return SizedBox(
-                          height: 40.h,
                           width: double.infinity,
                           child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: Column(
                               children: [
+                                Center(
+                                    child: Text(
+                                  'Select filters',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 TextFormField(
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Colors.black),
+                                          const BorderSide(color: Colors.black),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     labelText: 'Brewed Before',
@@ -168,7 +172,7 @@ class _InfiniteListState extends State<InfiniteList> {
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Colors.black),
+                                          const BorderSide(color: Colors.black),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     labelText: 'Brewed After',
@@ -204,14 +208,19 @@ class _InfiniteListState extends State<InfiniteList> {
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Colors.black),
+                                          const BorderSide(color: Colors.black),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     labelText: 'filter By Food..',
                                   ),
                                   controller: searchByFoodController,
                                 ),
+                                SizedBox(
+                                  height: 25,
+                                ),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     ElevatedButton(
                                         onPressed: () {
@@ -219,24 +228,58 @@ class _InfiniteListState extends State<InfiniteList> {
                                           brewedBeforeController.clear();
                                           brewedAfterController.clear();
                                           Navigator.pop(context);
-                                          fetchData(currentPage, '','' ,'' );
-                                        }, child: Text('Reset')),
+                                          fetchData(1);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.green,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(7))),
+                                        child: const Text('Reset',style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight:
+                                            FontWeight.bold),)),
                                     Row(
                                       children: [
                                         ElevatedButton(
                                             onPressed: () {
-                                              searchedFood = searchByFoodController.text;
-                                              brewedBeforeFilter = brewedBeforeController.text;
-                                              brewedAfterFilter = brewedAfterController.text;
-                                              fetchData(currentPage, searchedFood , brewedBeforeFilter, brewedAfterFilter);
+                                              currentPage = 1;
+                                              fetchData(currentPage);
                                               Navigator.pop(context);
                                             },
-                                            child: Text('OK')),
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('Cancel')),
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.blue,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7))),
+                                            child: const Text('OK',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 20),
+                                          child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.redAccent,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              7))),
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                        ),
                                       ],
                                     )
                                   ],
@@ -247,8 +290,8 @@ class _InfiniteListState extends State<InfiniteList> {
                     });
               },
               child: Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.only(right: 20),
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.only(right: 20),
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     color: Colors.black,
@@ -276,13 +319,13 @@ class _InfiniteListState extends State<InfiniteList> {
             : SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: AlignedGridView.count(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   mainAxisSpacing: 3.h,
                   controller: scrollController,
                   itemCount: _list.length + (_isLoading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == _list.length) {
-                      return Center(child: const CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else {
                       final singleData = _list[index];
 
