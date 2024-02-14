@@ -1,61 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:sizer/sizer.dart';
 
 class InfiniteListFilterBottomSheet extends StatefulWidget {
   const InfiniteListFilterBottomSheet({
     super.key,
     required this.onCancel,
     required this.onSubmit,
-    required this.onReset,
+    required this.onReset, required this.foodSearch, required this.brewedBefore, required this.brewedAfter,
   });
 
   final VoidCallback onCancel;
   final Function(String foodSearch, String brewedBefore, String brewedAfter)
       onSubmit;
   final VoidCallback onReset;
+  final String foodSearch;
+   final String brewedBefore;
+  final String brewedAfter;
+
+
+
 
   @override
   State<InfiniteListFilterBottomSheet> createState() =>
       _InfiniteListFilteBottomSheetState();
 }
 
+
 class _InfiniteListFilteBottomSheetState
     extends State<InfiniteListFilterBottomSheet> {
+
   final TextEditingController brewedBeforeController = TextEditingController();
+
   final TextEditingController brewedAfterController = TextEditingController();
   final TextEditingController searchByFoodController = TextEditingController();
-
   DateTime? brewedBefore;
   DateTime? brewedAfter;
+
+@override
+  void initState() {
+
+    super.initState();
+
+    searchByFoodController.text = widget.foodSearch;
+    brewedAfterController.text = widget.brewedAfter;
+    brewedBeforeController.text = widget.brewedBefore;
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
             children: [
-              const Center(
-                  child: Text(
+              const Text(
                 'Select filters',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )),
+
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(
+                height: 0.01,
+                color: Colors.black26,
+              ),
               const SizedBox(
                 height: 20,
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
                   labelText: 'Brewed Before',
-                  suffix: const Align(
-                      heightFactor: 1.0,
-                      widthFactor: 1.0,
-                      child: Icon(Icons.date_range)),
+                    suffixIcon:Icon(Icons.date_range,size: 25,) ,
+                    isDense: true
                 ),
                 controller: brewedBeforeController,
                 readOnly: true,
@@ -79,16 +103,15 @@ class _InfiniteListFilteBottomSheetState
                 height: 20,
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
                   labelText: 'Brewed After',
-                  suffix: const Align(
-                      heightFactor: 1.0,
-                      widthFactor: 1.0,
-                      child: Icon(Icons.date_range)),
+                    suffixIcon:Icon(Icons.date_range ,size: 25,) ,
+
+                    isDense: true
+
                 ),
                 controller: brewedAfterController,
                 readOnly: true,
@@ -101,9 +124,9 @@ class _InfiniteListFilteBottomSheetState
                   );
                   if (brewedAfter != null) {
                     setState(() {
-                      String formattedDate =
+                      String newFormattedDate =
                           DateFormat('MM-yyyy').format(brewedAfter!);
-                      brewedAfterController.text = formattedDate;
+                      brewedAfterController.text = newFormattedDate;
                     });
                   }
                 },
@@ -112,20 +135,23 @@ class _InfiniteListFilteBottomSheetState
                 height: 20,
               ),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
+
                   border: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.black),
                   ),
-                  labelText: 'filter By Food..',
+
+                  labelText: 'filter By Food',
+                   suffixIcon:Icon(Icons.search,size: 25,) ,
+                  isDense: true
                 ),
                 controller: searchByFoodController,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
                       onPressed: () {
@@ -142,23 +168,8 @@ class _InfiniteListFilteBottomSheetState
                       )),
                   Row(
                     children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            widget.onSubmit(
-                                searchByFoodController.text,
-                                brewedBeforeController.text,
-                                brewedAfterController.text);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7))),
-                          child: const Text('OK',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold))),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(right: 20),
                         child: ElevatedButton(
                             onPressed: () {
                               widget.onCancel();
@@ -174,6 +185,21 @@ class _InfiniteListFilteBottomSheetState
                                   fontWeight: FontWeight.bold),
                             )),
                       ),
+                      ElevatedButton(
+                          onPressed: () {
+                            widget.onSubmit(
+                               searchByFoodController.text,
+                                brewedBeforeController.text,
+                                brewedAfterController.text);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7))),
+                          child: const Text('OK',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold))),
                     ],
                   )
                 ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:signup_page/mainpagewithbar.dart';
+import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
 
 class DetailsPage extends StatelessWidget {
    const DetailsPage({super.key , required this.post});

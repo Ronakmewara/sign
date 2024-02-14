@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:signup_page/custom_input.dart';
-import 'package:signup_page/login.dart';
-import 'package:signup_page/theme.dart';
+import 'package:signup_page/common/custom_input/custom_input.dart';
+import 'package:signup_page/presentation/login/login.dart';
+import 'package:signup_page/theme/theme.dart';
 import 'package:intl/intl.dart';
+
+import '../../common/custom_button/custom_button.dart';
 
 class User {
   String name;
@@ -70,6 +72,7 @@ class SignupState extends State<Signup> {
   ];
   List<String> selectedHobbies = [];
   ImagePicker picker = ImagePicker();
+
   //controllers
 
   final TextEditingController dateController = TextEditingController();
@@ -173,117 +176,68 @@ class SignupState extends State<Signup> {
                               padding:
                                   const EdgeInsets.fromLTRB(0, 20, 0, 26.5),
                               child: CustomInput(
-                                  name: 'Name',
-                                  controller: nameController,
-                                  placeholder: 'Enter Your Name',
-                                  keyboardStyle: TextInputType.text)),
+                                name: 'Name',
+                                controller: nameController,
+                                placeholder: 'Enter Your Name',
+                                keyboardStyle: TextInputType.text,
+                                regexp: '',
+                                regexNotMatchMessage: 'Please Enter Name',
+                                obscureText: false,
+                              )),
                           //Email
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: TextFormField(
-                              controller: emailController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                  border: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: underLineColor)),
-                                  label: const Text('Email'),
-                                  labelStyle: TextStyle(color: hintTextColor)),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter Email';
-                                } else if (!RegExp(
-                                        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                                    .hasMatch(value)) {
-                                  return 'Please Enter valid Email';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                              child: CustomInput(
+                                  name: 'Email',
+                                  controller: emailController,
+                                  placeholder: 'Enter Email',
+                                  keyboardStyle: TextInputType.emailAddress,
+                                  regexp: r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                                  regexNotMatchMessage:
+                                      'Please Enter valid Email',
+                                  obscureText: false)),
 
                           //Password
 
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: TextFormField(
-                              controller: passwordController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textCapitalization: TextCapitalization.sentences,
-                              textInputAction: TextInputAction.next,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  border: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: underLineColor)),
-                                  label: const Text('Password'),
-                                  labelStyle: TextStyle(color: hintTextColor)),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter Password';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
+                            child:CustomInput(
+                                name: 'Password',
+                                controller: passwordController,
+                                placeholder: 'Enter Password',
+                                keyboardStyle: TextInputType.visiblePassword,
+                                regexp: '',
+                                regexNotMatchMessage:
+                                '',
+                                obscureText: true)
                           ),
                           //Confirm Password
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: TextFormField(
-                              controller: confirmPasswordController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              textCapitalization: TextCapitalization.sentences,
-                              keyboardType: TextInputType.visiblePassword,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  border: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: underLineColor)),
-                                  label: const Text('Confirm Password'),
-                                  labelStyle: TextStyle(color: hintTextColor)),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter Password';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
+                            child: CustomInput(
+                                name: 'Confirm Password',
+                                controller: confirmPasswordController,
+                                placeholder: 'Re-enter Password',
+                                keyboardStyle: TextInputType.visiblePassword,
+                                regexp: '',
+                                regexNotMatchMessage:
+                                '',
+                                obscureText: true)
                           ),
                           //Mobile Number
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: TextFormField(
-                              controller: mobileNumberController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                  border: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: underLineColor)),
-                                  label: const Text('Mobile Number'),
-                                  labelStyle: TextStyle(color: hintTextColor)),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter Mobile Number';
-                                } else if (!RegExp(r"^[0-9]{10}$")
-                                    .hasMatch(value)) {
-                                  return 'Mobile Number must be of 10 digit';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
+                            child: CustomInput(
+                                name: 'Mobile Number',
+                                controller: mobileNumberController,
+                                placeholder: 'Re-enter Password',
+                                keyboardStyle: TextInputType.number,
+                                regexp: r'^[0-9]{10}$',
+                                regexNotMatchMessage:
+                                'Please Enter Valid Mobile Number',
+                                obscureText: false)
                           ),
+
                           //Gender
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
@@ -357,71 +311,41 @@ class SignupState extends State<Signup> {
                           //Country
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: TextFormField(
+                            child: CustomInput(
+                              name: 'Country',
                               controller: countryController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  border: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: underLineColor)),
-                                  label: const Text('Country'),
-                                  labelStyle: TextStyle(color: hintTextColor)),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter Country';
-                                }
-                                return null;
-                              },
-                            ),
+                              placeholder: 'Enter Country',
+                              keyboardStyle: TextInputType.text,
+                              regexp: '',
+                              regexNotMatchMessage:
+                              '',
+                              obscureText: false)
                           ),
                           //State
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: TextFormField(
+                            child: CustomInput(
+                              name: 'State',
                               controller: stateController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  border: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: underLineColor)),
-                                  label: const Text('State'),
-                                  labelStyle: TextStyle(color: hintTextColor)),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter State';
-                                }
-                                return null;
-                              },
-                            ),
+                              placeholder: 'Enter State',
+                              keyboardStyle: TextInputType.text,
+                              regexp: '',
+                              regexNotMatchMessage:
+                              '',
+                              obscureText: false)
                           ),
                           //City
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: TextFormField(
-                              controller: cityController,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  border: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: underLineColor)),
-                                  label: const Text('City'),
-                                  labelStyle: TextStyle(color: hintTextColor)),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter City';
-                                }
-                                return null;
-                              },
-                            ),
+                            child:CustomInput(
+                                name: 'City',
+                                controller: cityController,
+                                placeholder: 'Enter City',
+                                keyboardStyle: TextInputType.text,
+                                regexp: '',
+                                regexNotMatchMessage:
+                                '',
+                                obscureText: false)
                           ),
                           Row(
                             children: [
@@ -431,27 +355,26 @@ class SignupState extends State<Signup> {
                                   onPressed: () {
                                     pickImage();
                                   },
-                                  child: const Text('Choose Your Profile Picture'),
+                                  child:
+                                      const Text('Choose Your Profile Picture'),
                                 ),
-
                               ),
-                              if(imagePath != null)
+                              if (imagePath != null)
                                 Container(
-                                  height:50,
+                                  height: 50,
                                   width: 50,
                                   decoration: BoxDecoration(
                                       border: Border.all(color: Colors.black),
                                       borderRadius: BorderRadius.circular(25),
                                       color: Colors.white),
                                   child: ClipOval(
-                                      child:Image.file(File(imagePath!),
-                                        fit: BoxFit.cover,
-                                      ) ),
+                                      child: Image.file(
+                                    File(imagePath!),
+                                    fit: BoxFit.cover,
+                                  )),
                                 ),
                             ],
                           ),
-
-
 
                           //Hobbies
                           Padding(
@@ -503,23 +426,7 @@ class SignupState extends State<Signup> {
                                               Text('Signup Successfully!')));
                                 }
                               },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius: BorderRadius.circular(40)),
-                                height: 50,
-                                width: 400,
-                                child: Center(
-                                  child: Text(
-                                    'Sign up',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(
-                                            fontSize: 18, color: Colors.white),
-                                  ),
-                                ),
-                              ),
+                              child: const CustomButton(text: 'Sign up',)
                             ),
                           ),
 
@@ -529,7 +436,7 @@ class SignupState extends State<Signup> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Back to ',
+                                'Back to',
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge!
@@ -545,7 +452,7 @@ class SignupState extends State<Signup> {
                                               const LoginPage()));
                                 },
                                 child: Text(
-                                  ' Sign in',
+                                  'Sign in',
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleLarge!
@@ -587,7 +494,7 @@ class SignupState extends State<Signup> {
   void loadImage() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-  imagePath = prefs.getString('image');
+      imagePath = prefs.getString('image');
     });
   }
 }

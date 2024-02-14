@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:signup_page/curved_list.dart';
-import 'package:signup_page/homepage.dart';
-import 'package:signup_page/infinite_list.dart';
+import 'package:signup_page/presentation/applist/single_curved_list/curved_list.dart';
+import 'package:signup_page/presentation/apidata_list/homepage/apilist_homepage.dart';
+import 'package:signup_page/presentation/beerlist/infinite_beer_listing/infinite_list.dart';
+
+
+
 
 class TaskList extends StatefulWidget {
   const TaskList({super.key});

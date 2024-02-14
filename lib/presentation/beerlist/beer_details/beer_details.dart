@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:signup_page/model_class/model_beer.dart';
-import 'package:signup_page/theme.dart';
+import 'package:signup_page/theme/theme.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sizer/sizer.dart';
 

@@ -6,10 +6,10 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:signup_page/custom_input.dart';
-import 'package:signup_page/mainpagewithbar.dart';
-import 'package:signup_page/signup.dart';
-import 'package:signup_page/theme.dart';
+import 'package:signup_page/common/custom_input/custom_input.dart';
+import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
+import 'package:signup_page/presentation/signup/signup.dart';
+import 'package:signup_page/theme/theme.dart';
 
 File? _image;
 String? imagePath;
@@ -90,19 +90,19 @@ class _UpdateFormState extends State<UpdateForm> {
                     name: 'Name',
                     placeholder: 'Enter Your Name',
                     keyboardStyle: TextInputType.text,
-                    controller: nameController,
+                    controller: nameController, regexp: '', regexNotMatchMessage: '',obscureText: false,
                   ),
                   CustomInput(
                     name: 'Email',
                     placeholder: 'Enter Your Email',
                     keyboardStyle: TextInputType.emailAddress,
-                    controller: emailController,
+                    controller: emailController, regexp: '', regexNotMatchMessage: '',obscureText: false,
                   ),
                   CustomInput(
                     name: 'Mobile number',
                     placeholder: 'Enter Your Mobile Number',
                     keyboardStyle: TextInputType.text,
-                    controller: mobileNumberController,
+                    controller: mobileNumberController, regexp: '', regexNotMatchMessage: '',obscureText: false,
                   ),
                   DropdownButtonFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -153,19 +153,19 @@ class _UpdateFormState extends State<UpdateForm> {
                     name: 'Country',
                     placeholder: 'Enter country',
                     keyboardStyle: TextInputType.text,
-                    controller: countryController,
+                    controller: countryController, regexp: '', regexNotMatchMessage: '',obscureText: false,
                   ),
                   CustomInput(
                     name: 'State',
                     placeholder: 'Enter State',
                     keyboardStyle: TextInputType.text,
-                    controller: stateController,
+                    controller: stateController, regexp: '', regexNotMatchMessage: '', obscureText: false,
                   ),
                   CustomInput(
                     name: 'City',
                     placeholder: 'Enter City',
                     keyboardStyle: TextInputType.text,
-                    controller: cityController,
+                    controller: cityController, regexp: '', regexNotMatchMessage: '', obscureText: false,
                   ),
 
                   const SizedBox(

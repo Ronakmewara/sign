@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:signup_page/login.dart';
-import 'package:signup_page/mainpagewithbar.dart';
+import 'package:signup_page/presentation/login/login.dart';
+import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

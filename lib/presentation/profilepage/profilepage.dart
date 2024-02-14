@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:signup_page/theme.dart';
-import 'package:signup_page/updateprofile.dart';
+import 'package:signup_page/theme/theme.dart';
+import 'package:signup_page/presentation/updateprofile/updateprofile.dart';
 
 String? imgPath;
 

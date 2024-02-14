@@ -4,20 +4,23 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:signup_page/beer_card/beer_card.dart';
-import 'package:signup_page/beer_demo/infinite_list_filter_dialog.dart';
-import 'package:signup_page/beer_details.dart';
+
+import 'package:signup_page/presentation/beerlist/beer_details/beer_details.dart';
 import 'package:signup_page/model_class/model_beer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sizer/sizer.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 
+import '../beer_card_list/beer_card_list.dart';
+import '../beer_filter_bottomsheet/infinite_list_filter_dialog.dart';
 
 class InfiniteList extends StatefulWidget {
   const InfiniteList({super.key});
+
   @override
   State<InfiniteList> createState() => _InfiniteListState();
 }
+
 class _InfiniteListState extends State<InfiniteList> {
   List<Color> colors = [
     Colors.amber,
@@ -41,11 +44,13 @@ class _InfiniteListState extends State<InfiniteList> {
 
     super.dispose();
   }
+
   void initState() {
     super.initState();
     scrollController.addListener(loadMore);
     fetchData(currentPage);
   }
+
   Future<void> fetchData(int pageKey) async {
     setState(() {
       _isLoading = true;
@@ -71,14 +76,15 @@ class _InfiniteListState extends State<InfiniteList> {
       final List beerData = jsonDecode(data);
       List<Beer> allData = beerData.map((e) => Beer.fromJson(e)).toList();
       if (response.statusCode == 200) {
-        setState(() {
-
-            _list.addAll(allData);
-          _isLoading = false;
-        });
         if (_list.isNotEmpty) {
           isListEmpty = false;
         }
+        setState(() {
+          _list.addAll(allData);
+          _isLoading = false;
+
+        });
+
       } else {
         throw Exception('Failed To Load Data');
       }
@@ -101,28 +107,38 @@ class _InfiniteListState extends State<InfiniteList> {
   Widget build(BuildContext __) {
     return Scaffold(
         appBar: AppBar(
+          title: const Text(
+            'All Beers',
+            style: TextStyle(fontSize: 20),
+          ),
           actions: [
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
+                    elevation: 1,
                     context: context,
                     builder: (_) {
-                      return InfiniteListFilterBottomSheet(onCancel: (){
-                        Navigator.pop(context);
-                      }, onSubmit: (foodSearch1 , brewedBefore1 , brewedAfter1){
-                        currentPage = 1;
-                        this.foodSearch = foodSearch1;
-                        this.brewedBefore = brewedBefore1;
-                        this.brewedAfter = brewedAfter1;
-                        fetchData(currentPage);
-                        Navigator.pop(context);
-                      }, onReset: (){
-                        foodSearch = '';
-                        brewedBefore = '';
-                        brewedAfter = '';
-                        Navigator.pop(context);
-                        fetchData(1);
-                      },);
+                      return InfiniteListFilterBottomSheet(
+                        onCancel: () {
+                          Navigator.pop(context);
+                        },
+                        onSubmit: (foodSearch1, brewedBefore1, brewedAfter1) {
+                          currentPage = 1;
+                          this.foodSearch = foodSearch1;
+                          this.brewedBefore = brewedBefore1;
+                          this.brewedAfter = brewedAfter1;
+                          fetchData(currentPage);
+                          Navigator.pop(context);
+                        },
+                        onReset: () {
+                          foodSearch = '';
+                          brewedBefore = '';
+                          brewedAfter = '';
+                          Navigator.pop(context);
+                          fetchData(1);
+                        }, foodSearch: foodSearch, brewedBefore: brewedBefore, brewedAfter: brewedAfter,
+
+                      );
                     });
               },
               child: Container(
@@ -148,10 +164,17 @@ class _InfiniteListState extends State<InfiniteList> {
             )
           ],
         ),
-        body: isListEmpty
+        body:
+
+        (_list.isEmpty && _isLoading)
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : BeerCard(list: _list, scrollController: scrollController, isLoading: _isLoading, colors: colors,) );
+            : _list.isEmpty  ? const Center(child: Text('No data Found'))  :  BeerCard(
+                list: _list,
+                scrollController: scrollController,
+                isLoading: _isLoading,
+                colors: colors,
+              ));
   }
 }

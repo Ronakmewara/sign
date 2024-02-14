@@ -1,11 +1,14 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:signup_page/infinite_list.dart';
-import 'package:sizer/sizer.dart';
-import 'package:signup_page/splash.dart';
+import 'package:signup_page/presentation/applist/all_apps_list/app_list.dart';
+import 'package:signup_page/presentation/login/login.dart';
+import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
 
-import 'package:signup_page/theme.dart';
+import 'package:sizer/sizer.dart';
+import 'package:signup_page/presentation/splash_screen/splash.dart';
+
+import 'package:signup_page/theme/theme.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 
 void main() async {
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Signup Page',
           theme: theme(),
-          home: const SplashScreen());
+          home: const MainPage());
     });
 
     // home: const SettingPage());

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:signup_page/homepage.dart';
-import 'package:signup_page/list_task.dart';
-import 'package:signup_page/profilepage.dart';
-import 'package:signup_page/settingpage.dart';
-import 'package:signup_page/theme.dart';
+import 'package:signup_page/presentation/apidata_list/homepage/apilist_homepage.dart';
+import 'package:signup_page/presentation/applist/all_apps_list/app_list.dart';
+import 'package:signup_page/presentation/profilepage/profilepage.dart';
+import 'package:signup_page/presentation/settings/settingpage.dart';
+import 'package:signup_page/theme/theme.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
