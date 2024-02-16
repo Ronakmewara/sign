@@ -81,11 +81,11 @@ class _LoginFormState extends State<LoginForm> {
                       String? userJson = prefs.getString('user');
 
                       if (userJson != null) {
-                        Map<String, dynamic> userData =
-                        json.decode(userJson);
+                        User userData =
+                         User.fromJson(json.decode(userJson));
 
-                        if (userData['email'] == email &&
-                            userData['password'] == password) {
+                        if (userData.email == email &&
+                            userData.password == password) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
                             content: Text('Login Successful'),

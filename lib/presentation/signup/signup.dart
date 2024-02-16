@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,20 +8,21 @@ import 'package:signup_page/common/custom_input/custom_input.dart';
 import 'package:signup_page/presentation/login/login.dart';
 import 'package:signup_page/theme/theme.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import '../../common/custom_button/custom_button.dart';
 
 class User {
-  String name;
-  String email;
-  String password;
-  String mobileNumber;
-  String dateOfBirth;
-  String country;
-  String state;
-  String city;
+  String? name;
+  String? email;
+  String? password;
+  String? mobileNumber;
+  String? dateOfBirth;
+  String? country;
+  String? state;
+  String? city;
   List<String>? hobbies;
-  String gender;
+  String? gender;
 
   User(
       {required this.name,
@@ -47,6 +49,20 @@ class User {
       'state': state,
       'hobbies': hobbies
     };
+  }
+
+  User.fromJson(Map<String , dynamic> json){
+    name = json['Name'];
+    email = json['Email'];
+    password = json['Password'];
+    mobileNumber = json['Mobile Number'];
+    dateOfBirth = json['DateOfBirth'];
+    country = json['Country'];
+    city = json['City'];
+    gender = json['Gender'];
+    state = json['State'];
+    hobbies = json['Hobbies'];
+
   }
 }
 
@@ -79,10 +95,8 @@ class SignupState extends State<Signup> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
-
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
@@ -90,53 +104,51 @@ class SignupState extends State<Signup> {
   final TextEditingController hobbiesController = TextEditingController();
 
   //User Class
-
-  final formKey = GlobalKey<FormState>();
+var formBuilderData;
+  final formKey = GlobalKey<FormBuilderState>();
 
   //sharedpref signUp login
   void signup() async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String name = nameController.text.trim();
-    String email = emailController.text;
-    String password = passwordController.text;
-    String mobileNumber = mobileNumberController.text;
-    String? gender = dropdownValue;
-    String dateOfBirth = dateController.text;
-    String country = countryController.text;
-    String state = stateController.text;
-    String city = cityController.text;
-    var hobbies = selectedHobbies;
 
-    User user = User(
-        name: name,
-        email: email,
-        password: password,
-        mobileNumber: mobileNumber,
-        dateOfBirth: dateOfBirth,
-        country: country,
-        city: city,
-        state: state,
-        hobbies: hobbies,
-        gender: gender!);
-
-    String userJson = json.encode(user.toJson());
-
+      String userJson = json.encode(formBuilderData);
     await prefs.setString('user', userJson);
+
+
+
+
+    // String name = nameController.text.trim();
+    // String email = emailController.text;
+    // String password = passwordController.text;
+    // String mobileNumber = mobileNumberController.text;
+    //
+    // String dateOfBirth = dateController.text;
+    // String country = countryController.text;
+    // String state = stateController.text;
+    // String city = cityController.text;
+
+
+    // User user = User(
+    //     name: name,
+    //     email: email,
+    //     password: password,
+    //     mobileNumber: mobileNumber,
+    //     dateOfBirth: dateOfBirth,
+    //     country: country,
+    //     city: city,
+    //     state: state,
+    //     hobbies: hobbies,
+    //     gender: gender);
+
+    // String userJson = json.encode(user.toJson());
+
+    // await prefs.setString('user', userJson);
 
     //clearing Input Fields
 
-    nameController.clear();
-    dateController.clear();
-    nameController.clear();
-    emailController.clear();
-    passwordController.clear();
-    confirmPasswordController.clear();
-    mobileNumberController.clear();
-    dateOfBirthController.clear();
-    countryController.clear();
-    stateController.clear();
-    cityController.clear();
-    hobbiesController.clear();
+     // )
+
   }
 
   @override
@@ -167,7 +179,7 @@ class SignupState extends State<Signup> {
                   textAlign: TextAlign.left,
                 ),
                 Center(
-                  child: Form(
+                  child: FormBuilder(
                       key: formKey,
                       child: Column(
                         children: [
@@ -175,178 +187,205 @@ class SignupState extends State<Signup> {
                           Padding(
                               padding:
                                   const EdgeInsets.fromLTRB(0, 20, 0, 26.5),
-                              child: CustomInput(
+                              child: FormBuilderTextField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 name: 'Name',
-                                controller: nameController,
-                                placeholder: 'Enter Your Name',
-                                keyboardStyle: TextInputType.text,
-                                regexp: '',
-                                regexNotMatchMessage: 'Please Enter Name',
-                                obscureText: false,
+                                decoration: InputDecoration(
+                                    label: Text(
+                                  'Enter Name',
+                                  style: TextStyle(color: hintTextColor),
+                                )),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                ]),
                               )),
                           //Email
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                              child: CustomInput(
-                                  name: 'Email',
-                                  controller: emailController,
-                                  placeholder: 'Enter Email',
-                                  keyboardStyle: TextInputType.emailAddress,
-                                  regexp: r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                                  regexNotMatchMessage:
-                                      'Please Enter valid Email',
-                                  obscureText: false)),
+                              child: FormBuilderTextField(
+                                keyboardType: TextInputType.emailAddress,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                name: 'Email',
+                                decoration: InputDecoration(
+                                    label: Text(
+                                  'Enter Email',
+                                  style: TextStyle(color: hintTextColor),
+                                )),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.email()
+                                ]),
+                              )),
 
                           //Password
 
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child:CustomInput(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                              child: FormBuilderTextField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 name: 'Password',
-                                controller: passwordController,
-                                placeholder: 'Enter Password',
-                                keyboardStyle: TextInputType.visiblePassword,
-                                regexp: '',
-                                regexNotMatchMessage:
-                                '',
-                                obscureText: true)
-                          ),
+                                decoration: InputDecoration(
+                                    label: Text(
+                                  'Enter Password',
+                                  style: TextStyle(color: hintTextColor),
+                                )),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.minLength(6)
+                                ]),
+                              )),
                           //Confirm Password
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: CustomInput(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                              child: FormBuilderTextField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 name: 'Confirm Password',
-                                controller: confirmPasswordController,
-                                placeholder: 'Re-enter Password',
-                                keyboardStyle: TextInputType.visiblePassword,
-                                regexp: '',
-                                regexNotMatchMessage:
-                                '',
-                                obscureText: true)
-                          ),
+                                decoration: InputDecoration(
+                                    label: Text(
+                                  'Confirm Password',
+                                  style: TextStyle(color: hintTextColor),
+                                )),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.minLength(6)
+                                ]),
+                              )),
                           //Mobile Number
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: CustomInput(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                              child: FormBuilderTextField(
+                                keyboardType: TextInputType.number,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 name: 'Mobile Number',
-                                controller: mobileNumberController,
-                                placeholder: 'Re-enter Password',
-                                keyboardStyle: TextInputType.number,
-                                regexp: r'^[0-9]{10}$',
-                                regexNotMatchMessage:
-                                'Please Enter Valid Mobile Number',
-                                obscureText: false)
-                          ),
+                                decoration: InputDecoration(
+                                    label: Text(
+                                  'Enter Mobile Number',
+                                  style: TextStyle(color: hintTextColor),
+                                )),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.minLength(10)
+                                ]),
+                              )),
 
                           //Gender
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                              child: DropdownButtonFormField(
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please Enter Your Gender';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                isExpanded: true,
-                                style: TextStyle(
-                                    color: Theme.of(context).hintColor,
-                                    fontSize: 16),
-                                hint: Text(
-                                  'Gender',
-                                  style: TextStyle(color: hintTextColor),
+                              child: FormBuilderDropdown(
+                                name: 'gender',
+                                decoration: const InputDecoration(
+                                  labelText: 'Gender',
+                                  hintText: 'Select Gender',
                                 ),
-                                value: dropdownValue,
-                                icon: const Icon(Icons.keyboard_arrow_down),
-                                items: genderOptions.map((item) {
-                                  return DropdownMenuItem(
-                                      value: item, child: Text(item));
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue!;
-                                  });
-                                },
-                              )),
+                                items: genderOptions
+                                    .map((gender) => DropdownMenuItem(
+                                        alignment: Alignment.centerLeft,
+                                        value: gender,
+                                        child: Text(gender)))
+                                    .toList(),
+                              )
+
+                              // DropdownButtonFormField(
+                              //   autovalidateMode:
+                              //       AutovalidateMode.onUserInteraction,
+                              //   validator: (value) {
+                              //     if (value == null || value.isEmpty) {
+                              //       return 'Please Enter Your Gender';
+                              //     } else {
+                              //       return null;
+                              //     }
+                              //   },
+                              //   isExpanded: true,
+                              //   style: TextStyle(
+                              //       color: Theme.of(context).hintColor,
+                              //       fontSize: 16),
+                              //   hint: Text(
+                              //     'Gender',
+                              //     style: TextStyle(color: hintTextColor),
+                              //   ),
+                              //   value: dropdownValue,
+                              //   icon: const Icon(Icons.keyboard_arrow_down),
+                              //   items: genderOptions.map((item) {
+                              //     return DropdownMenuItem(
+                              //         value: item, child: Text(item));
+                              //   }).toList(),
+                              //   onChanged: (String? newValue) {
+                              //     setState(() {
+                              //       dropdownValue = newValue!;
+                              //     });
+                              //   },
+                              // )
+
+                              ),
                           //Date Of birth
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: TextFormField(
+                            child: FormBuilderDateTimePicker(
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter Your Date Of Birth';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              readOnly: true,
-                              controller: dateController,
                               decoration: InputDecoration(
                                 label: Text(
                                   'Date of birth',
                                   style: TextStyle(color: hintTextColor),
                                 ),
                               ),
-                              onTap: () async {
-                                DateTime? picked = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime(2023, 1, 1),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2023, 12, 31));
-                                if (picked != null) {
-                                  setState(() {
-                                    String formattedDate =
-                                        DateFormat('dd-MM-yyyy').format(picked);
-                                    dateController.text = formattedDate;
-                                  });
-                                }
-                              },
+                              name: 'Date of birth',
+                              format: DateFormat('yyyy-MM-dd'),
                             ),
                           ),
                           //Country
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: CustomInput(
-                              name: 'Country',
-                              controller: countryController,
-                              placeholder: 'Enter Country',
-                              keyboardStyle: TextInputType.text,
-                              regexp: '',
-                              regexNotMatchMessage:
-                              '',
-                              obscureText: false)
-                          ),
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                              child: FormBuilderTextField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                name: 'Country',
+                                decoration: InputDecoration(
+                                    label: Text(
+                                  'Country',
+                                  style: TextStyle(color: hintTextColor),
+                                )),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                ]),
+                              )),
                           //State
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child: CustomInput(
-                              name: 'State',
-                              controller: stateController,
-                              placeholder: 'Enter State',
-                              keyboardStyle: TextInputType.text,
-                              regexp: '',
-                              regexNotMatchMessage:
-                              '',
-                              obscureText: false)
-                          ),
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                              child: FormBuilderTextField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                name: 'State',
+                                decoration: InputDecoration(
+                                    label: Text(
+                                  'State',
+                                  style: TextStyle(color: hintTextColor),
+                                )),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                ]),
+                              )),
                           //City
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                            child:CustomInput(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                              child: FormBuilderTextField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 name: 'City',
-                                controller: cityController,
-                                placeholder: 'Enter City',
-                                keyboardStyle: TextInputType.text,
-                                regexp: '',
-                                regexNotMatchMessage:
-                                '',
-                                obscureText: false)
-                          ),
+                                decoration: InputDecoration(
+                                    label: Text(
+                                  'City',
+                                  style: TextStyle(color: hintTextColor),
+                                )),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                ]),
+                              )),
                           Row(
                             children: [
                               Padding(
@@ -376,35 +415,54 @@ class SignupState extends State<Signup> {
                             ],
                           ),
 
+
                           //Hobbies
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Column(
+                            child:
+                            Column(
                               children: [
                                 Text(
                                   'Select Your Hobbies',
                                   style: TextStyle(
                                       color: hintTextColor, fontSize: 17),
                                 ),
-                                Column(
-                                  children: hobbies.map((hobby) {
-                                    return CheckboxListTile(
-                                      title: Text(hobby),
-                                      value: selectedHobbies.contains(hobby),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          if (value!) {
-                                            selectedHobbies.add(hobby);
-                                          } else {
-                                            selectedHobbies.remove(hobby);
-                                          }
-                                        });
-                                      },
-                                    );
-                                  }).toList(),
-                                )
+                                Column(children: [
+                                  FormBuilderCheckboxGroup(
+                                    wrapVerticalDirection: VerticalDirection.down,
+                                      name: 'Hobbies',
+                                      options:hobbies.map((e) {
+                                        return FormBuilderFieldOption(value: e);
+                                      }).toList())
+                                ])
                               ],
                             ),
+                            // Column(
+                            //   children: [
+                            //     Text(
+                            //       'Select Your Hobbies',
+                            //       style: TextStyle(
+                            //           color: hintTextColor, fontSize: 17),
+                            //     ),
+                            //     Column(
+                            //       children: hobbies.map((hobby) {
+                            //         return CheckboxListTile(
+                            //           title: Text(hobby),
+                            //           value: selectedHobbies.contains(hobby),
+                            //           onChanged: (value) {
+                            //             setState(() {
+                            //               if (value!) {
+                            //                 selectedHobbies.add(hobby);
+                            //               } else {
+                            //                 selectedHobbies.remove(hobby);
+                            //               }
+                            //             });
+                            //           },
+                            //         );
+                            //       }).toList(),
+                            //     )
+                            //   ],
+                            // ),
                           ),
 
                           //SignUp Button
@@ -412,22 +470,42 @@ class SignupState extends State<Signup> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 40),
                             child: InkWell(
-                              onTap: () {
-                                if (formKey.currentState!.validate()) {
-                                  signup();
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginPage()));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content:
-                                              Text('Signup Successfully!')));
-                                }
-                              },
-                              child: const CustomButton(text: 'Sign up',)
-                            ),
+                                onTap: () {
+                                 if(formKey.currentState!.saveAndValidate()){
+                                   formBuilderData = formKey.currentState?.value;
+                                   Signup();
+                                   Navigator.pushReplacement(
+                                       context,
+                                       MaterialPageRoute(
+                                           builder: (context) =>
+                                           const LoginPage()));
+                                   ScaffoldMessenger.of(context).showSnackBar(
+                                       const SnackBar(
+                                           content:
+                                           Text('Signup Successfully!')));
+                                 }
+
+
+
+
+
+                                  // if (formKey.currentState!.validate()) {
+                                  //   debugPrint(formKey.currentState?.value.toString());
+                                  //   signup();
+                                  //   Navigator.pushReplacement(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //           builder: (context) =>
+                                  //               const LoginPage()));
+                                  //   ScaffoldMessenger.of(context).showSnackBar(
+                                  //       const SnackBar(
+                                  //           content:
+                                  //               Text('Signup Successfully!')));
+                                  // }
+                                },
+                                child: const CustomButton(
+                                  text: 'Sign up',
+                                )),
                           ),
 
                           //back to sign-in Button

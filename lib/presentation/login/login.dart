@@ -43,7 +43,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                   textAlign: TextAlign.left,
                 ),
-                Center(
+                const Center(
                   child: LoginForm()
                 ),
               ],
