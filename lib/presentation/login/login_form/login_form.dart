@@ -1,31 +1,33 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../common/custom_button/custom_button.dart';
 import '../../../common/custom_input/custom_input.dart';
+import '../../../model_class/user_sharedprefs.dart';
 import '../../../theme/theme.dart';
 import '../../mainpagewithbar/mainpagewithbar.dart';
 import '../../signup/signup.dart';
 
 class LoginForm extends StatefulWidget {
-
-  const LoginForm({super.key, });
-
+  const LoginForm({
+    super.key,
+  });
 
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
+
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
-bool isObscure =false;
+bool isObscure = true;
 late SharedPreferences prefs;
-final lFormKey = GlobalKey<FormState>();
+final lFormKey = GlobalKey<FormBuilderState>();
+
 class _LoginFormState extends State<LoginForm> {
-
-
-
   @override
   void initState() {
     super.initState();
@@ -38,54 +40,62 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+    return FormBuilder(
         key: lFormKey,
         child: Column(
           children: [
             Padding(
-                padding:
-                const EdgeInsets.fromLTRB(0, 100, 0, 26.5),
-                child: CustomInput(
+                padding: const EdgeInsets.fromLTRB(0, 100, 0, 26.5),
+                child: FormBuilderTextField(
                   name: 'Email',
-                  controller: emailController,
-                  placeholder: 'Please Enter email',
-                  keyboardStyle: TextInputType.emailAddress,
-                  regexp: r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                  regexNotMatchMessage:
-                  'Please Enter Valid Email', obscureText: false,)),
+                  decoration: InputDecoration(
+                      label: Text(
+                    'Enter Email',
+                    style: TextStyle(color: hintTextColor),
+                  )),
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.email()
+                  ]),
+                )),
             Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                child: CustomInput(
+                child: FormBuilderTextField(
                   name: 'Password',
-                  controller: passwordController,
-                  placeholder: 'Enter Password',
-                  keyboardStyle: TextInputType.visiblePassword,
-                  regexp: '',
-                  regexNotMatchMessage: 'Please Enter Password', obscureText: isObscure, suffixIcon: IconButton(
-                  onPressed: (){
-                    setState(() {
-                      isObscure = !isObscure;
-                    });
-                  }, icon:  Icon( isObscure ? Icons.visibility_off :  Icons.remove_red_eye_outlined ),
-                ),)),
+                  decoration: InputDecoration(
+                    labelText: 'Enter Password',
+                    labelStyle: TextStyle(color: hintTextColor),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isObscure ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isObscure = !isObscure;
+                        });
+                      },
+                    ),
+                  ),
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: isObscure,
+                )),
             //SignUp Button
 
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 8),
               child: InkWell(
                   onTap: () {
-                    if (lFormKey.currentState!.validate()) {
-                      String email = emailController.text;
-                      String password = passwordController.text;
+                    if (lFormKey.currentState!.saveAndValidate()) {
+
 
                       String? userJson = prefs.getString('user');
 
                       if (userJson != null) {
-                        User userData =
-                         User.fromJson(json.decode(userJson));
+                        User userData = User.fromJson(json.decode(userJson));
 
-                        if (userData.email == email &&
-                            userData.password == password) {
+                        if (userData.email == lFormKey.currentState!.value['Email'] &&
+                            userData.password == lFormKey.currentState!.value['Password']) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
                             content: Text('Login Successful'),
@@ -95,8 +105,7 @@ class _LoginFormState extends State<LoginForm> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                  const MainPage()));
+                                  builder: (context) => const MainPage()));
                           emailController.clear();
                           passwordController.clear();
                         } else {
@@ -109,15 +118,16 @@ class _LoginFormState extends State<LoginForm> {
                       } else {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
-                          content: Text(
-                              'No Such Data Found ! Please Register '),
+                          content:
+                              Text('No Such Data Found ! Please Register '),
                           duration: Duration(seconds: 2),
                         ));
                       }
                     }
                   },
-                  child: const CustomButton(text: 'Sign in',)
-              ),
+                  child: const CustomButton(
+                    text: 'Sign in',
+                  )),
             ),
             Text(
               'or',
@@ -130,8 +140,7 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 36),
               child: Container(
                 decoration: BoxDecoration(
-                    border:
-                    Border.all(color: buttonLightGreenBorder),
+                    border: Border.all(color: buttonLightGreenBorder),
                     color: buttonLightGreen,
                     //rgb(223,234,228)
                     borderRadius: BorderRadius.circular(40)),
@@ -140,10 +149,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: Center(
                   child: Text(
                     'Sign in with Google',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge!
-                        .copyWith(
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontSize: 18,
                         color: primaryColor,
                         fontWeight: FontWeight.bold),
@@ -161,23 +167,18 @@ class _LoginFormState extends State<LoginForm> {
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!
-                      .copyWith(
-                      fontSize: 14, color: Colors.grey[600]),
+                      .copyWith(fontSize: 14, color: Colors.grey[600]),
                 ),
                 InkWell(
                   onTap: () {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                            const Signup()));
+                            builder: (context) => const Signup()));
                   },
                   child: Text(
                     ' Sign up',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge!
-                        .copyWith(
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         fontSize: 14,
                         color: primaryColor,
                         fontWeight: FontWeight.bold),

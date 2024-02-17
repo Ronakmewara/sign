@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Signup Page',
           theme: theme(),
-          home: const Signup());
+          home: const LoginPage());
     });
 
     // home: const SettingPage());

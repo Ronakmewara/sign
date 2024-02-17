@@ -12,60 +12,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import '../../common/custom_button/custom_button.dart';
 
-class User {
-  String? name;
-  String? email;
-  String? password;
-  String? mobileNumber;
-  String? dateOfBirth;
-  String? country;
-  String? state;
-  String? city;
-  List<String>? hobbies;
-  String? gender;
-
-  User(
-      {required this.name,
-      required this.email,
-      required this.password,
-      required this.mobileNumber,
-      required this.dateOfBirth,
-      required this.country,
-      required this.city,
-      required this.state,
-      this.hobbies,
-      required this.gender});
-
-  Map<String, dynamic> toJson() {
-    return {
-      'fullName': name,
-      'email': email,
-      'password': password,
-      'mobileNumber': mobileNumber,
-      'dateOfBirth': dateOfBirth,
-      'country': country,
-      'city': city,
-      'gender': gender,
-      'state': state,
-      'hobbies': hobbies
-    };
-  }
-
-  User.fromJson(Map<String , dynamic> json){
-    name = json['Name'];
-    email = json['Email'];
-    password = json['Password'];
-    mobileNumber = json['Mobile Number'];
-    dateOfBirth = json['DateOfBirth'];
-    country = json['Country'];
-    city = json['City'];
-    gender = json['Gender'];
-    state = json['State'];
-    hobbies = json['Hobbies'];
-
-  }
-}
-
 File? _image;
 String? imagePath;
 
@@ -95,7 +41,8 @@ class SignupState extends State<Signup> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final TextEditingController mobileNumberController = TextEditingController();
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
@@ -104,50 +51,15 @@ class SignupState extends State<Signup> {
   final TextEditingController hobbiesController = TextEditingController();
 
   //User Class
-var formBuilderData;
+
   final formKey = GlobalKey<FormBuilderState>();
 
   //sharedpref signUp login
+  Map<String, dynamic>? formBuilderData;
+
   void signup() async {
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      String userJson = json.encode(formBuilderData);
-    await prefs.setString('user', userJson);
-
-
-
-
-    // String name = nameController.text.trim();
-    // String email = emailController.text;
-    // String password = passwordController.text;
-    // String mobileNumber = mobileNumberController.text;
-    //
-    // String dateOfBirth = dateController.text;
-    // String country = countryController.text;
-    // String state = stateController.text;
-    // String city = cityController.text;
-
-
-    // User user = User(
-    //     name: name,
-    //     email: email,
-    //     password: password,
-    //     mobileNumber: mobileNumber,
-    //     dateOfBirth: dateOfBirth,
-    //     country: country,
-    //     city: city,
-    //     state: state,
-    //     hobbies: hobbies,
-    //     gender: gender);
-
-    // String userJson = json.encode(user.toJson());
-
-    // await prefs.setString('user', userJson);
-
-    //clearing Input Fields
-
-     // )
 
   }
 
@@ -290,37 +202,6 @@ var formBuilderData;
                                     .toList(),
                               )
 
-                              // DropdownButtonFormField(
-                              //   autovalidateMode:
-                              //       AutovalidateMode.onUserInteraction,
-                              //   validator: (value) {
-                              //     if (value == null || value.isEmpty) {
-                              //       return 'Please Enter Your Gender';
-                              //     } else {
-                              //       return null;
-                              //     }
-                              //   },
-                              //   isExpanded: true,
-                              //   style: TextStyle(
-                              //       color: Theme.of(context).hintColor,
-                              //       fontSize: 16),
-                              //   hint: Text(
-                              //     'Gender',
-                              //     style: TextStyle(color: hintTextColor),
-                              //   ),
-                              //   value: dropdownValue,
-                              //   icon: const Icon(Icons.keyboard_arrow_down),
-                              //   items: genderOptions.map((item) {
-                              //     return DropdownMenuItem(
-                              //         value: item, child: Text(item));
-                              //   }).toList(),
-                              //   onChanged: (String? newValue) {
-                              //     setState(() {
-                              //       dropdownValue = newValue!;
-                              //     });
-                              //   },
-                              // )
-
                               ),
                           //Date Of birth
                           Padding(
@@ -336,6 +217,7 @@ var formBuilderData;
                               ),
                               name: 'Date of birth',
                               format: DateFormat('yyyy-MM-dd'),
+
                             ),
                           ),
                           //Country
@@ -415,12 +297,10 @@ var formBuilderData;
                             ],
                           ),
 
-
                           //Hobbies
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child:
-                            Column(
+                            child: Column(
                               children: [
                                 Text(
                                   'Select Your Hobbies',
@@ -429,40 +309,15 @@ var formBuilderData;
                                 ),
                                 Column(children: [
                                   FormBuilderCheckboxGroup(
-                                    wrapVerticalDirection: VerticalDirection.down,
+                                      wrapVerticalDirection:
+                                          VerticalDirection.down,
                                       name: 'Hobbies',
-                                      options:hobbies.map((e) {
+                                      options: hobbies.map((e) {
                                         return FormBuilderFieldOption(value: e);
                                       }).toList())
                                 ])
                               ],
                             ),
-                            // Column(
-                            //   children: [
-                            //     Text(
-                            //       'Select Your Hobbies',
-                            //       style: TextStyle(
-                            //           color: hintTextColor, fontSize: 17),
-                            //     ),
-                            //     Column(
-                            //       children: hobbies.map((hobby) {
-                            //         return CheckboxListTile(
-                            //           title: Text(hobby),
-                            //           value: selectedHobbies.contains(hobby),
-                            //           onChanged: (value) {
-                            //             setState(() {
-                            //               if (value!) {
-                            //                 selectedHobbies.add(hobby);
-                            //               } else {
-                            //                 selectedHobbies.remove(hobby);
-                            //               }
-                            //             });
-                            //           },
-                            //         );
-                            //       }).toList(),
-                            //     )
-                            //   ],
-                            // ),
                           ),
 
                           //SignUp Button
@@ -470,38 +325,29 @@ var formBuilderData;
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 40),
                             child: InkWell(
-                                onTap: () {
-                                 if(formKey.currentState!.saveAndValidate()){
-                                   formBuilderData = formKey.currentState?.value;
-                                   Signup();
-                                   Navigator.pushReplacement(
-                                       context,
-                                       MaterialPageRoute(
-                                           builder: (context) =>
-                                           const LoginPage()));
-                                   ScaffoldMessenger.of(context).showSnackBar(
-                                       const SnackBar(
-                                           content:
-                                           Text('Signup Successfully!')));
-                                 }
+                                onTap: () async {
+                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  if (formKey.currentState!.saveAndValidate()) {
+                                   //FormBuilder gives us Immutable so creating Map copy and then conversion!!
+                                    formBuilderData = Map<String, dynamic>.from(formKey.currentState!.value);
+                                    //date of birth is Type of DATETIME so converting it to String
+                                    formBuilderData?['Date of birth'] = (formBuilderData?['Date of birth'] as DateTime).toIso8601String();
+
+                                    String userJson = json.encode(formBuilderData);
+                                    print(userJson);
+                                    await prefs.setString('user', userJson);
+                                    // Navigator.pushReplacement(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             const LoginPage()));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text('Signup Successfully!')));
+                                  }
 
 
-
-
-
-                                  // if (formKey.currentState!.validate()) {
-                                  //   debugPrint(formKey.currentState?.value.toString());
-                                  //   signup();
-                                  //   Navigator.pushReplacement(
-                                  //       context,
-                                  //       MaterialPageRoute(
-                                  //           builder: (context) =>
-                                  //               const LoginPage()));
-                                  //   ScaffoldMessenger.of(context).showSnackBar(
-                                  //       const SnackBar(
-                                  //           content:
-                                  //               Text('Signup Successfully!')));
-                                  // }
                                 },
                                 child: const CustomButton(
                                   text: 'Sign up',

@@ -175,7 +175,7 @@ class BeerDetailsPage extends StatelessWidget {
                             height: 20,
                           ),
                           SizedBox(
-                            height: 11.h,
+                            height: 12.h,
                             child: Text(
                               beerDetails.description!,
                               style:   TextStyle(

@@ -11,6 +11,8 @@ import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
 import 'package:signup_page/presentation/signup/signup.dart';
 import 'package:signup_page/theme/theme.dart';
 
+import '../../model_class/user_sharedprefs.dart';
+
 File? _image;
 String? imagePath;
 class UpdateForm extends StatefulWidget {
