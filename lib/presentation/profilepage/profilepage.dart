@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup_page/theme/theme.dart';
 import 'package:signup_page/presentation/updateprofile/updateprofile.dart';
 
+import '../../model_class/user_sharedprefs.dart';
+
 String? imgPath;
 
 class ProfilePage extends StatefulWidget {
@@ -17,7 +19,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientMixin<ProfilePage>{
   late SharedPreferences prefs;
-  Map<String, dynamic>? data = {};
+  var userData;
 
   @override
   void initState() {
@@ -39,11 +41,8 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
     String? userJson = prefs.getString('user');
 
     if (userJson != null) {
-      Map<String, dynamic> userData = json.decode(userJson);
+       userData = User.fromJson(json.decode(userJson));
 
-      setState(() {
-        data = userData;
-      });
     }
   }
 
@@ -55,6 +54,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
       future: getProfileImage(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+
           return Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 50),
@@ -83,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                         style: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                       Text(
-                        data?['fullName'] ?? "",
+                        userData!.name ?? "" ,
                         style: const TextStyle(fontSize: 20),
                       )
                     ],
@@ -98,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                         style: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                       Text(
-                        data?['email'] ?? "",
+                        userData!.email??"" ,
                         style: const TextStyle(fontSize: 20),
                       )
                     ],
@@ -113,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                         style: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                       Text(
-                        data?['mobileNumber'] ?? "",
+                        userData!.mobileNumber??"",
                         style: const TextStyle(fontSize: 20),
                       )
                     ],
@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => UpdateForm(data: data)));
+                                builder: (context) => UpdateForm(data: userData??"")));
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,

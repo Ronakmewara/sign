@@ -37,31 +37,12 @@ class SignupState extends State<Signup> {
 
   //controllers
 
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  final TextEditingController mobileNumberController = TextEditingController();
-  final TextEditingController dateOfBirthController = TextEditingController();
-  final TextEditingController countryController = TextEditingController();
-  final TextEditingController stateController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController hobbiesController = TextEditingController();
-
   //User Class
 
   final formKey = GlobalKey<FormBuilderState>();
 
   //sharedpref signUp login
   Map<String, dynamic>? formBuilderData;
-
-  void signup() async {
-
-
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,9 +181,7 @@ class SignupState extends State<Signup> {
                                         value: gender,
                                         child: Text(gender)))
                                     .toList(),
-                              )
-
-                              ),
+                              )),
                           //Date Of birth
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
@@ -217,7 +196,6 @@ class SignupState extends State<Signup> {
                               ),
                               name: 'Date of birth',
                               format: DateFormat('yyyy-MM-dd'),
-
                             ),
                           ),
                           //Country
@@ -326,28 +304,34 @@ class SignupState extends State<Signup> {
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 40),
                             child: InkWell(
                                 onTap: () async {
-                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
                                   if (formKey.currentState!.saveAndValidate()) {
-                                   //FormBuilder gives us Immutable so creating Map copy and then conversion!!
-                                    formBuilderData = Map<String, dynamic>.from(formKey.currentState!.value);
+                                    //FormBuilder gives us Immutable so creating Map copy and then conversion!!
+                                    formBuilderData = Map<String, dynamic>.from(
+                                        formKey.currentState!.value);
                                     //date of birth is Type of DATETIME so converting it to String
-                                    formBuilderData?['Date of birth'] = (formBuilderData?['Date of birth'] as DateTime).toIso8601String();
+                                    formBuilderData?['Date of birth'] =
+                                        (formBuilderData?['Date of birth']
+                                                as DateTime)
+                                            .toIso8601String();
 
-                                    String userJson = json.encode(formBuilderData);
-                                    print(userJson);
+                                    String userJson =
+                                        json.encode(formBuilderData);
+
                                     await prefs.setString('user', userJson);
-                                    // Navigator.pushReplacement(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             const LoginPage()));
+                                    String? hello = prefs.getString('user');
+
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginPage()));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
                                             content:
                                                 Text('Signup Successfully!')));
                                   }
-
-
                                 },
                                 child: const CustomButton(
                                   text: 'Sign up',

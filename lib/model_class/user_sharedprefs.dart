@@ -43,10 +43,10 @@ name = json['Name'];
 email = json['Email'];
 password = json['Password'];
 mobileNumber = json['Mobile Number'];
-dateOfBirth = json['DateOfBirth'];
+dateOfBirth = json['Date of birth'];
 country = json['Country'];
 city = json['City'];
-gender = json['Gender'];
+gender = json['gender'];
 state = json['State'];
 hobbies = (json['Hobbies'] as List<dynamic>).cast<String>();
 
