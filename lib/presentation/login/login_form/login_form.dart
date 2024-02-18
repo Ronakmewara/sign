@@ -47,6 +47,7 @@ class _LoginFormState extends State<LoginForm> {
             Padding(
                 padding: const EdgeInsets.fromLTRB(0, 100, 0, 26.5),
                 child: FormBuilderTextField(
+                  keyboardType: TextInputType.emailAddress,
                   name: 'Email',
                   decoration: InputDecoration(
                       label: Text(
@@ -93,7 +94,6 @@ class _LoginFormState extends State<LoginForm> {
 
                       if (userJson != null) {
                         User userData = User.fromJson(json.decode(userJson));
-
                         if (userData.email == lFormKey.currentState!.value['Email'] &&
                             userData.password == lFormKey.currentState!.value['Password']) {
                           ScaffoldMessenger.of(context)

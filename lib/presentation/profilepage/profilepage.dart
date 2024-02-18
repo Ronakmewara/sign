@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:signup_page/common/custom_listtile_profilepage.dart';
 import 'package:signup_page/theme/theme.dart';
 import 'package:signup_page/presentation/updateprofile/updateprofile.dart';
 
 import '../../model_class/user_sharedprefs.dart';
+import '../login/login.dart';
 
 String? imgPath;
 
@@ -17,7 +19,8 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientMixin<ProfilePage>{
+class _ProfilePageState extends State<ProfilePage>
+    with AutomaticKeepAliveClientMixin<ProfilePage> {
   late SharedPreferences prefs;
   var userData;
 
@@ -41,8 +44,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
     String? userJson = prefs.getString('user');
 
     if (userJson != null) {
-       userData = User.fromJson(json.decode(userJson));
-
+      userData = User.fromJson(json.decode(userJson));
     }
   }
 
@@ -54,84 +56,112 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
       future: getProfileImage(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-
           return Center(
             child: Padding(
-              padding: const EdgeInsets.only(top: 50),
+              padding: const EdgeInsets.only(top: 20),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    height: 200,
-                    width: 200,
+                    height: 125,
+                    width: 125,
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
                         borderRadius: BorderRadius.circular(100),
                         color: Colors.white),
                     child: ClipOval(
-                      child:Image.file(File(imgPath!),
-                         fit: BoxFit.cover,
-                    ) ),
+                        child: Image.file(
+                      File(imgPath!),
+                      fit: BoxFit.cover,
+                    )),
                   ),
-                  const SizedBox(
-                    height: 25,
+                  SizedBox(
+                    height: 10,
                   ),
-                  Column(
-                    children: [
-                      const Text(
-                        'Full Name',
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
-                      Text(
-                        userData!.name ?? "" ,
-                        style: const TextStyle(fontSize: 20),
-                      )
-                    ],
+                  Text(
+                    userData!.name ?? "",
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    height: 25,
+                  Text(
+                    userData!.email ?? "",
+                    style: const TextStyle(fontSize: 17),
                   ),
-                  Column(
-                    children: [
-                      const Text(
-                        'Email Id',
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
-                      Text(
-                        userData!.email??"" ,
-                        style: const TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Column(
-                    children: [
-                      const Text(
-                        'Phone Number',
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
-                      Text(
-                        userData!.mobileNumber??"",
-                        style: const TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 25,
+                  SizedBox(
+                    height: 20,
                   ),
                   ElevatedButton(
+
                       onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => UpdateForm(data: userData??"")));
+                                builder: (context) =>
+                                    UpdateForm(data: userData ?? "")));
                       },
+
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor,
-                          foregroundColor: Colors.white),
-                      child: const Icon(Icons.edit))
+                        elevation: 0,
+                        backgroundColor: Colors.yellow,
+                          fixedSize: const Size(220 , 50),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)
+                          )
+                      ),
+                      child: const Text(
+                        'Edit Profile ',
+                        style: TextStyle(fontWeight: FontWeight.bold , color: Colors.black , fontSize: 15),
+                      )),
+
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  CustomListTile(text: 'Settings', icon: Icons.settings, onPress: (){}, endIcon: true),
+                  SizedBox(height: 10,),
+                  CustomListTile(text: 'User Management', icon: Icons.manage_accounts, onPress: (){}, endIcon: true),
+                  SizedBox(height: 10,),
+                  CustomListTile(text: 'Billing Details', icon: Icons.credit_card, onPress: (){}, endIcon: true),
+                  SizedBox(height: 10,),
+                  CustomListTile(text: 'Information', icon: Icons.info_outline_rounded, onPress: (){}, endIcon: true),
+                  SizedBox(height: 10,),
+                  CustomListTile(text: 'Logout', icon: Icons.logout, onPress: (){
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          content: const Text('Do You Want to Logout?'),
+                          actions: [
+                            TextButton(
+                                onPressed: () async {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                                        (route) => false,
+                                  );
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                          Text('Logged Out Successfully')));
+                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                  prefs.setBool('isLogged', false);
+                                },
+                                child: const Text('Yes')),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('No')),
+                          ],
+                        ));
+
+                  }, endIcon: false),
+
+
+                  const SizedBox(
+                    height: 25,
+                  ),
+
+
+
                 ],
               ),
             ),
@@ -146,6 +176,5 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
   }
 
   @override
-
   bool get wantKeepAlive => true;
 }

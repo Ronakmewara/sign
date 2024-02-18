@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:intl/intl.dart';
@@ -28,18 +29,7 @@ class UpdateForm extends StatefulWidget {
 }
 
 class _UpdateFormState extends State<UpdateForm> {
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-  final TextEditingController mobileNumberController = TextEditingController();
 
-  final TextEditingController countryController = TextEditingController();
-  final TextEditingController stateController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController hobbiesController = TextEditingController();
 
   late SharedPreferences prefs;
   final formKey = GlobalKey<FormBuilderState>();
@@ -77,227 +67,275 @@ class _UpdateFormState extends State<UpdateForm> {
         backgroundColor: primaryColor,
       ),
       body: SingleChildScrollView(
-        child: FormBuilder(
-            key: formKey,
-            child: Column(
-              children: [
-                //Name
-                Padding(
-                    padding:
-                    const EdgeInsets.fromLTRB(0, 20, 0, 26.5),
-                    child: FormBuilderTextField(
-                      initialValue: widget.data.name??"",
-                      autovalidateMode:
-                      AutovalidateMode.onUserInteraction,
-                      name: 'Name',
-                      decoration: InputDecoration(
-                          label: Text(
-                            'Enter Name',
-                            style: TextStyle(color: hintTextColor),
-                          )),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                      ]),
-                    )),
-                //Email
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                    child: FormBuilderTextField(
-                      initialValue: widget.data.email??"",
-                      keyboardType: TextInputType.emailAddress,
-                      autovalidateMode:
-                      AutovalidateMode.onUserInteraction,
-                      name: 'Email',
-                      decoration: InputDecoration(
-                          label: Text(
-                            'Enter Email',
-                            style: TextStyle(color: hintTextColor),
-                          )),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.email()
-                      ]),
-                    )),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: FormBuilder(
+              key: formKey,
+              child: Column(
+                children: [
+                  //Name
+                  Padding(
+                      padding:
+                      const EdgeInsets.fromLTRB(0, 20, 0, 26.5),
+                      child: FormBuilderTextField(
+                        initialValue: widget.data.name??"",
+                        autovalidateMode:
+                        AutovalidateMode.onUserInteraction,
+                        name: 'Name',
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.manage_accounts_rounded),
+                          border: OutlineInputBorder(
 
-                //Password
-
-
-                //Mobile Number
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                    child: FormBuilderTextField(
-                      initialValue: widget.data.mobileNumber??"" ,
-                      keyboardType: TextInputType.number,
-                      autovalidateMode:
-                      AutovalidateMode.onUserInteraction,
-                      name: 'Mobile Number',
-                      decoration: InputDecoration(
-                          label: Text(
-                            'Enter Mobile Number',
-                            style: TextStyle(color: hintTextColor),
-                          )),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.minLength(10)
-                      ]),
-                    )),
-
-                //Gender
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                    child: FormBuilderDropdown(
-                      initialValue: widget.data.gender??"",
-                      name: 'gender',
-                      decoration: const InputDecoration(
-                        labelText: 'Gender',
-                        hintText: 'Select Gender',
-                      ),
-                      items: genderOptions
-                          .map((gender) => DropdownMenuItem(
-                          alignment: Alignment.centerLeft,
-                          value: gender,
-                          child: Text(gender)))
-                          .toList(),
-                    )
-
-                ),
-                //Date Of birth
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                  child: FormBuilderDateTimePicker(
-                  initialValue:  DateTime.parse(widget.data.dateOfBirth) ,
-                    autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-                    decoration: InputDecoration(
-                      label: Text(
-                        'Date of birth',
-                        style: TextStyle(color: hintTextColor),
-                      ),
-                    ),
-                    name: 'Date of birth',
-                    format: DateFormat('yyyy-MM-dd'),
-                  ),
-                ),
-                //Country
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                    child: FormBuilderTextField(
-                      initialValue: widget.data.country??"",
-                      autovalidateMode:
-                      AutovalidateMode.onUserInteraction,
-                      name: 'Country',
-                      decoration: InputDecoration(
-                          label: Text(
-                            'Country',
-                            style: TextStyle(color: hintTextColor),
-                          )),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                      ]),
-                    )),
-                //State
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                    child: FormBuilderTextField(
-                      initialValue: widget.data.state??"",
-                      autovalidateMode:
-                      AutovalidateMode.onUserInteraction,
-                      name: 'State',
-                      decoration: InputDecoration(
-                          label: Text(
-                            'State',
-                            style: TextStyle(color: hintTextColor),
-                          )),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                      ]),
-                    )),
-                //City
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                    child: FormBuilderTextField(
-                      initialValue: widget.data.city??"",
-                      autovalidateMode:
-                      AutovalidateMode.onUserInteraction,
-                      name: 'City',
-                      decoration: InputDecoration(
-                          label: Text(
-                            'City',
-                            style: TextStyle(color: hintTextColor),
-                          )),
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                      ]),
-                    )),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          pickImage();
-                        },
-                        child:
-                        const Text('Update Your Profile Picture'),
-                      ),
-                    ),
-                    if (imagePath != null)
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(25),
-                            color: Colors.white),
-                        child: ClipOval(
-                            child: Image.file(
-                              File(imagePath!),
-                              fit: BoxFit.cover,
+                            borderRadius: BorderRadius.circular(100)
+                          ),
+                            label: Text(
+                              'Enter Name',
+                              style: TextStyle(color: hintTextColor),
                             )),
-                      ),
-                  ],
-                ),
 
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
 
-                //SignUp Button
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 40),
-                  child: InkWell(
-                      onTap: () async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        if (formKey.currentState!.saveAndValidate()) {
-
-
-                          //date of birth is Type of DATETIME so converting it to String
-                          updateFormBuilderData?['Date of birth'] = (updateFormBuilderData?['Date of birth'] as DateTime).toIso8601String();
-
-                          String userJson = json.encode(updateFormBuilderData);
-                          print(userJson);
-                          await prefs.setString('user', userJson);
-                          // Navigator.pushReplacement(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             const LoginPage()));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content:
-                                  Text('Details Updated Successfully')));
-                        }
-
-
-                      },
-                      child: const CustomButton(
-                        text: 'Update Details',
                       )),
-                ),
+                  //Email
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                      child: FormBuilderTextField(
+                        initialValue: widget.data.email??"",
+                        keyboardType: TextInputType.emailAddress,
+                        autovalidateMode:
+                        AutovalidateMode.onUserInteraction,
+                        name: 'Email',
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.email_outlined),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100)
+                            ),
+                            label: Text(
+                              'Enter Email',
+                              style: TextStyle(color: hintTextColor),
+                            )),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.email()
+                        ]),
+                      )),
 
-                //back to sign-in Button
+                  //Password
 
 
-              ],
-            )),
+                  //Mobile Number
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                      child: FormBuilderTextField(
+                        initialValue: widget.data.mobileNumber??"" ,
+                        keyboardType: TextInputType.number,
+                        autovalidateMode:
+                        AutovalidateMode.onUserInteraction,
+                        name: 'Mobile Number',
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.phone),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100)
+                            ),
+                            label: Text(
+                              'Enter Mobile Number',
+                              style: TextStyle(color: hintTextColor),
+                            )),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.minLength(10)
+                        ]),
+                      )),
+
+                  //Gender
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                      child: FormBuilderDropdown(
+                        initialValue: widget.data.gender??"",
+                        name: 'gender',
+                        decoration:  InputDecoration(
+                          prefixIcon: Icon(Icons.man),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(100)
+                          ),
+                          labelText: 'Gender',
+                          hintText: 'Select Gender',
+                        ),
+                        items: genderOptions
+                            .map((gender) => DropdownMenuItem(
+                            alignment: Alignment.centerLeft,
+                            value: gender,
+                            child: Text(gender)))
+                            .toList(),
+                      )
+
+                  ),
+                  //Date Of birth
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                    child: FormBuilderDateTimePicker(
+                    initialValue:  DateTime.parse(widget.data.dateOfBirth) ,
+                      autovalidateMode:
+                      AutovalidateMode.onUserInteraction,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.date_range),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100)
+                        ),
+                        label: Text(
+                          'Date of birth',
+                          style: TextStyle(color: hintTextColor),
+                        ),
+                      ),
+                      name: 'Date of birth',
+                      format: DateFormat('yyyy-MM-dd'),
+                    ),
+                  ),
+                  //Country
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                      child: FormBuilderTextField(
+                        initialValue: widget.data.country??"",
+                        autovalidateMode:
+                        AutovalidateMode.onUserInteraction,
+                        name: 'Country',
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.account_balance),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100)
+                            ),
+                            label: Text(
+                              'Country',
+                              style: TextStyle(color: hintTextColor),
+                            )),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
+                      )),
+                  //State
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                      child: FormBuilderTextField(
+                        initialValue: widget.data.state??"",
+                        autovalidateMode:
+                        AutovalidateMode.onUserInteraction,
+                        name: 'State',
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.map),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100)
+                            ),
+                            label: Text(
+                              'State',
+                              style: TextStyle(color: hintTextColor),
+                            )),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
+                      )),
+                  //City
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                      child: FormBuilderTextField(
+                        initialValue: widget.data.city??"",
+                        autovalidateMode:
+                        AutovalidateMode.onUserInteraction,
+                        name: 'City',
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.location_city),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100)
+                            ),
+                            label: Text(
+                              'City',
+                              style: TextStyle(color: hintTextColor),
+                            )),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
+                      )),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            pickImage();
+                          },
+                          child:
+                          const Text('Update Your Profile Picture'),
+                        ),
+                      ),
+                      if (imagePath != null)
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.white),
+                          child: ClipOval(
+                              child: Image.file(
+                                File(imagePath!),
+                                fit: BoxFit.cover,
+                              )),
+                        ),
+                    ],
+                  ),
+
+
+                  //SignUp Button
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 40),
+                    child: ElevatedButton(
+
+                        onPressed: ()async {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          if (formKey.currentState!.saveAndValidate()) {
+
+
+                            //date of birth is Type of DATETIME so converting it to String
+                            updateFormBuilderData?['Date of birth'] = (updateFormBuilderData?['Date of birth'] as DateTime).toIso8601String();
+
+                            String userJson = json.encode(updateFormBuilderData);
+                            print(userJson);
+                            await prefs.setString('user', userJson);
+                            // Navigator.pushReplacement(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             const LoginPage()));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                    Text('Details Updated Successfully')));
+                          }
+
+                        },
+
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: Colors.yellow,
+                            fixedSize: const Size(400 , 50),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)
+                            )
+                        ),
+                        child: const Text(
+                          'Update Profile ',
+                          style: TextStyle(fontWeight: FontWeight.bold , color: Colors.black , fontSize: 15),
+                        )),
+                  ),
+
+                  //back to sign-in Button
+
+
+                ],
+              )),
+        ),
       ),
     );
   }

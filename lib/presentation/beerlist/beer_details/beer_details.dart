@@ -188,7 +188,7 @@ class BeerDetailsPage extends StatelessWidget {
                           ),
                           ElevatedButton(
 
-                              onPressed: () {}, child: Text('Add to cart', style: TextStyle(color: Colors.white),),
+                              onPressed: () {},
                             style:
                             ElevatedButton.styleFrom(
                               backgroundColor: Color.fromRGBO(15, 19, 26, 1),
@@ -197,7 +197,7 @@ class BeerDetailsPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(7)
                               )
 
-                             )
+                             ), child: const Text('Add to cart', style: TextStyle(color: Colors.white),)
 
 
                           )

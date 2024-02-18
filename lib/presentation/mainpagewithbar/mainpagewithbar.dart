@@ -37,10 +37,10 @@ class MainPageState extends State<MainPage> with AutomaticKeepAliveClientMixin<M
             style: Theme.of(context)
                 .textTheme
                 .titleLarge!
-                .copyWith(color: Colors.white, fontSize: 25),
+                .copyWith(color: Colors.black, fontSize: 25),
           ),
         ),
-        backgroundColor: primaryColor,
+
       ),
      body:  Center(
        child: pages.elementAt(selectedIndex),
