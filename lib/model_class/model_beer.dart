@@ -11,6 +11,7 @@ class Beer{
   String? tagLine;
   double? ph;
   int? ibu;
+  bool isFav = false;
 
   Beer({this.id , this.name , this.firstBrewed , this.description , this.imageUrl , this.volume , this.tagLine , this.ph , this.ibu});
 

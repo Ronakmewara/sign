@@ -88,10 +88,7 @@ class _LoginFormState extends State<LoginForm> {
               child: InkWell(
                   onTap: () {
                     if (lFormKey.currentState!.saveAndValidate()) {
-
-
                       String? userJson = prefs.getString('user');
-
                       if (userJson != null) {
                         User userData = User.fromJson(json.decode(userJson));
                         if (userData.email == lFormKey.currentState!.value['Email'] &&

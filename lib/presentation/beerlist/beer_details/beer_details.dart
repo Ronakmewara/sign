@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:signup_page/model_class/model_beer.dart';
 import 'package:signup_page/theme/theme.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:hive/hive.dart';
 
-class BeerDetailsPage extends StatelessWidget {
+class BeerDetailsPage extends StatefulWidget {
   const BeerDetailsPage(
       {super.key,
       required this.beerDetails,
@@ -17,26 +20,70 @@ class BeerDetailsPage extends StatelessWidget {
   final Color color;
 
   @override
+  State<BeerDetailsPage> createState() => _BeerDetailsPageState();
+}
+
+class _BeerDetailsPageState extends State<BeerDetailsPage> {
+  bool isFavourite = false;
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initializeList();
+
+  }
+
+  void initializeList()async{
+    var box = await Hive.openBox('List');
+   if(box.get('favBeer')== null){
+     List<Beer>? favouriteBeers;
+
+      await box.put('favBeer', favouriteBeers.toString());
+
+   } else{
+     print(box.get('favBeer'));
+   }
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: color,
+        backgroundColor: widget.color,
         appBar: AppBar(
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.only(right: 40),
-              child: Icon(Icons.favorite_border),
+              padding: const EdgeInsets.only(right: 40),
+              child: IconButton(icon: Icon(
+                  widget.beerDetails.isFav ? Icons.favorite : Icons
+                      .favorite_border_outlined,
+                  color: widget.beerDetails.isFav  ? Colors.red : Colors.black),
+                onPressed: ()async {
+                  setState(()  {
+                    widget.beerDetails.isFav = !widget.beerDetails.isFav;
+                  });
+                  var box = await Hive.openBox('List');
+                  String favBeer = await box.get('favBeer');
+
+                  List<Beer>? BeerList =  json.decode(favBeer);
+                  if (widget.beerDetails.isFav) {
+                    BeerList?.add(widget.beerDetails);
+                    await box.put('favBeer', BeerList.toString());
+                  }
+                },),
             )
           ],
           title: Text(
-            beerDetails.name!,
+            widget.beerDetails.name!,
             style: const TextStyle(fontSize: 20),
           ),
-          backgroundColor: color,
+          backgroundColor: widget.color,
         ),
         body: Container(
           height: 100.h,
           width: double.infinity,
-          color: color,
+          color: widget.color,
           child: Stack(
             children: [
               Padding(
@@ -47,14 +94,14 @@ class BeerDetailsPage extends StatelessWidget {
                     Container(
                       width: 200,
                       child: Text(
-                        beerDetails.tagLine!,
+                        widget.beerDetails.tagLine!,
                         style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Container(
@@ -66,7 +113,7 @@ class BeerDetailsPage extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.all(5.sp),
                           child: Center(
-                              child: Text('${beerDetails.ph}' " " "PH",
+                              child: Text('${widget.beerDetails.ph}' " " "PH",
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold))),
@@ -100,7 +147,7 @@ class BeerDetailsPage extends StatelessWidget {
                                     padding: const EdgeInsets.only(right: 40),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Vol.",
@@ -109,7 +156,8 @@ class BeerDetailsPage extends StatelessWidget {
                                               fontSize: 12.sp),
                                         ),
                                         Text(
-                                          '${beerDetails.volume!.value.toString()} ml',
+                                          '${widget.beerDetails.volume!.value
+                                              .toString()} ml',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14.sp),
@@ -119,7 +167,7 @@ class BeerDetailsPage extends StatelessWidget {
                                   ),
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Alc.",
@@ -127,7 +175,7 @@ class BeerDetailsPage extends StatelessWidget {
                                             color: hintTextColor,
                                             fontSize: 12.sp),
                                       ),
-                                      Text('${beerDetails.ibu} IBU',
+                                      Text('${widget.beerDetails.ibu} IBU',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14.sp))
@@ -146,7 +194,7 @@ class BeerDetailsPage extends StatelessWidget {
                                     style: TextStyle(
                                         color: hintTextColor, fontSize: 12.sp),
                                   ),
-                                  Text('${beerDetails.firstBrewed}',
+                                  Text('${widget.beerDetails.firstBrewed}',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14.sp))
@@ -163,7 +211,7 @@ class BeerDetailsPage extends StatelessWidget {
                                     style: TextStyle(
                                         color: hintTextColor, fontSize: 12.sp),
                                   ),
-                                  Text('${beerDetails.ph} PH',
+                                  Text('${widget.beerDetails.ph} PH',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14.sp))
@@ -177,10 +225,10 @@ class BeerDetailsPage extends StatelessWidget {
                           SizedBox(
                             height: 12.h,
                             child: Text(
-                              beerDetails.description!,
-                              style:   TextStyle(
+                              widget.beerDetails.description!,
+                              style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold , fontSize: 10.sp),
+                                  fontWeight: FontWeight.bold, fontSize: 10.sp),
                             ),
                           ),
                           const SizedBox(
@@ -189,15 +237,18 @@ class BeerDetailsPage extends StatelessWidget {
                           ElevatedButton(
 
                               onPressed: () {},
-                            style:
-                            ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromRGBO(15, 19, 26, 1),
-                              fixedSize: Size(350 , 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(7)
-                              )
+                              style:
+                              ElevatedButton.styleFrom(
+                                  backgroundColor: Color.fromRGBO(15, 19, 26,
+                                      1),
+                                  fixedSize: Size(350, 50),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(7)
+                                  )
 
-                             ), child: const Text('Add to cart', style: TextStyle(color: Colors.white),)
+                              ),
+                              child: const Text('Add to cart', style: TextStyle(
+                                  color: Colors.white),)
 
 
                           )
@@ -211,9 +262,9 @@ class BeerDetailsPage extends StatelessWidget {
                 top: 4.h,
                 right: 30,
                 child: Hero(
-                  tag: 'imageHero$index',
+                  tag: 'imageHero${widget.index}',
                   child: CachedNetworkImage(
-                    imageUrl: beerDetails.imageUrl ?? "",
+                    imageUrl: widget.beerDetails.imageUrl ?? "",
                     height: 55.h,
                   ),
                 ),
@@ -222,4 +273,14 @@ class BeerDetailsPage extends StatelessWidget {
           ),
         ));
   }
+
+  void saveToHive() async{
+    final box = await Hive.openBox('favBeer');
+
+
+
+
+  }
+
+
 }

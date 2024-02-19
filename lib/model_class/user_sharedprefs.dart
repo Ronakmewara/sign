@@ -48,7 +48,7 @@ country = json['Country'];
 city = json['City'];
 gender = json['gender'];
 state = json['State'];
-hobbies = (json['Hobbies'] as List<dynamic>).cast<String>();
+hobbies =  (json['Hobbies']!=null) ?  (json['Hobbies'] as List<dynamic>).cast<String>() : null;
 
 }
 }

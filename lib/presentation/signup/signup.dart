@@ -13,7 +13,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import '../../common/custom_button/custom_button.dart';
 
 File? _image;
-String? imagePath;
+
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -23,6 +23,7 @@ class Signup extends StatefulWidget {
 }
 
 class SignupState extends State<Signup> {
+  String? imagePath;
   String? dropdownValue;
   var genderOptions = ['male', 'female'];
   List<String> hobbies = [
@@ -320,7 +321,7 @@ class SignupState extends State<Signup> {
                                         json.encode(formBuilderData);
 
                                     await prefs.setString('user', userJson);
-                                    String? hello = prefs.getString('user');
+
 
                                     Navigator.pushReplacement(
                                         context,

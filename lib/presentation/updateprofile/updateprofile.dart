@@ -39,7 +39,7 @@ class _UpdateFormState extends State<UpdateForm> {
 
 
   void loadUserdata() async {
-     prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
   }
   ImagePicker picker = ImagePicker();
   @override
@@ -83,11 +83,11 @@ class _UpdateFormState extends State<UpdateForm> {
                         AutovalidateMode.onUserInteraction,
                         name: 'Name',
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.manage_accounts_rounded),
-                          border: OutlineInputBorder(
+                            prefixIcon: Icon(Icons.manage_accounts_rounded),
+                            border: OutlineInputBorder(
 
-                            borderRadius: BorderRadius.circular(100)
-                          ),
+                                borderRadius: BorderRadius.circular(100)
+                            ),
                             label: Text(
                               'Enter Name',
                               style: TextStyle(color: hintTextColor),
@@ -176,7 +176,7 @@ class _UpdateFormState extends State<UpdateForm> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
                     child: FormBuilderDateTimePicker(
-                    initialValue:  DateTime.parse(widget.data.dateOfBirth) ,
+                      initialValue:  DateTime.parse(widget.data.dateOfBirth) ,
                       autovalidateMode:
                       AutovalidateMode.onUserInteraction,
                       decoration: InputDecoration(
@@ -296,18 +296,19 @@ class _UpdateFormState extends State<UpdateForm> {
                           SharedPreferences prefs = await SharedPreferences.getInstance();
                           if (formKey.currentState!.saveAndValidate()) {
 
-
+                            updateFormBuilderData = Map<String, dynamic>.from(
+                                formKey.currentState!.value);
                             //date of birth is Type of DATETIME so converting it to String
                             updateFormBuilderData?['Date of birth'] = (updateFormBuilderData?['Date of birth'] as DateTime).toIso8601String();
 
                             String userJson = json.encode(updateFormBuilderData);
                             print(userJson);
                             await prefs.setString('user', userJson);
-                            // Navigator.pushReplacement(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) =>
-                            //             const LoginPage()));
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => const MainPage()),
+                                  (route) => false,
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content:
