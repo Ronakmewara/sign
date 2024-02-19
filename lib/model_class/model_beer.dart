@@ -25,6 +25,22 @@ class Beer{
      ph = json['ph'];
      description = json['description'];
     ibu = json['ibu']?.toInt();
+
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'first_brewed': firstBrewed,
+      'image_url': imageUrl,
+      'volume': volume?.toJson(),
+      'tagline': tagLine,
+      'ph': ph,
+      'description': description,
+      'ibu': ibu,
+
+    };
   }
   }
 
