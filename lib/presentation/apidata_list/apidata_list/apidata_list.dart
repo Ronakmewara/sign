@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-
 import '../apidata_details/apidata_details.dart';
 import '../../../theme/theme.dart';
 

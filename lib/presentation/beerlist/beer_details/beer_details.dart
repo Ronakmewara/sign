@@ -25,7 +25,8 @@ class BeerDetailsPage extends StatefulWidget {
 
 class _BeerDetailsPageState extends State<BeerDetailsPage> {
   bool isFavourite = false;
-
+  List<Beer>? favBeerList;
+  List<dynamic>? BeerList;
   @override
   void initState() {
     // TODO: implement initState
@@ -42,13 +43,15 @@ class _BeerDetailsPageState extends State<BeerDetailsPage> {
       String? favBeer = await box.get('favBeer');
      if(favBeer!=null){
        List<dynamic> favBeerListJson = json.decode(favBeer);
-       List<Beer> favBeerList = favBeerListJson.map((e){
+     favBeerList = favBeerListJson.map((e){
          return Beer.fromJson(e);
        }).toList();
+       for (var element in favBeerList!) {
+         if(element.id == widget.beerDetails.id && !element.isFav){
+           setState(() {
+             isFavourite= true;
+           });
 
-       for (var element in favBeerList) {
-         if(element.id == widget.beerDetails.id && widget.beerDetails.isFav){
-           isFavourite = true;
          }
 
        }
@@ -56,8 +59,6 @@ class _BeerDetailsPageState extends State<BeerDetailsPage> {
       print(box.get('favBeer'));
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,27 +70,28 @@ class _BeerDetailsPageState extends State<BeerDetailsPage> {
               padding: const EdgeInsets.only(right: 40),
               child: IconButton(
                 icon: Icon(
-                    widget.beerDetails.isFav
+                    isFavourite
                         ? Icons.favorite
                         : Icons.favorite_border_outlined,
                     color:
-                        widget.beerDetails.isFav ? Colors.red : Colors.black),
+                    isFavourite ? Colors.red : Colors.black),
 
 
                 onPressed: () async {
                   setState(() {
-                    widget.beerDetails.isFav = !widget.beerDetails.isFav;
+                    isFavourite = !isFavourite;
                   });
                   var box = await Hive.openBox('List');
                   String? favBeer = await box.get('favBeer');
-
-                  List<dynamic> BeerList =
-                      favBeer != null ? json.decode(favBeer) : [];
+                 BeerList = favBeer != null ? json.decode(favBeer) : [];
 
 
-                  if (widget.beerDetails.isFav) {
-                    BeerList.add(widget.beerDetails.toJson());
+                  if (isFavourite) {
+                    BeerList?.add(widget.beerDetails.toJson());
                     await box.put('favBeer', json.encode(BeerList));
+                  }else{
+                      BeerList?.removeWhere((element) => element['id'] == widget.beerDetails.id);
+                      await box.put('favBeer', json.encode(BeerList));
                   }
                 },
 

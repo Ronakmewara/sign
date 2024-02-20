@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Signup Page',
           theme: theme(),
-          home: const SplashScreen());
+          home: const MainPage());
     });
 
     // home: const SettingPage());
