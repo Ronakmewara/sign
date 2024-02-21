@@ -1,6 +1,8 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:signup_page/Module/blocloginapi/ui/loginform.dart';
 import 'package:signup_page/presentation/applist/all_apps_list/app_list.dart';
 import 'package:signup_page/presentation/login/login.dart';
 import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
@@ -11,6 +13,8 @@ import 'package:signup_page/presentation/splash_screen/splash.dart';
 
 import 'package:signup_page/theme/theme.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+
+import 'Module/blocloginapi/bloc/login_bloc.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -26,17 +30,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
-      return MaterialApp(
-          localizationsDelegates:  [
-            // GlobalMaterialLocalizations.delegate,
-            MonthYearPickerLocalizations.delegate
-          ],
-          locale: DevicePreview.locale(context),
-          builder: DevicePreview.appBuilder,
-          debugShowCheckedModeBanner: false,
-          title: 'Signup Page',
-          theme: theme(),
-          home: const MainPage());
+      return BlocProvider(
+        create: (context) => LoginBloc(),
+        child: MaterialApp(
+            localizationsDelegates: [
+              // GlobalMaterialLocalizations.delegate,
+              MonthYearPickerLocalizations.delegate
+            ],
+            locale: DevicePreview.locale(context),
+            builder: DevicePreview.appBuilder,
+            debugShowCheckedModeBanner: false,
+            title: 'Signup Page',
+            theme: theme(),
+            home: const LoginFormBloc()),
+      );
     });
 
     // home: const SettingPage());

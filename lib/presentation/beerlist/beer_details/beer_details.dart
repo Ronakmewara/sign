@@ -14,8 +14,8 @@ class BeerDetailsPage extends StatefulWidget {
       required this.beerDetails,
       required this.index,
       required this.color});
-
   final Beer beerDetails;
+
   final int index;
   final Color color;
 
