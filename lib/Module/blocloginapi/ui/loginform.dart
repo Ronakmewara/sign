@@ -15,7 +15,6 @@ class LoginFormBloc extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginFormBloc> {
-
   final LoginBloc loginBloc = LoginBloc();
 
   String? userName;
@@ -26,93 +25,87 @@ class _LoginFormState extends State<LoginFormBloc> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('Login using API'),),
-    body: SingleChildScrollView(
-      child: Column(
-          children: [
-      
-      
-            Padding(
-              padding: const EdgeInsets.only(left: 20 , right: 20),
-              child: FormBuilder(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Login using API'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: FormBuilder(
                 key: blocFormKey,
-                child: Column(
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 100, 0, 26.5),
-                          child: FormBuilderTextField(
-                            keyboardType: TextInputType.text,
-                            name: 'Username',
-                            decoration: InputDecoration(
-                                label: Text(
-                                  'Enter Username',
-                                  style: TextStyle(color: hintTextColor),
-                                )),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-      
-                            ]),
-                          )),
-                      Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
-                          child: FormBuilderTextField(
-                            name: 'Password',
-                            decoration: InputDecoration(
-                              labelText: 'Enter Password',
-                              labelStyle: TextStyle(color: hintTextColor),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  hidePassword ? Icons.visibility_off : Icons
-                                      .visibility,
-                                  color: Colors.grey,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    hidePassword = !hidePassword;
-                                  });
-                                },
-                              ),
+                child: Column(children: [
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 100, 0, 26.5),
+                      child: FormBuilderTextField(
+                        keyboardType: TextInputType.text,
+                        name: 'Username',
+                        decoration: InputDecoration(
+                            label: Text(
+                          'Enter Username',
+                          style: TextStyle(color: hintTextColor),
+                        )),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(),
+                        ]),
+                      )),
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 26.5),
+                      child: FormBuilderTextField(
+                        name: 'Password',
+                        decoration: InputDecoration(
+                          labelText: 'Enter Password',
+                          labelStyle: TextStyle(color: hintTextColor),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              hidePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.grey,
                             ),
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: hidePassword,
-                          )),
-                      //SignUp Button
-      
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 8),
-                        child: InkWell(
-                            onTap: () {
-                              if (blocFormKey.currentState!.saveAndValidate()) {
-                                userName =
-                                blocFormKey.currentState?.value['Username'];
-                                password =
-                                blocFormKey.currentState?.value['Password'];
-                                loginBloc.add(LoginWithApi(
-                                    userName: userName, password: password));
-                              }
+                            onPressed: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
+                              });
                             },
-                            child: const CustomButton(
-                              text: 'Sign in',
-                            )),
-      
-                      ),
-      
-      
-                    ])
-      
-                      ),
-            ),
-            BlocConsumer<LoginBloc, LoginState>(
+                          ),
+                        ),
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: hidePassword,
+                      )),
+                  //SignUp Button
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 8),
+                    child: InkWell(
+                        onTap: () {
+                          if (blocFormKey.currentState!.saveAndValidate()) {
+                            userName =
+                                blocFormKey.currentState?.value['Username'];
+                            password =
+                                blocFormKey.currentState?.value['Password'];
+                            loginBloc.add(LoginWithApi(
+                                userName: userName, password: password));
+                          }
+                        },
+                        child: const CustomButton(
+                          text: 'Sign in',
+                        )),
+                  ),
+                ])),
+          ),
+          BlocConsumer<LoginBloc, LoginState>(
               bloc: loginBloc,
-              listener: (context, state) {
-      
-              },
-              builder: ( context, state) {
-                print(state);
-                if(state is UserLoggedInSuccess){
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is UserLoggedInSuccess) {
                   return Column(
                     children: [
-                      Text('Logged In Succesfully' , style: TextStyle(fontSize: 20 , color: Colors.green),),
+                      Text(
+                        'Logged In Succesfully',
+                        style: TextStyle(fontSize: 20, color: Colors.green),
+                      ),
                       Container(
                         child: Column(
                           children: [
@@ -123,20 +116,13 @@ class _LoginFormState extends State<LoginFormBloc> {
                       )
                     ],
                   );
-                  
-                  
-                } else {
-                  return Text('some Error Occured');
+                } else if (state is ErrorState) {
+                  return Text(state.message);
                 }
-      
-              },
-            ) ,
-      
-          ]
-      
-      
+                return SizedBox();
+              }),
+        ]),
       ),
-    ) ,
-    ) ;
+    );
   }
 }

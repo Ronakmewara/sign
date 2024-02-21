@@ -10,3 +10,11 @@ class UserLoggedInSuccess extends LoginState{
 
   UserLoggedInSuccess({required this.userData});
 }
+
+class LoadingState extends LoginState{}
+class ErrorState extends LoadingState{
+ final String message;
+
+  ErrorState({required this.message});
+
+}
