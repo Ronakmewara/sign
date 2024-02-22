@@ -23,7 +23,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
              if(response.statusCode == 200 ){
                UserApi user = UserApi.fromJson(jsonDecode(response.body));
                emit(UserLoggedInSuccess(userData: user));
-             } else if(response.statusCode == 401){
+             } else if(response.statusCode == 400){
                emit(ErrorState(message : 'Invalid Credentials'));
              }
              else{

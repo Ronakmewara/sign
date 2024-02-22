@@ -30,9 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
-      return BlocProvider(
-        create: (context) => LoginBloc(),
-        child: MaterialApp(
+      return MaterialApp(
             localizationsDelegates: [
               // GlobalMaterialLocalizations.delegate,
               MonthYearPickerLocalizations.delegate
@@ -42,7 +40,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Signup Page',
             theme: theme(),
-            home: const LoginFormBloc()),
+            home: const LoginFormNew()
       );
     });
 
