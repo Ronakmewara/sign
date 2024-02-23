@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:signup_page/Module/blocloginapi/ui/loginform.dart';
 import 'package:signup_page/presentation/applist/all_apps_list/app_list.dart';
+import 'package:signup_page/presentation/beerlist_app/presentation/screens/infinite_beer_listing/infinite_list.dart';
 import 'package:signup_page/presentation/login/login.dart';
 import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
 import 'package:signup_page/presentation/signup/signup.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Signup Page',
             theme: theme(),
-            home: const LoginFormNew()
+            home: const MainPage()
       );
     });
 

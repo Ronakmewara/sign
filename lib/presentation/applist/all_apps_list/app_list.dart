@@ -3,10 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:signup_page/presentation/applist/single_curved_list/curved_list.dart';
 import 'package:signup_page/presentation/apidata_list/homepage/apilist_homepage.dart';
-import 'package:signup_page/presentation/beerlist/infinite_beer_listing/infinite_list.dart';
 
-
-
+import '../../beerlist_app/presentation/screens/infinite_beer_listing/infinite_list.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({super.key});
@@ -43,23 +41,19 @@ class _State extends State<TaskList> {
       },
     ];
     return Scaffold(
-        body: ListView(children:
-      mainPageList.map((app) => CurvedListItem(
-            title: app['title'],
-            time: app['time'],
-            icon: app['icon'],
-            color: app['color'],
-            nextColor: app['nextColor'],
-            onTap: app['onTap'],
-          )).toList()
-    )
+        body: ListView(
+            children: mainPageList
+                .map((app) => CurvedListItem(
+                      title: app['title'],
+                      time: app['time'],
+                      icon: app['icon'],
+                      color: app['color'],
+                      nextColor: app['nextColor'],
+                      onTap: app['onTap'],
+                    ))
+                .toList())
 
-        // ListView(
-        //   children: [
-        //     CurvedListItem(title: 'API Listing App', time: '5 Feb 2024', icon: Icons.list_alt, color: Colors.pinkAccent , nextColor: Colors.green,),
-        //     CurvedListItem(title: 'API Listing App', time: '', icon: Icons.list_alt, color: Colors. green ,),
-        //   ],
-        // )
+
         );
   }
 }

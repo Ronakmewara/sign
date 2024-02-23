@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sizer/sizer.dart';
 
-import '../beer_details/beer_details.dart';
+import '../../../data/model/beer_model/model_beer.dart';
+import '../../screens/beer_details/beer_details.dart';
 
 class BeerCard extends StatelessWidget {
   const BeerCard({super.key, required this.list, required this.scrollController, required this.isLoading, required this.colors});
-  final List list;
+  final list;
   final ScrollController scrollController;
   final bool isLoading;
   final List colors;

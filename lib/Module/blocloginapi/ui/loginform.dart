@@ -106,7 +106,7 @@ class _LoginFormState extends State<LoginFormNew> {
                       if (state is UserLoggedInSuccess) {
                         return Column(
                           children: [
-                            Text(
+                            const Text(
                               'Logged In Successfully',
                               style: TextStyle(fontSize: 20, color: Colors.green),
                             ),
