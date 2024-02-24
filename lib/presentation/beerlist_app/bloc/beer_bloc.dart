@@ -14,12 +14,13 @@ class BeerBloc extends Bloc<BeerEvent, BeerState> {
 on<FetchBeerData>(fetchBeerData);
   }
   FutureOr<void> fetchBeerData(FetchBeerData event, Emitter<BeerState> emit) async{
-    final List<Beer> list = [];
-    emit(ListLoadingState());
+
+
     if(event.currentPage == 1) {
-      list.clear();
+      event.list.clear();
     }
       try {
+        emit(BeerLoadingState());
         String url = 'https://api.punkapi.com/v2/beers?page=${event.currentPage}&per_page=10';
         if (event.foodSearch.isNotEmpty) {
           url += '&food=${event.foodSearch}';
@@ -38,16 +39,18 @@ on<FetchBeerData>(fetchBeerData);
           List<Beer> allData = beerData.map((e) => Beer.fromJson(e)).toList();
 
 
-            list.addAll(allData);
-          print(list);
+          event.list.addAll(allData);
+          print(event.list);
 
-          emit(FetchBeerDataSuccess(list: list));
+          emit(BeerSuccessState(list: event.list));
 
         } else {
-          throw Exception('Failed To Load Data');
+        emit(BeerErrorState(errorMsg: 'some Error Occurred'));
+
         }
       } catch (e) {
        print(e.toString());
+       emit(BeerErrorState(errorMsg: 'some Error Occurred'));
       }
     }
   }

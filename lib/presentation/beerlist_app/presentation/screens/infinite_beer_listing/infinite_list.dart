@@ -16,6 +16,7 @@ class InfiniteList extends StatefulWidget {
 }
 
 class _InfiniteListState extends State<InfiniteList> {
+   List<Beer> list = [];
   BeerBloc beerBloc = BeerBloc();
   List<Color> colors = [
     Colors.amber,
@@ -43,66 +44,24 @@ class _InfiniteListState extends State<InfiniteList> {
   void initState() {
     super.initState();
     scrollController.addListener(loadMore);
-     beerBloc.add(FetchBeerData(currentPage, foodSearch, brewedBefore, brewedAfter));
+     beerBloc.add(FetchBeerData(currentPage, foodSearch, brewedBefore, brewedAfter, list));
   }
 
-  // Future<void> fetchData(int pageKey) async {
-  //   setState(() {
-  //     _isLoading = true;
-  //     if (pageKey == 1) {
-  //       _list.clear();
-  //     }
-  //   });
-  //   try {
-  //     String url = 'https://api.punkapi.com/v2/beers?page=$pageKey&per_page=10';
-  //
-  //     if (foodSearch.isNotEmpty) {
-  //       url += '&food=$foodSearch';
-  //     }
-  //     if (brewedAfter.isNotEmpty) {
-  //       url += '&brewed_after=$brewedAfter';
-  //     }
-  //     if (brewedBefore.isNotEmpty) {
-  //       url += '&brewed_before=$brewedBefore';
-  //     }
-  //
-  //     final response = await http.get(Uri.parse(url));
-  //     final data = response.body;
-  //     final List beerData = jsonDecode(data);
-  //     List<Beer> allData = beerData.map((e) => Beer.fromJson(e)).toList();
-  //     if (response.statusCode == 200) {
-  //       if (_list.isNotEmpty) {
-  //         isListEmpty = false;
-  //       }
-  //       setState(() {
-  //         _list.addAll(allData);
-  //         _isLoading = false;
-  //
-  //       });
-  //
-  //     } else {
-  //       throw Exception('Failed To Load Data');
-  //     }
-  //   } catch (e) {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
+
 
   void loadMore() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
       currentPage++;
       beerBloc.add(
-          FetchBeerData(currentPage, foodSearch, brewedBefore, brewedAfter));
+          FetchBeerData(currentPage, foodSearch, brewedBefore, brewedAfter , list));
     }
   }
 
   @override
   Widget build(BuildContext __) {
     return BlocProvider(
-      create: (context) => BeerBloc(),
+      create: (context) => beerBloc,
       child: Scaffold(
           appBar: AppBar(
             title: const Text(
@@ -126,7 +85,7 @@ class _InfiniteListState extends State<InfiniteList> {
                             this.brewedBefore = brewedBefore1;
                             this.brewedAfter = brewedAfter1;
                             beerBloc.add(FetchBeerData(currentPage, foodSearch,
-                                brewedBefore, brewedAfter));
+                                brewedBefore, brewedAfter , list));
                             Navigator.pop(context);
                           },
                           onReset: () {
@@ -135,7 +94,7 @@ class _InfiniteListState extends State<InfiniteList> {
                             brewedAfter = '';
                             Navigator.pop(context);
                             beerBloc.add(FetchBeerData(
-                                1, foodSearch, brewedBefore, brewedAfter));
+                                1, foodSearch, brewedBefore, brewedAfter , list));
                           },
                           foodSearch: foodSearch,
                           brewedBefore: brewedBefore,
@@ -169,15 +128,18 @@ class _InfiniteListState extends State<InfiniteList> {
           body: BlocConsumer<BeerBloc, BeerState>(
               listener: (context, state) {},
               builder: (context, state) {
-
-              if (state is FetchBeerDataSuccess) {
+             if(state is BeerErrorState){
+               return Center(child:  Text(state.errorMsg));
+             }
+             else if (state is BeerSuccessState) {
                   return BeerCard(
                       list: state.list,
                       scrollController: scrollController,
                       isLoading: _isLoading,
                       colors: colors);
                 }  else {
-                 return const Text('no data found');
+                 // return Center(child: const Text('no data found'));
+               return Center(child: CircularProgressIndicator());
                  }
               })
           // (_list.isEmpty && _isLoading)

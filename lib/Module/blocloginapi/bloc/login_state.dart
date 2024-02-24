@@ -12,6 +12,7 @@ class UserLoggedInSuccess extends LoginState{
 }
 
 class LoadingState extends LoginState{}
+
 class ErrorState extends LoadingState{
  final String message;
 

@@ -8,5 +8,6 @@ class FetchBeerData extends BeerEvent{
   final String foodSearch;
   final String brewedBefore;
   final String brewedAfter;
-  FetchBeerData(this.currentPage, this.foodSearch, this.brewedBefore, this.brewedAfter);
+  final List<Beer> list;
+  FetchBeerData(this.currentPage, this.foodSearch, this.brewedBefore, this.brewedAfter, this.list);
 }

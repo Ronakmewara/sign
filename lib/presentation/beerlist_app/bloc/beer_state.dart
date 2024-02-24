@@ -5,16 +5,20 @@ abstract class BeerState {}
 
 class BeerInitial extends BeerState {}
 
-class ListState extends BeerState{
-  final bool isListEmpty;
-   ListState({required this.isListEmpty});
-}
 
-class FetchBeerDataSuccess extends BeerState{
+
+class BeerSuccessState extends BeerState{
   final List<Beer> list;
-  FetchBeerDataSuccess({ required this.list});
+  BeerSuccessState({ required this.list});
 }
 
-class ListLoadingState extends BeerState{
+class BeerErrorState extends BeerState{
+  final String errorMsg;
+
+  BeerErrorState({required this.errorMsg});
+
+
+}
+class BeerLoadingState extends BeerState{
 
 }
