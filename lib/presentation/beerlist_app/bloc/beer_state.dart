@@ -20,5 +20,7 @@ class BeerErrorState extends BeerState{
 
 }
 class BeerLoadingState extends BeerState{
+final bool firstPage;
+  BeerLoadingState({required this.firstPage});
 
 }

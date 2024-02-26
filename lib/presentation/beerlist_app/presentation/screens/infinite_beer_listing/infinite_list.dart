@@ -126,21 +126,36 @@ class _InfiniteListState extends State<InfiniteList> {
             ],
           ),
           body: BlocConsumer<BeerBloc, BeerState>(
-              listener: (context, state) {},
+              listener: (context, state) {
+                if(state is BeerLoadingState){
+                  _isLoading = true;
+
+                } else {
+                  _isLoading = false;
+                }
+              },
               builder: (context, state) {
-             if(state is BeerErrorState){
+             if(state is BeerErrorState) {
                return Center(child:  Text(state.errorMsg));
              }
-             else if (state is BeerSuccessState) {
-                  return BeerCard(
-                      list: state.list,
+
+              if (state is BeerSuccessState) {
+                return BeerCard(
+                      list: list,
                       scrollController: scrollController,
                       isLoading: _isLoading,
                       colors: colors);
-                }  else {
-                 // return Center(child: const Text('no data found'));
-               return Center(child: CircularProgressIndicator());
-                 }
+              }
+              if(state is BeerLoadingState){
+                if(state.firstPage){
+                  return const Center(child: CircularProgressIndicator(),);
+                } else{
+                  return BeerCard(list: list, scrollController: scrollController, isLoading: _isLoading, colors: colors);
+                }
+              }
+                 return const Center(child: Text('no data found'));
+
+
               })
           // (_list.isEmpty && _isLoading)
           //     ? const Center(

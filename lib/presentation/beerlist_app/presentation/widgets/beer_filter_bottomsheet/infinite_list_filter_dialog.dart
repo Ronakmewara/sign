@@ -50,162 +50,164 @@ class _InfiniteListFilteBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return SingleChildScrollView(
+      child: SizedBox(
 
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [
-              const Text(
-                'Select filters',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Divider(
-                height: 0.01,
-                color: Colors.black26,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: [
+                const Text(
+                  'Select filters',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Divider(
+                  height: 0.01,
+                  color: Colors.black26,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    labelText: 'Brewed Before',
+                      suffixIcon:Icon(Icons.date_range,size: 25,) ,
+                      isDense: true
                   ),
-                  labelText: 'Brewed Before',
-                    suffixIcon:Icon(Icons.date_range,size: 25,) ,
+                  controller: brewedBeforeController,
+                  readOnly: true,
+                  onTap: () async {
+                    brewedBefore = await showMonthYearPicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1995),
+                      lastDate: DateTime(2025),
+                    );
+                    if (brewedBefore != null) {
+                      setState(() {
+                        String formattedDate =
+                            DateFormat('MM-yyyy').format(brewedBefore!);
+                        brewedBeforeController.text = formattedDate;
+                      });
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    labelText: 'Brewed After',
+                      suffixIcon:Icon(Icons.date_range ,size: 25,) ,
+      
+                      isDense: true
+      
+                  ),
+                  controller: brewedAfterController,
+                  readOnly: true,
+                  onTap: () async {
+                    brewedAfter = await showMonthYearPicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1995),
+                      lastDate: DateTime(2025),
+                    );
+                    if (brewedAfter != null) {
+                      setState(() {
+                        String newFormattedDate =
+                            DateFormat('MM-yyyy').format(brewedAfter!);
+                        brewedAfterController.text = newFormattedDate;
+                      });
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+      
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+      
+                    labelText: 'filter By Food',
+                     suffixIcon:Icon(Icons.search,size: 25,) ,
                     isDense: true
-                ),
-                controller: brewedBeforeController,
-                readOnly: true,
-                onTap: () async {
-                  brewedBefore = await showMonthYearPicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1995),
-                    lastDate: DateTime(2025),
-                  );
-                  if (brewedBefore != null) {
-                    setState(() {
-                      String formattedDate =
-                          DateFormat('MM-yyyy').format(brewedBefore!);
-                      brewedBeforeController.text = formattedDate;
-                    });
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
                   ),
-                  labelText: 'Brewed After',
-                    suffixIcon:Icon(Icons.date_range ,size: 25,) ,
-
-                    isDense: true
-
+                  controller: searchByFoodController,
                 ),
-                controller: brewedAfterController,
-                readOnly: true,
-                onTap: () async {
-                  brewedAfter = await showMonthYearPicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1995),
-                    lastDate: DateTime(2025),
-                  );
-                  if (brewedAfter != null) {
-                    setState(() {
-                      String newFormattedDate =
-                          DateFormat('MM-yyyy').format(brewedAfter!);
-                      brewedAfterController.text = newFormattedDate;
-                    });
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-
-                  labelText: 'filter By Food',
-                   suffixIcon:Icon(Icons.search,size: 25,) ,
-                  isDense: true
+                const SizedBox(
+                  height: 25,
                 ),
-                controller: searchByFoodController,
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        widget.onReset();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7))),
-                      child: const Text(
-                        'Reset',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      )),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: ElevatedButton(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          widget.onReset();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(7))),
+                        child: const Text(
+                          'Reset',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        )),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                widget.onCancel();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.redAccent,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(7))),
+                              child: const Text(
+                                'Cancel',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                        ),
+                        ElevatedButton(
                             onPressed: () {
-                              widget.onCancel();
+                              widget.onSubmit(
+                                 searchByFoodController.text,
+                                  brewedBeforeController.text,
+                                  brewedAfterController.text);
                             },
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.redAccent,
+                                backgroundColor: Colors.blue,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(7))),
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            widget.onSubmit(
-                               searchByFoodController.text,
-                                brewedBeforeController.text,
-                                brewedAfterController.text);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7))),
-                          child: const Text('OK',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold))),
-                    ],
-                  )
-                ],
-              )
-            ],
-          ),
-        ));
+                            child: const Text('OK',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold))),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          )),
+    );
   }
 }

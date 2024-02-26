@@ -9,7 +9,7 @@ class Beer{
   String? imageUrl;
   Volume? volume;
   String? tagLine;
-  double? ph;
+  int? ph;
   int? ibu;
   bool isFav = false;
 
@@ -22,7 +22,7 @@ class Beer{
     imageUrl = json['image_url'];
     volume = json['volume'] != null ? Volume.fromJson(json['volume']) : null;
     tagLine = json['tagline'];
-     ph = json['ph'];
+     ph = json['ph']?.toInt();
      description = json['description'];
     ibu = json['ibu']?.toInt();
 
