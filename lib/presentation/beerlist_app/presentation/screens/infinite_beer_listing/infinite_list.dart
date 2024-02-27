@@ -16,7 +16,7 @@ class InfiniteList extends StatefulWidget {
 }
 
 class _InfiniteListState extends State<InfiniteList> {
-   List<Beer> list = [];
+  List<Beer> list = [];
   BeerBloc beerBloc = BeerBloc();
   List<Color> colors = [
     Colors.amber,
@@ -44,17 +44,16 @@ class _InfiniteListState extends State<InfiniteList> {
   void initState() {
     super.initState();
     scrollController.addListener(loadMore);
-     beerBloc.add(FetchBeerData(currentPage, foodSearch, brewedBefore, brewedAfter, list));
+    beerBloc.add(FetchBeerData(
+        currentPage, foodSearch, brewedBefore, brewedAfter, list));
   }
-
-
 
   void loadMore() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
       currentPage++;
-      beerBloc.add(
-          FetchBeerData(currentPage, foodSearch, brewedBefore, brewedAfter , list));
+      beerBloc.add(FetchBeerData(
+          currentPage, foodSearch, brewedBefore, brewedAfter, list));
     }
   }
 
@@ -85,7 +84,7 @@ class _InfiniteListState extends State<InfiniteList> {
                             this.brewedBefore = brewedBefore1;
                             this.brewedAfter = brewedAfter1;
                             beerBloc.add(FetchBeerData(currentPage, foodSearch,
-                                brewedBefore, brewedAfter , list));
+                                brewedBefore, brewedAfter, list));
                             Navigator.pop(context);
                           },
                           onReset: () {
@@ -93,8 +92,8 @@ class _InfiniteListState extends State<InfiniteList> {
                             brewedBefore = '';
                             brewedAfter = '';
                             Navigator.pop(context);
-                            beerBloc.add(FetchBeerData(
-                                1, foodSearch, brewedBefore, brewedAfter , list));
+                            beerBloc.add(FetchBeerData(1, foodSearch,
+                                brewedBefore, brewedAfter, list));
                           },
                           foodSearch: foodSearch,
                           brewedBefore: brewedBefore,
@@ -125,38 +124,39 @@ class _InfiniteListState extends State<InfiniteList> {
               )
             ],
           ),
-          body: BlocConsumer<BeerBloc, BeerState>(
-              listener: (context, state) {
-                if(state is BeerLoadingState){
-                  _isLoading = true;
+          body: BlocConsumer<BeerBloc, BeerState>(listener: (context, state) {
+            if (state is BeerLoadingState) {
+              _isLoading = true;
+            } else {
+              _isLoading = false;
+            }
+          }, builder: (context, state) {
+            if (state is BeerErrorState) {
+              return Center(child: Text(state.errorMsg));
+            }
 
-                } else {
-                  _isLoading = false;
-                }
-              },
-              builder: (context, state) {
-             if(state is BeerErrorState) {
-               return Center(child:  Text(state.errorMsg));
-             }
-
-              if (state is BeerSuccessState) {
+            if (state is BeerSuccessState) {
+              return BeerCard(
+                  list: state.list,
+                  scrollController: scrollController,
+                  isLoading: _isLoading,
+                  colors: colors);
+            }
+            if (state is BeerLoadingState) {
+              if (state.firstPage) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
                 return BeerCard(
-                      list: list,
-                      scrollController: scrollController,
-                      isLoading: _isLoading,
-                      colors: colors);
+                    list: list,
+                    scrollController: scrollController,
+                    isLoading: _isLoading,
+                    colors: colors);
               }
-              if(state is BeerLoadingState){
-                if(state.firstPage){
-                  return const Center(child: CircularProgressIndicator(),);
-                } else{
-                  return BeerCard(list: list, scrollController: scrollController, isLoading: _isLoading, colors: colors);
-                }
-              }
-                 return const Center(child: Text('no data found'));
-
-
-              })
+            }
+            return const Center(child: Text('no data found'));
+          })
           // (_list.isEmpty && _isLoading)
           //     ? const Center(
           //         child: CircularProgressIndicator(),

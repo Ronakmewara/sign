@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
+import 'package:signup_page/common/custom_listtile_profilepage.dart';
 import 'package:signup_page/presentation/beerlist_app/data/repository/beer_repo.dart';
+import 'package:signup_page/utils/exception/custom_exception.dart';
 
 import '../data/model/beer_model/model_beer.dart';
 
@@ -29,12 +31,14 @@ class BeerBloc extends Bloc<BeerEvent, BeerState> {
       emit(BeerLoadingState(firstPage: false));
     }
     try {
-      List<Beer> list = await BeerRepo.fetchBeer(
-          event.currentPage, event.foodSearch, event.brewedAfter,
-          event.brewedBefore, event.list);
-      emit(BeerSuccessState(list: list));
-    } catch(e){
-      emit(BeerErrorState(errorMsg: 'some Error Occured'));
+      List<Beer> list = await BeerRepo.fetchBeer(event.currentPage,
+          event.foodSearch, event.brewedAfter, event.brewedBefore);
+      event.list.addAll(list);
+      emit(BeerSuccessState(list: event.list));
+    } on CustomException catch (e) {
+      emit(BeerErrorState(errorMsg: e.message));
+    } catch (e) {
+      emit(BeerErrorState(errorMsg: "some Error occurred"));
     }
   }
 }

@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:signup_page/utils/exception/custom_exception.dart';
 import '../model/beer_model/model_beer.dart';
 
 class BeerRepo {
   static Future<List<Beer>> fetchBeer(int currentPage, String foodSearch,
-      String brewedAfter, String brewedBefore, List<Beer> list) async {
-    try {
+      String brewedAfter, String brewedBefore) async {
+    List<Beer> allData = [];
+
       String url =
           'https://api.punkapi.com/v2/beers?page=$currentPage&per_page=10';
       if (foodSearch.isNotEmpty) {
@@ -18,19 +20,20 @@ class BeerRepo {
         url += '&brewed_before=$brewedBefore';
       }
       final response = await http.get(Uri.parse(url));
+      if(response.statusCode == 200){
 
-      if (response.statusCode == 200) {
+
         final data = response.body;
         final List beerData = jsonDecode(data);
-        List<Beer> allData = beerData.map((e) => Beer.fromJson(e)).toList();
-        list.addAll(allData);
-      }
+        allData = beerData.map((e) => Beer.fromJson(e)).toList();
 
-    }
-    catch (e) {
-      print(e.toString());
-    }
-    return list;
+      }
+      else if(response.statusCode == 404){
+          throw CustomException(response.reasonPhrase.toString());
+      }
+    return allData;
+
   }
+
 
 }
