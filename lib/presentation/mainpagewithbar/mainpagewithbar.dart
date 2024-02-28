@@ -30,6 +30,7 @@ class MainPageState extends State<MainPage> with AutomaticKeepAliveClientMixin<M
     const List<Widget> pages = [TaskList(), ProfilePage(), SettingPage()];
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(210, 227, 200, 1),
         automaticallyImplyLeading: false,
         title: Center(
           child: Text(

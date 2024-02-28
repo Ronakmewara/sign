@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:signup_page/Module/blocloginapi/bloc/login_bloc.dart';
-import 'package:signup_page/presentation/beerlist_app/bloc/beer_bloc.dart';
-import 'package:signup_page/presentation/beerlist_app/data/model/beer_model/model_beer.dart';
+
+import '../../../bloc/beer_bloc.dart';
+import '../../../data/model/beer_model/model_beer.dart';
 import '../../widgets/beer_card_list/beer_card_list.dart';
 import '../../widgets/beer_filter_bottomsheet/infinite_list_filter_dialog.dart';
 
@@ -44,16 +45,20 @@ class _InfiniteListState extends State<InfiniteList> {
   void initState() {
     super.initState();
     scrollController.addListener(loadMore);
-    beerBloc.add(FetchBeerData(
-        currentPage, foodSearch, brewedBefore, brewedAfter, list));
+    beerBloc.add(FetchBeerData(currentPage, list));
   }
 
   void loadMore() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
       currentPage++;
-      beerBloc.add(FetchBeerData(
-          currentPage, foodSearch, brewedBefore, brewedAfter, list));
+      if (foodSearch.isNotEmpty ||
+          brewedBefore.isNotEmpty ||
+          brewedAfter.isNotEmpty) {
+          beerBloc.add(FetchFilteredBeerData(foodSearch, brewedBefore, brewedAfter, currentPage, list));
+      } else {
+        beerBloc.add(FetchBeerData(currentPage, list));
+      }
     }
   }
 
@@ -83,8 +88,8 @@ class _InfiniteListState extends State<InfiniteList> {
                             this.foodSearch = foodSearch1;
                             this.brewedBefore = brewedBefore1;
                             this.brewedAfter = brewedAfter1;
-                            beerBloc.add(FetchBeerData(currentPage, foodSearch,
-                                brewedBefore, brewedAfter, list));
+                            beerBloc.add(FetchFilteredBeerData(foodSearch,
+                                brewedBefore, brewedAfter, currentPage, list));
                             Navigator.pop(context);
                           },
                           onReset: () {
@@ -92,8 +97,8 @@ class _InfiniteListState extends State<InfiniteList> {
                             brewedBefore = '';
                             brewedAfter = '';
                             Navigator.pop(context);
-                            beerBloc.add(FetchBeerData(1, foodSearch,
-                                brewedBefore, brewedAfter, list));
+                            beerBloc.add(FetchFilteredBeerData(foodSearch,
+                                brewedBefore, brewedAfter, 1, list));
                           },
                           foodSearch: foodSearch,
                           brewedBefore: brewedBefore,
