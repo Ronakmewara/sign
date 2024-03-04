@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:signup_page/presentation/login/login.dart';
 import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
 import 'package:signup_page/theme/theme.dart';
 import 'package:sizer/sizer.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Signup Page',
             theme: theme(),
-            home: const MainPage()
+            home: const LoginPage()
       );
     });
 

@@ -1,14 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
-
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:sizer/sizer.dart';
-import 'package:month_year_picker/month_year_picker.dart';
 
 import '../../presentation/beerlist_app_bloc/data/model/beer_model/model_beer.dart';
 import '../../presentation/beerlist_app_bloc/presentation/widgets/beer_card_list/beer_card_list.dart';
@@ -22,7 +15,7 @@ class InfiniteListWithoutBloc extends StatefulWidget {
   State<InfiniteListWithoutBloc> createState() => _InfiniteListState();
 }
 
-class _InfiniteListState extends State<InfiniteListWithoutBloc> {
+class _InfiniteListState extends  State<InfiniteListWithoutBloc> {
   List<Color> colors = [
     Colors.amber,
     Colors.yellow,
