@@ -334,8 +334,8 @@ class SignupState extends State<Signup> {
                                                 Text('Signup Successfully!')));
                                   }
                                 },
-                                child: const CustomButton(
-                                  text: 'Sign up',
+                                child:  CustomButton(
+                                  text: 'Sign up', color: primaryColor,
                                 )),
                           ),
 

@@ -93,8 +93,8 @@ class _LoginFormState extends State<LoginFormNew> {
                                   BlocProvider.of<LoginBloc>(context).add(LoginWithApi(userName: userName, password: password));
                                 }
                               },
-                              child: const CustomButton(
-                                text: 'Sign in',
+                              child:  CustomButton(
+                                text: 'Sign in',color: primaryColor,
                               )),
                         ),
                       ])),
@@ -123,7 +123,7 @@ class _LoginFormState extends State<LoginFormNew> {
                       } else if (state is ErrorState) {
                         return Text(state.message);
                       }
-                      return SizedBox();
+                      return const SizedBox();
                     }),
               ]),
             );

@@ -122,8 +122,8 @@ class _LoginFormState extends State<LoginForm> {
                       }
                     }
                   },
-                  child: const CustomButton(
-                    text: 'Sign in',
+                  child:  CustomButton(
+                    text: 'Sign in', color: primaryColor,
                   )),
             ),
             Text(
