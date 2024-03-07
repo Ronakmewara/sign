@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
+
+import '../../../router/router_constants.dart';
 
 class DetailsPage extends StatelessWidget {
    const DetailsPage({super.key , required this.post});
@@ -11,7 +14,7 @@ class DetailsPage extends StatelessWidget {
          leading: IconButton(
            icon: const Icon(Icons.arrow_back_ios_new) ,color: Colors.white,
            onPressed: (){
-             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>const MainPage()));
+              context.go(RouterConstants.apiDataList);
            },
          ),
          title:  Text('Details', style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white , fontSize: 25),),

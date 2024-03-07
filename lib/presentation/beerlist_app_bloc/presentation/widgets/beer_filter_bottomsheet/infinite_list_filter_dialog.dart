@@ -12,15 +12,11 @@ class InfiniteListFilterBottomSheet extends StatefulWidget {
   });
 
   final VoidCallback onCancel;
-  final Function(String foodSearch, String brewedBefore, String brewedAfter)
-      onSubmit;
+  final Function(String foodSearch, String brewedBefore, String brewedAfter) onSubmit;
   final VoidCallback onReset;
   final String foodSearch;
    final String brewedBefore;
   final String brewedAfter;
-
-
-
 
   @override
   State<InfiniteListFilterBottomSheet> createState() =>

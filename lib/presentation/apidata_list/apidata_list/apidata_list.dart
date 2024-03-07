@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../apidata_details/apidata_details.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../router/router_constants.dart';
 import '../../../theme/theme.dart';
 
 class ListBuilder extends StatelessWidget {
@@ -29,10 +31,11 @@ final List filteredPosts;
               padding: const EdgeInsets.all(10),
               child: ListTile(
                 onTap: () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              DetailsPage(post: post)));
+                  context.go( RouterConstants.apiDataDetails , extra: post);
+                  // Navigator.of(context).pushReplacement(
+                  //     MaterialPageRoute(
+                  //         builder: (context) =>
+                  //             DetailsPage(post: post)));
                 },
                 leading: CircleAvatar(
                     backgroundColor: buttonLightGreen,

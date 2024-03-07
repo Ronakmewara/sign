@@ -1,12 +1,5 @@
-import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:signup_page/common/custom_button/custom_button.dart';
-import 'package:signup_page/common/custom_input/custom_input.dart';
 import 'package:signup_page/presentation/login/login_form/login_form.dart';
-import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
-import 'package:signup_page/presentation/signup/signup.dart';
 import 'package:signup_page/theme/theme.dart';
 
 class LoginPage extends StatefulWidget {

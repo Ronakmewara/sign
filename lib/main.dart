@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:signup_page/Module/get_it_demo/locator.dart';
-import 'package:signup_page/presentation/login/login.dart';
-import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
+import 'package:signup_page/router/router_config.dart';
 import 'package:signup_page/theme/theme.dart';
 import 'package:sizer/sizer.dart';
 
-import 'Module/freezed_demo/ui/userlist_screen.dart';
-import 'Module/get_it_demo/ui/show_post_ui.dart';
+import 'Module/beerlist_app_without_bloc/beer_infinite_listing.dart';
 
 
 void main() async {
@@ -27,7 +25,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
-      return MaterialApp(
+      return MaterialApp.router(
+
+          routerConfig: MyRouter().router,
             localizationsDelegates: const [
               // GlobalMaterialLocalizations.delegate,
               MonthYearPickerLocalizations.delegate
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Signup Page',
             theme: theme(),
-            home: const ShowPostWithGetIt()
+
       );
     });
 

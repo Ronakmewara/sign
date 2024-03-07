@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:go_router/go_router.dart';
 import 'package:signup_page/model_class/post.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -6,17 +7,18 @@ import 'package:http/http.dart' as http;
 import 'package:signup_page/theme/theme.dart';
 import 'package:hive/hive.dart';
 
+import '../../../router/router_constants.dart';
 import '../apidata_list/apidata_list.dart';
 
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class ApiDataList extends StatefulWidget {
+  const ApiDataList({super.key});
 
   @override
-  State<Homepage> createState() => HomepageState();
+  State<ApiDataList> createState() => HomepageState();
 }
 
-class HomepageState extends State<Homepage> {
+class HomepageState extends State<ApiDataList> {
   bool isTimeMatched = false;
   late DateTime currentDate = DateTime.now();
 
@@ -95,7 +97,16 @@ class HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: (){
+                context.go(RouterConstants.appListRoute);
+          },
+        ),
+        title: const Text('Api Data List' , style: TextStyle(fontSize: 25 ),),
+        centerTitle: true,
+      ),
         backgroundColor: buttonLightGreen,
         body: hasData
             ? Column(

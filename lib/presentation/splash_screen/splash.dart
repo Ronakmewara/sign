@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup_page/presentation/login/login.dart';
 import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
+import 'package:signup_page/router/router_constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -32,11 +34,13 @@ class _SplashScreenState extends State<SplashScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       isLoggedIn = prefs.getBool('isLogged');
       if (isLoggedIn == true) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) =>const MainPage()));
+         context.go(RouterConstants.appListRoute);
+        // Navigator.pushReplacement(
+        //     context, MaterialPageRoute(builder: (context) =>const MainPage()));
       } else {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const LoginPage()));
+        context.go(RouterConstants.loginPageRoute);
+        // Navigator.pushReplacement(
+        //     context, MaterialPageRoute(builder: (context) => const LoginPage()));
       }
     });
   }

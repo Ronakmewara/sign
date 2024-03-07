@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
 import '../../presentation/beerlist_app_bloc/data/model/beer_model/model_beer.dart';
 import '../../presentation/beerlist_app_bloc/presentation/widgets/beer_card_list/beer_card_list.dart';
 import '../../presentation/beerlist_app_bloc/presentation/widgets/beer_filter_bottomsheet/infinite_list_filter_dialog.dart';
+import '../../router/router_constants.dart';
 
 
 class InfiniteListWithoutBloc extends StatefulWidget {
@@ -101,6 +103,12 @@ class _InfiniteListState extends  State<InfiniteListWithoutBloc> {
   Widget build(BuildContext __) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new) ,
+            onPressed: (){
+              context.go(RouterConstants.appListRoute);
+            },
+          ),
           title: const Text(
             'All Beers',
             style: TextStyle(fontSize: 20),

@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup_page/common/custom_input/custom_input.dart';
 import 'package:signup_page/presentation/login/login.dart';
+import 'package:signup_page/router/router_constants.dart';
 import 'package:signup_page/theme/theme.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -322,12 +324,7 @@ class SignupState extends State<Signup> {
 
                                     await prefs.setString('user', userJson);
 
-
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LoginPage()));
+                                    context.go(RouterConstants.loginPageRoute);
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(
                                             content:
@@ -354,11 +351,7 @@ class SignupState extends State<Signup> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginPage()));
+                                  context.go(RouterConstants.loginPageRoute);
                                 },
                                 child: Text(
                                   'Sign in',

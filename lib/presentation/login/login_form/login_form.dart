@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:signup_page/router/router_constants.dart';
 
 import '../../../common/custom_button/custom_button.dart';
 import '../../../common/custom_input/custom_input.dart';
@@ -168,10 +170,9 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Signup()));
+
+                    context.go(RouterConstants.signupPageRoute);
+
                   },
                   child: Text(
                     ' Sign up',

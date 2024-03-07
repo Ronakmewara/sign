@@ -3,6 +3,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
+import 'package:signup_page/router/router_constants.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../data/model/beer_model/model_beer.dart';
@@ -32,13 +34,15 @@ class BeerCard extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    (MaterialPageRoute(
-                        builder: (context) => BeerDetailsPage(
-                            beerDetails: singleData,
-                            index: index,
-                            color: colors[index % 5]))));
+
+                context.go("${RouterConstants.beerDetailsRoute}/$index", extra: singleData ,   );
+                // Navigator.push(
+                //     context,
+                //     (MaterialPageRoute(
+                //         builder: (context) => BeerDetailsPage(
+                //             beerDetails: singleData,
+                //             index: index,
+                //             color: colors[index % 5]))));
               },
               child: SizedBox(
                 height: 40.h,

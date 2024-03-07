@@ -35,8 +35,8 @@ final client = RestClient(Dio(BaseOptions(contentType: "application/json")));
           title: const Text('Retrofit demo'),
 
         ),
-        body: ListView.builder(itemCount: , itemBuilder: (context, index){
-    return
+        body: ListView.builder(itemCount: postList.length , itemBuilder: (context, index){
+    return Container();
     }),);
   }
 }

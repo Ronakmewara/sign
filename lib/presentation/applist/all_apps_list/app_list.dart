@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:signup_page/Module/beerlist_app_without_bloc/beer_infinite_listing.dart';
 import 'package:signup_page/presentation/applist/single_curved_list/curved_list.dart';
 import 'package:signup_page/presentation/apidata_list/homepage/apilist_homepage.dart';
+import 'package:signup_page/router/router_constants.dart';
 
 import '../../../Module/blocloginapi/ui/loginform.dart';
 
@@ -27,8 +29,7 @@ class _State extends State<TaskList> {
         'color': const Color.fromRGBO(60, 99, 80, 1.0),
         'nextColor': const Color.fromRGBO(79, 111, 82, 1),
         'onTap': () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Homepage()));
+           context.go(RouterConstants.apiDataList);
         }
       },
       {
@@ -38,8 +39,7 @@ class _State extends State<TaskList> {
         'color': const Color.fromRGBO(79, 111, 82, 1),
         'nextColor': const Color.fromRGBO(115, 144, 114, 1),
         'onTap': () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const InfiniteListWithoutBloc()));
+           context.go(RouterConstants.beerListWithoutBlocRoute);
         }
       },
       {
