@@ -30,12 +30,13 @@ class BeerCard extends StatelessWidget {
           if (index == list.length) {
             return const Center(child: CircularProgressIndicator());
           } else {
+            var color = colors[index % 5].toString();
             final singleData = list[index];
 
             return GestureDetector(
               onTap: () {
 
-                context.go("${RouterConstants.beerDetailsRoute}/$index", extra: singleData ,   );
+                context.go("${RouterConstants.beerDetailsRoute}/$index/$color", extra: singleData ,   );
                 // Navigator.push(
                 //     context,
                 //     (MaterialPageRoute(

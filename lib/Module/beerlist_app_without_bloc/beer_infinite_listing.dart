@@ -55,8 +55,8 @@ class _InfiniteListState extends  State<InfiniteListWithoutBloc> {
       }
     });
     try {
-      String url = 'https://api.punkapi.com/v2/beers?page=$pageKey&per_page=10';
 
+      String url = 'https://api.punkapi.com/v2/beers?page=$pageKey&per_page=10';
       if (foodSearch.isNotEmpty) {
         url += '&food=$foodSearch';
       }
@@ -176,7 +176,7 @@ class _InfiniteListState extends  State<InfiniteListWithoutBloc> {
           list: _list,
           scrollController: scrollController,
           isLoading: _isLoading,
-          colors: colors,
+          colors: colors
         ));
   }
 }

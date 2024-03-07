@@ -14,18 +14,20 @@ class BeerDetailsPage extends StatefulWidget {
   const BeerDetailsPage(
       {super.key,
       required this.beerDetails,
-      required this.index,
+      required this.index, required this.color,
       });
   final Beer beerDetails;
-
   final String index;
-  // final Color color;
+  final String color;
 
   @override
   State<BeerDetailsPage> createState() => _BeerDetailsPageState();
 }
 
 class _BeerDetailsPageState extends State<BeerDetailsPage> {
+
+
+
   bool isFavourite = false;
   List<Beer>? favBeerList;
   List<dynamic>? BeerList;
@@ -65,7 +67,7 @@ class _BeerDetailsPageState extends State<BeerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // backgroundColor: widget.color,
+        backgroundColor: Color(int.parse(widget.color.substring(1), radix: 16) + 0xFF000000),
         appBar: AppBar(
           actions: [
             Padding(
@@ -105,12 +107,12 @@ class _BeerDetailsPageState extends State<BeerDetailsPage> {
             widget.beerDetails.name!,
             style: const TextStyle(fontSize: 20),
           ),
-          // backgroundColor: widget.color,
+          backgroundColor:Color(int.parse(widget.color.substring(1), radix: 16) + 0xFF000000),
         ),
         body: Container(
           height: 100.h,
           width: double.infinity,
-          // color: widget.color,
+          color: Color(int.parse(widget.color.substring(1), radix: 16) + 0xFF000000),
           child: Stack(
             children: [
               Padding(

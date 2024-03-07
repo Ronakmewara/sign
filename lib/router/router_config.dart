@@ -72,13 +72,14 @@ class MyRouter {
 
 
         GoRoute(name: 'BeerDetailsPage',
-            path:"${RouterConstants.beerDetailsRoute}/:index",
+            path:"${RouterConstants.beerDetailsRoute}/:index/:color",
             builder: (context, state) {
 
-              final index = state.pathParameters['index'] as String;
+              final index = state.pathParameters['index']! as String;
+              final String color = state.pathParameters['color']!;
 
        final Beer beer = state.extra! as Beer;
-              return  BeerDetailsPage(beerDetails: beer, index: index);
+              return  BeerDetailsPage(beerDetails: beer, index: index , color: color,);
             }),
 
       ]);
