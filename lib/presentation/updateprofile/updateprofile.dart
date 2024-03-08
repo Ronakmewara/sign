@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup_page/common/custom_input/custom_input.dart';
 import 'package:signup_page/presentation/mainpagewithbar/mainpagewithbar.dart';
 import 'package:signup_page/presentation/signup/signup.dart';
+import 'package:signup_page/router/router_constants.dart';
 import 'package:signup_page/theme/theme.dart';
 
 import '../../common/custom_button/custom_button.dart';
@@ -83,7 +85,7 @@ class _UpdateFormState extends State<UpdateForm> {
                         AutovalidateMode.onUserInteraction,
                         name: 'Name',
                         decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.manage_accounts_rounded),
+                            prefixIcon: const Icon(Icons.manage_accounts_rounded),
                             border: OutlineInputBorder(
 
                                 borderRadius: BorderRadius.circular(100)
@@ -304,11 +306,7 @@ class _UpdateFormState extends State<UpdateForm> {
                             String userJson = json.encode(updateFormBuilderData);
                             print(userJson);
                             await prefs.setString('user', userJson);
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (context) => const MainPage()),
-                                  (route) => false,
-                            );
+                             context.go(RouterConstants.appListRoute);
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content:

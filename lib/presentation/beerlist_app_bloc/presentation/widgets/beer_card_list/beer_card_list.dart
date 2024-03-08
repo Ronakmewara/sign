@@ -7,9 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:signup_page/router/router_constants.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../data/model/beer_model/model_beer.dart';
-import '../../screens/beer_details/beer_details.dart';
-
 class BeerCard extends StatelessWidget {
   const BeerCard({super.key, required this.list, required this.scrollController, required this.isLoading, required this.colors});
   final list;
@@ -30,13 +27,17 @@ class BeerCard extends StatelessWidget {
           if (index == list.length) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            var color = colors[index % 5].toString();
+            Color color = colors[index % 5];
+       String stringColor = color.value.toString();
+
+
             final singleData = list[index];
+
 
             return GestureDetector(
               onTap: () {
 
-                context.go("${RouterConstants.beerDetailsRoute}/$index/$color", extra: singleData ,   );
+                context.go("${RouterConstants.beerDetailsRoute}/$index/$stringColor", extra: singleData ,   );
                 // Navigator.push(
                 //     context,
                 //     (MaterialPageRoute(

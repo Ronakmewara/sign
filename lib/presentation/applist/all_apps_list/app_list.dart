@@ -49,8 +49,7 @@ class _State extends State<TaskList> {
         'color': const Color.fromRGBO(115, 144, 114, 1),
         'nextColor': const Color.fromRGBO(134, 167, 137, 1),
         'onTap': () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const InfiniteList()));
+          context.go(RouterConstants.beerListWithBlocRoute);
         }
         },{
         'title': 'Login with API',
@@ -59,8 +58,7 @@ class _State extends State<TaskList> {
         'color': const Color.fromRGBO(134, 167, 137, 1),
         'nextColor': Colors.transparent,
         'onTap': () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LoginFormNew()));
+          context.go(RouterConstants.apiLoginWithBloc);
         }
       },
     ];

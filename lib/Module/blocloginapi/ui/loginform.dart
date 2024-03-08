@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
 import 'package:signup_page/Module/blocloginapi/bloc/login_bloc.dart';
+import 'package:signup_page/router/router_constants.dart';
 
 import '../../../common/custom_button/custom_button.dart';
 import '../../../theme/theme.dart';
@@ -28,7 +30,8 @@ class _LoginFormState extends State<LoginFormNew> {
       create: (context) => LoginBloc(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Login using API'),
+          leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new), onPressed: (){context.go(RouterConstants.appListRoute);},),
+          title: const Text('Login using API'),
         ),
         body: Builder(
           builder: (context) {

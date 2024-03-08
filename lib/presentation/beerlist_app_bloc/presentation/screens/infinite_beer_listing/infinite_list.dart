@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:signup_page/Module/blocloginapi/bloc/login_bloc.dart';
+import 'package:signup_page/router/router_constants.dart';
 
 import '../../../bloc/beer_bloc.dart';
 import '../../../data/model/beer_model/model_beer.dart';
@@ -72,6 +74,9 @@ class _InfiniteListState extends State<InfiniteList> {
               'All Beers',
               style: TextStyle(fontSize: 20),
             ),
+            leading :  IconButton(icon: const Icon(Icons.arrow_back_ios_new), onPressed: (){
+              context.go(RouterConstants.appListRoute);
+            },),
             actions: [
               GestureDetector(
                 onTap: () {

@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup_page/common/custom_listtile_profilepage.dart';
-import 'package:signup_page/presentation/signup/signup.dart';
-import 'package:signup_page/theme/theme.dart';
-import 'package:signup_page/presentation/updateprofile/updateprofile.dart';
+import 'package:signup_page/router/router_constants.dart';
 
 import '../../model_class/user_sharedprefs.dart';
 import '../login/login.dart';
@@ -75,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage>
                       fit: BoxFit.cover,
                     )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
@@ -87,17 +86,18 @@ class _ProfilePageState extends State<ProfilePage>
                     userData!.email ?? "",
                     style: const TextStyle(fontSize: 17),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   ElevatedButton(
 
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    UpdateForm(data: userData ?? "", )));
+                        context.go(RouterConstants.updateProfileRoute , extra: userData ?? "");
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             UpdateForm(data: userData ?? "", )));
                       },
 
                       style: ElevatedButton.styleFrom(
@@ -117,13 +117,13 @@ class _ProfilePageState extends State<ProfilePage>
                     height: 25,
                   ),
                   CustomListTile(text: 'Settings', icon: Icons.settings, onPress: (){}, endIcon: true),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   CustomListTile(text: 'User Management', icon: Icons.manage_accounts, onPress: (){}, endIcon: true),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   CustomListTile(text: 'Billing Details', icon: Icons.credit_card, onPress: (){}, endIcon: true),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   CustomListTile(text: 'Information', icon: Icons.info_outline_rounded, onPress: (){}, endIcon: true),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   CustomListTile(text: 'Logout', icon: Icons.logout, onPress: (){
                     showDialog(
                         context: context,
@@ -132,11 +132,7 @@ class _ProfilePageState extends State<ProfilePage>
                           actions: [
                             TextButton(
                                 onPressed: () async {
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                                        (route) => false,
-                                  );
+                                  context.go(RouterConstants.loginPageRoute);
 
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(

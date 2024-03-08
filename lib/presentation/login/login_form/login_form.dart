@@ -101,10 +101,8 @@ class _LoginFormState extends State<LoginForm> {
                             duration: Duration(seconds: 2),
                           ));
                           prefs.setBool('isLogged', true);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MainPage()));
+                          context.go(RouterConstants.appListRoute);
+
                           emailController.clear();
                           passwordController.clear();
                         } else {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-// Example dependency class
+
 class DataService {
   List<String> fetchData() {
     return ["Item 1", "Item 2", "Item 3"];
   }
 }
 
-// Widget that uses setter injection
+
 class ListPrinter extends StatelessWidget {
   DataService? _dataService;
 
@@ -25,7 +25,7 @@ class ListPrinter extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Printing Example'),
+        title: const Text('List Printing Example'),
       ),
       body: ListView.builder(
         itemCount: items.length,
@@ -44,12 +44,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     DataService dataService = DataService();
     ListPrinter listPrinter = ListPrinter();
 
-    // Setting the dependency through setter injection
     listPrinter.dataService = dataService;
 
     return MaterialApp(

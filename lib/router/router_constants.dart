@@ -9,5 +9,8 @@ class RouterConstants{
  static const String appListRoute = '/appListPage';
  static const String apiDataList = '/apiDataListPage';
  static const String apiDataDetails = '/apiDataDetailsPage';
+ static const String apiLoginWithBloc = '/apiLoginWithBloc';
+ static const String updateProfileRoute = '/updateProfilePage';
+ static const String constructorInjectionPage = '/constructorInjectionPage';
 
 }

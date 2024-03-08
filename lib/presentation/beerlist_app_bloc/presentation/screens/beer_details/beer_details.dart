@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
+import 'package:signup_page/router/router_constants.dart';
 import 'package:signup_page/theme/theme.dart';
 import 'package:sizer/sizer.dart';
-import 'package:sizer/sizer.dart';
-import 'package:hive/hive.dart';
 
 import '../../../data/model/beer_model/model_beer.dart';
 
@@ -27,13 +27,15 @@ class BeerDetailsPage extends StatefulWidget {
 class _BeerDetailsPageState extends State<BeerDetailsPage> {
 
 
-
+ Color? newColor;
   bool isFavourite = false;
   List<Beer>? favBeerList;
   List<dynamic>? BeerList;
   @override
   void initState() {
-    // TODO: implement initState
+
+    int intColor = int.parse(widget.color);
+    newColor = Color(intColor);
     super.initState();
     initializeList();
   }
@@ -67,8 +69,14 @@ class _BeerDetailsPageState extends State<BeerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(int.parse(widget.color.substring(1), radix: 16) + 0xFF000000),
+        backgroundColor: newColor,
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new),
+            onPressed: (){
+              context.go(RouterConstants.beerListWithoutBlocRoute);
+            },
+          ),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 40),
@@ -107,12 +115,12 @@ class _BeerDetailsPageState extends State<BeerDetailsPage> {
             widget.beerDetails.name!,
             style: const TextStyle(fontSize: 20),
           ),
-          backgroundColor:Color(int.parse(widget.color.substring(1), radix: 16) + 0xFF000000),
+          backgroundColor:newColor
         ),
         body: Container(
           height: 100.h,
           width: double.infinity,
-          color: Color(int.parse(widget.color.substring(1), radix: 16) + 0xFF000000),
+          color:  newColor,
           child: Stack(
             children: [
               Padding(
@@ -285,7 +293,7 @@ class _BeerDetailsPageState extends State<BeerDetailsPage> {
                 top: 4.h,
                 right: 30,
                 child: Hero(
-                  tag: 'imageHero${widget.index}',
+                  tag: 'imageHero${int.parse(widget.index)}',
                   child: CachedNetworkImage(
                     imageUrl: widget.beerDetails.imageUrl ?? "",
                     height: 55.h,
