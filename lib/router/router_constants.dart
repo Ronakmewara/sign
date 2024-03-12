@@ -12,5 +12,6 @@ class RouterConstants{
  static const String apiLoginWithBloc = '/apiLoginWithBloc';
  static const String updateProfileRoute = '/updateProfilePage';
  static const String constructorInjectionPage = '/constructorInjectionPage';
+ static const String crashlyticsPage = '/crashlyticsPage';
 
 }

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:go_router/go_router.dart';
 import 'package:signup_page/D_Injection/construnctor.dart';
 import 'package:signup_page/Module/blocloginapi/bloc/login_bloc.dart';
+import 'package:signup_page/firebase_crashlytics/crash_test.dart';
 import 'package:signup_page/model_class/post.dart';
 import 'package:signup_page/model_class/user_sharedprefs.dart';
 import 'package:signup_page/presentation/apidata_list/apidata_details/apidata_details.dart';
@@ -22,7 +23,7 @@ import '../presentation/beerlist_app_bloc/data/model/beer_model/model_beer.dart'
 
 class MyRouter {
   GoRouter router =
-      GoRouter(initialLocation: RouterConstants.constructorInjectionPage, routes: [
+      GoRouter(initialLocation: RouterConstants.crashlyticsPage, routes: [
     GoRoute(
         name: 'splashScreen',
         path: RouterConstants.splashScreenRoute,
@@ -91,6 +92,14 @@ class MyRouter {
           final data = state.extra!;
 
           return  UpdateForm(data: data);
+        }),
+        GoRoute(
+        name: 'crashlytics Firebase',
+        path: RouterConstants.crashlyticsPage,
+        builder: (context, state) {
+
+
+          return const CrashTest();
         }),
     GoRoute(
         name: 'BeerDetailsPage',
