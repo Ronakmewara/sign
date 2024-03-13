@@ -23,7 +23,7 @@ import '../presentation/beerlist_app_bloc/data/model/beer_model/model_beer.dart'
 
 class MyRouter {
   GoRouter router =
-      GoRouter(initialLocation: RouterConstants.crashlyticsPage, routes: [
+      GoRouter(initialLocation: RouterConstants.appListRoute, routes: [
     GoRoute(
         name: 'splashScreen',
         path: RouterConstants.splashScreenRoute,

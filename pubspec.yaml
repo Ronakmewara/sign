@@ -61,7 +61,9 @@ dependencies:
   string_to_color: ^2.0.0
   firebase_core: ^2.24.2
   firebase_crashlytics: ^3.4.9
-  firebase_analytics: ^10.8.0
+  firebase_analytics: ^10.8.10
+  firebase_remote_config: ^4.3.18
+  firebase_messaging: ^14.7.20
 dev_dependencies:
   flutter_test:
     sdk: flutter

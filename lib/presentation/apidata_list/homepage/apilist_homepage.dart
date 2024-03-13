@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:go_router/go_router.dart';
+import 'package:signup_page/data/remote_config/remote_config.dart';
 import 'package:signup_page/model_class/post.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -14,9 +17,11 @@ import '../apidata_list/apidata_list.dart';
 class ApiDataList extends StatefulWidget {
   const ApiDataList({super.key});
 
+
   @override
   State<ApiDataList> createState() => HomepageState();
 }
+
 
 class HomepageState extends State<ApiDataList> {
   bool isTimeMatched = false;
@@ -28,6 +33,7 @@ class HomepageState extends State<ApiDataList> {
   late List<Post> filteredPosts = [];
 
   Future<List<Post>> fetchData() async {
+   var remoteConfigTime = await FirebaseRemoteConfigClass().initializeConfig();
     final box = await Hive.openBox('RonakBox');
     var lastApicallDate = box.get('date');
     if (lastApicallDate == null) {
@@ -37,10 +43,11 @@ class HomepageState extends State<ApiDataList> {
       await box.put('date', currentDate);
        return  makeApicall();
     } else {
+
       var dataFromHive = await box.get('data') as List;
             print(DateTime.parse(lastApicallDate.toString()));
       if (dataFromHive.isEmpty) return [];
-      var lastDateTime = DateTime.parse(lastApicallDate.toString()).add(Duration(minutes: 5));
+      var lastDateTime = DateTime.parse(lastApicallDate.toString()).add(Duration(minutes: int.parse(remoteConfigTime) ));
   // case 1 - 8:05  + 5 = 8:10
       //case 2 - 8:06 true
       if(lastDateTime.isAfter(DateTime.now())) {
@@ -82,6 +89,7 @@ class HomepageState extends State<ApiDataList> {
 
   final TextEditingController searchController = TextEditingController();
   @override
+
   void initState() {
     super.initState();
 
@@ -92,7 +100,11 @@ class HomepageState extends State<ApiDataList> {
         hasData = true;
       });
     });
+
+
   }
+
+
 
   @override
   Widget build(BuildContext context) {

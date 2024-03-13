@@ -41,7 +41,8 @@ class BeerBloc extends Bloc<BeerEvent, BeerState> {
     }
   }
 
-  FutureOr<void> fetchFilteredBeerData(FetchFilteredBeerData event, Emitter<BeerState> emit) async{
+  FutureOr<void> fetchFilteredBeerData(
+      FetchFilteredBeerData event, Emitter<BeerState> emit) async {
     if (event.currentPage == 1) {
       event.list.clear();
     }
@@ -51,14 +52,14 @@ class BeerBloc extends Bloc<BeerEvent, BeerState> {
     } else {
       emit(BeerLoadingState(firstPage: false));
     }
-    try{
-      List<Beer> list = await FilterRepo.fetchFilterData( event.foodSearch, event.brewedBefore, event.brewedAfter, event.currentPage);
+    try {
+      List<Beer> list = await FilterRepo.fetchFilterData(event.foodSearch,
+          event.brewedBefore, event.brewedAfter, event.currentPage);
       event.list.addAll(list);
       emit(BeerSuccessState(list: event.list));
-
-    } on CustomException catch (e){
+    } on CustomException catch (e) {
       emit(BeerErrorState(errorMsg: e.message));
-    } catch(e){
+    } catch (e) {
       emit(BeerErrorState(errorMsg: 'some Error Occurred'));
     }
   }
