@@ -9,7 +9,8 @@ class Person extends Equatable{
 
   @override
   // TODO: implement props
-  List<Object?> get props => [name , age];
+  List<Object?> get props => [name];
+
 }
 
 
@@ -19,7 +20,7 @@ class EquatableDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final person1 = Person('ronak', 30);
+    final person1 = Person('ronak', 1);
     final person2 = Person('ronak', 30);
 
     bool areEqual = person1 == person2;
@@ -30,7 +31,7 @@ class EquatableDemo extends StatelessWidget {
       ),
       body: Center(
         child: Text(
-          'Are persons equal? $areEqual',
+           '$areEqual',
           style: const TextStyle(fontSize: 20),
         ),
       ),

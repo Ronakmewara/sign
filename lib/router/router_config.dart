@@ -21,22 +21,34 @@ import 'package:signup_page/router/router_constants.dart';
 import '../Module/beerlist_app_without_bloc/beer_infinite_listing.dart';
 import '../Module/blocloginapi/ui/loginform.dart';
 import '../Module/dragdrop_list/draganddrop_list.dart';
+import '../Module/local_notification/local_notification.dart';
 import '../presentation/beerlist_app_bloc/data/model/beer_model/model_beer.dart';
 
 class MyRouter {
   GoRouter router =
-      GoRouter(initialLocation: RouterConstants.appListRoute, routes: [
+      GoRouter(initialLocation: RouterConstants.equatableDemo, routes: [
     GoRoute(
         name: 'splashScreen',
         path: RouterConstants.splashScreenRoute,
         builder: (context, state) {
           return const SplashScreen();
+        }), GoRoute(
+        name: 'Equatable Demo',
+        path: RouterConstants.equatableDemo,
+        builder: (context, state) {
+          return const EquatableDemo();
         }),
         GoRoute(
             name: 'Drag and drop',
             path: RouterConstants.dragAndDrop,
             builder: (context, state) {
               return const DragAndDropListApp();
+            }),
+        GoRoute(
+            name: 'localNotification',
+            path: RouterConstants.localNotification,
+            builder: (context, state) {
+              return const LocalNotificationDemo();
             }),
         GoRoute(
         name: 'Constructor Injection',
@@ -50,12 +62,7 @@ class MyRouter {
         builder: (context, state) {
           return const Signup();
         }),
-        GoRoute(
-        name: 'equatablePage',
-        path: RouterConstants.equatableDemoPage,
-        builder: (context, state) {
-          return const EquatableDemo();
-        }),
+
     GoRoute(
         name: 'LoginPage',
         path: RouterConstants.loginPageRoute,
