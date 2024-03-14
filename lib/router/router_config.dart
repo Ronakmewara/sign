@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:go_router/go_router.dart';
 import 'package:signup_page/D_Injection/construnctor.dart';
 import 'package:signup_page/Module/blocloginapi/bloc/login_bloc.dart';
+import 'package:signup_page/Module/equatable/equatable_demo.dart';
 import 'package:signup_page/firebase_crashlytics/crash_test.dart';
 import 'package:signup_page/model_class/post.dart';
 import 'package:signup_page/model_class/user_sharedprefs.dart';
@@ -48,6 +49,12 @@ class MyRouter {
         path: RouterConstants.signupPageRoute,
         builder: (context, state) {
           return const Signup();
+        }),
+        GoRoute(
+        name: 'equatablePage',
+        path: RouterConstants.equatableDemoPage,
+        builder: (context, state) {
+          return const EquatableDemo();
         }),
     GoRoute(
         name: 'LoginPage',
