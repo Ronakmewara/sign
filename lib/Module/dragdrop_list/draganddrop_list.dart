@@ -13,8 +13,10 @@ class _DragAndDropListState extends State<DragAndDropListApp> {
   @override
   void initState() {
     super.initState();
-    listContent = List.generate(10, (index){
-      return DragAndDropList(children: [DragAndDropItem(
+    listContent = List.generate(2, (index){
+      return DragAndDropList(children: [
+
+        DragAndDropItem(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
@@ -40,7 +42,18 @@ class _DragAndDropListState extends State<DragAndDropListApp> {
               trailing: const Icon(Icons.menu),
             ),
           ),
-        ) ],);
+        ) , DragAndDropItem(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListTile(
+              title: Text('List ${index.toString()}.4'),
+              trailing: const Icon(Icons.menu),
+            ),
+          ),
+        ) ,
+
+
+      ],);
     });
   }
 
@@ -62,9 +75,9 @@ setState(() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('drag and drop demo' , style: TextStyle(fontSize: 20),)),
+        title: const Center(child: Text('drag and drop demo' , style: TextStyle(fontSize: 20),)),
       ),
-      body: DragAndDropLists(children: listContent, onItemReorder: _onItemReorder  , onListReorder: _onListReorder ,),
+      body: DragAndDropLists(children: listContent, onItemReorder: _onItemReorder  , onListReorder: _onListReorder ,listDivider: const Divider(),),
 
     );
   }

@@ -19,6 +19,7 @@ import 'package:signup_page/router/router_constants.dart';
 
 import '../Module/beerlist_app_without_bloc/beer_infinite_listing.dart';
 import '../Module/blocloginapi/ui/loginform.dart';
+import '../Module/dragdrop_list/draganddrop_list.dart';
 import '../presentation/beerlist_app_bloc/data/model/beer_model/model_beer.dart';
 
 class MyRouter {
@@ -30,6 +31,12 @@ class MyRouter {
         builder: (context, state) {
           return const SplashScreen();
         }),
+        GoRoute(
+            name: 'Drag and drop',
+            path: RouterConstants.dragAndDrop,
+            builder: (context, state) {
+              return const DragAndDropListApp();
+            }),
         GoRoute(
         name: 'Constructor Injection',
         path: RouterConstants.constructorInjectionPage,

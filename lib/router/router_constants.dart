@@ -13,5 +13,6 @@ class RouterConstants{
  static const String updateProfileRoute = '/updateProfilePage';
  static const String constructorInjectionPage = '/constructorInjectionPage';
  static const String crashlyticsPage = '/crashlyticsPage';
+ static const String dragAndDrop = '/dragAndDrop';
 
 }

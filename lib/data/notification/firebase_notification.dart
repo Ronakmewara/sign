@@ -10,7 +10,9 @@ class FirebaseNotification{
          badge: true,
          carPlay: false,
          criticalAlert: false,
-         sound: true
+         sound: true,
+         provisional: false
+
       );
       final token = await _firebaseMessaging.getToken();
       print("device Token : $token " );

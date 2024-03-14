@@ -14,17 +14,13 @@ import 'package:signup_page/router/router_config.dart';
 import 'package:signup_page/theme/theme.dart';
 import 'package:sizer/sizer.dart';
 
-
-
-Future _firebaseBackgroundMessage(RemoteMessage message) async{
-  if(message.notification != null){
+Future _firebaseBackgroundMessage(RemoteMessage message) async {
+  if (message.notification != null) {
     print('some notification received!');
   }
 }
 
-
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FlutterError.onError = (errorDetails) {
@@ -38,6 +34,21 @@ void main() async {
   FirebaseNotification.init();
   FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundMessage);
 
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+
+
+    if (message.notification != null) {
+      print("Got a message in foreground");
+    }
+  });
+
+  final RemoteMessage? message =
+  await FirebaseMessaging.instance.getInitialMessage();
+
+  if (message != null) {
+    print("Launched from terminated state");
+
+  }
   setupLocator();
   await Hive.initFlutter();
   runApp(DevicePreview(
@@ -54,23 +65,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp.router(
-
-          routerConfig: MyRouter().router,
-            localizationsDelegates: const [
-              // GlobalMaterialLocalizations.delegate,
-              MonthYearPickerLocalizations.delegate
-            ],
-            locale: DevicePreview.locale(context),
-            builder: DevicePreview.appBuilder,
-            debugShowCheckedModeBanner: false,
-            title: 'Signup Page',
-            theme: theme(),
-
+        routerConfig: MyRouter().router,
+        localizationsDelegates: const [
+          // GlobalMaterialLocalizations.delegate,
+          MonthYearPickerLocalizations.delegate
+        ],
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
+        debugShowCheckedModeBanner: false,
+        title: 'Signup Page',
+        theme: theme(),
       );
     });
 
